@@ -60,7 +60,7 @@ const initialState = {
 };
 
 const loginSlice = createSlice({
-	name: 'http://localhost:8086/api/v1/users/login',
+	name: 'https://api.constructionmarketuae.com/api/v1/users/login',
 	initialState,
 	reducers: {
 		loginSuccess: (state, action) => {

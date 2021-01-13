@@ -47,7 +47,7 @@ class JwtService extends FuseUtils.EventEmitter {
 
 	createUser = data => {
 		return new Promise((resolve, reject) => {
-			axios.post('http://localhost:8086/api/v1/users/signup', data).then(response => {
+			axios.post('https://api.constructionmarketuae.com/api/v1/users/signup', data).then(response => {
 				console.log(response);
 				if (response.data.user) {
 					this.setSession(response.data.access_token);
@@ -62,7 +62,7 @@ class JwtService extends FuseUtils.EventEmitter {
 	signInWithEmailAndPassword = (email, password) => {
 		return new Promise((resolve, reject) => {
 			axios
-				.post('http://localhost:8086/api/v1/users/login', {
+				.post('https://api.constructionmarketuae.com/api/v1/users/login', {
 					email,
 					password
 				})
@@ -81,7 +81,7 @@ class JwtService extends FuseUtils.EventEmitter {
 		var access_token = this.getAccessToken();
 		return new Promise((resolve, reject) => {
 			axios
-				.get(`http://localhost:8086/api/v1/users/auth/access-token/${access_token}`)
+				.get(`https://api.constructionmarketuae.com/api/v1/users/auth/access-token/${access_token}`)
 				.then(response => {
 					if (response.data.user) {
 						this.setSession(response.data.access_token);

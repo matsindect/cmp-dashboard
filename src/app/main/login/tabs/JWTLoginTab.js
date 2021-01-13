@@ -114,56 +114,6 @@ function JWTLoginTab(props) {
 					Login
 				</Button>
 			</Formsy>
-
-			<table className="text-center w-full mt-32">
-				<thead>
-					<tr>
-						<th>
-							<Typography className="font-600" color="textSecondary">
-								Role
-							</Typography>
-						</th>
-						<th>
-							<Typography className="font-600" color="textSecondary">
-								Username
-							</Typography>
-						</th>
-						<th>
-							<Typography className="font-600" color="textSecondary">
-								Password
-							</Typography>
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							<Typography className="font-600" color="textSecondary">
-								Admin
-							</Typography>
-						</td>
-						<td>
-							<Typography>admin</Typography>
-						</td>
-						<td>
-							<Typography>admin</Typography>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<Typography className="font-600" color="textSecondary">
-								Staff
-							</Typography>
-						</td>
-						<td>
-							<Typography>staff</Typography>
-						</td>
-						<td>
-							<Typography>staff</Typography>
-						</td>
-					</tr>
-				</tbody>
-			</table>
 		</div>
 	);
 }
