@@ -7,16 +7,16 @@ const SectorsConfig = {
 	},
 	routes: [
 		{
-			path: '/apps/sectors/sectors/:sectorId/:sectorHandle?',
+			path: '/apps/sectors/:sectorId/:sectorslug?',
 			component: React.lazy(() => import('./sector/Sector'))
 		},
 		{
-			path: '/apps/sectors/sectors',
+			path: '/apps/sectors',
 			component: React.lazy(() => import('./sectors/Sectors'))
 		},
 		{
 			path: '/apps/sectors',
-			component: () => <Redirect to="/apps/sectors/sectors" />
+			component: () => <Redirect to="/apps/sectors" />
 		}
 	]
 };

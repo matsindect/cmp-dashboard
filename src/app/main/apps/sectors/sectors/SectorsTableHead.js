@@ -38,17 +38,10 @@ const rows = [
 		sort: true
 	},
 	{
-		id: 'priceTaxIncl',
-		align: 'right',
+		id: 'description',
+		align: 'left',
 		disablePadding: false,
-		label: 'Price',
-		sort: true
-	},
-	{
-		id: 'quantity',
-		align: 'right',
-		disablePadding: false,
-		label: 'Quantity',
+		label: 'Description',
 		sort: true
 	},
 	{

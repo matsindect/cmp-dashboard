@@ -1,20 +1,20 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import domainConfig from '../../../../fuse-configs/domainConfig';
 import FuseUtils from '@fuse/utils';
 
 export const getSector = createAsyncThunk('cmp/sector/getSector', async params => {
-	const response = await axios.get('http://localhost:8086/api/v1/sectors', { params });
+	const response = await axios.get(`${domainConfig.api_url}api/v1/sectors/${params.sectorId}`);
 	const data = await response.data;
-	console.log(data.data);
+	console.log(data);
 	return data.data;
 });
 
 export const saveSector = createAsyncThunk('cmp/sector/saveSector', async sector => {
-	console.log(sector);
-	const response = await axios.post('http://localhost:8086/api/v1/sectors', sector);
+	const response = await axios.post(`${domainConfig.api_url}api/v1/sectors`, sector);
 	const data = await response.data;
-
-	return data;
+	console.log(data);
+	return data.data;
 });
 
 const sectorSlice = createSlice({

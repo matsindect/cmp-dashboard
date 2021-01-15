@@ -64,7 +64,7 @@ function SectorsTable(props) {
 	}
 
 	function handleClick(item) {
-		props.history.push(`/apps/sectors/setors/${item.id}/${item.handle}`);
+		props.history.push(`/apps/sectors/${item._id}/${item.slug}`);
 	}
 
 	function handleCheck(event, id) {
@@ -123,7 +123,7 @@ function SectorsTable(props) {
 						)
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map(n => {
-								const isSelected = selected.indexOf(n.id) !== -1;
+								const isSelected = selected.indexOf(n._id) !== -1;
 								return (
 									<TableRow
 										className="h-64 cursor-pointer"
@@ -131,7 +131,7 @@ function SectorsTable(props) {
 										role="checkbox"
 										aria-checked={isSelected}
 										tabIndex={-1}
-										key={n.id}
+										key={n._id}
 										selected={isSelected}
 										onClick={event => handleClick(n)}
 									>
@@ -139,7 +139,7 @@ function SectorsTable(props) {
 											<Checkbox
 												checked={isSelected}
 												onClick={event => event.stopPropagation()}
-												onChange={event => handleCheck(event, n.id)}
+												onChange={event => handleCheck(event, n._id)}
 											/>
 										</TableCell>
 
@@ -152,7 +152,7 @@ function SectorsTable(props) {
 											{n.images.length > 0 && n.featuredImageId ? (
 												<img
 													className="w-full block rounded"
-													src={_.find(n.images, { id: n.featuredImageId }).url}
+													src={_.find(n.images, { _id: n.featuredImageId }).url}
 													alt={n.name}
 												/>
 											) : (
@@ -167,10 +167,12 @@ function SectorsTable(props) {
 										<TableCell className="p-4 md:p-16" component="th" scope="row">
 											{n.name}
 										</TableCell>
-
-										{/* <TableCell className="p-4 md:p-16 truncate" component="th" scope="row">
+										<TableCell className="p-4 md:p-16 truncate" component="th" scope="row">
 											{n.categories.join(', ')}
-										</TableCell> */}
+										</TableCell>
+										<TableCell className="p-4 md:p-16" component="th" scope="row">
+											{n.description}
+										</TableCell>
 
 										{/* <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
 											<span>$</span>

@@ -1,17 +1,20 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import FuseUtils from '@fuse/utils';
+import domainConfig from '../../../../fuse-configs/domainConfig';
 
 export const getProduct = createAsyncThunk('eCommerceApp/product/getProduct', async params => {
-	const response = await axios.get('/api/e-commerce-app/product', { params });
-	const data = await response.data;
+	console.log(params);
+	const response = await axios.get(`${domainConfig.api_url}api/v1/products/${params.productId}`);
+	const data = await response.data.data;
 
 	return data;
 });
 
 export const saveProduct = createAsyncThunk('eCommerceApp/product/saveProduct', async product => {
-	const response = await axios.post('/api/e-commerce-app/product/save', product);
-	const data = await response.data;
+	console.log(product);
+	const response = await axios.post(`${domainConfig.api_url}/api/v1/products/`, product);
+	const data = await response.data.data;
 
 	return data;
 });
@@ -24,24 +27,26 @@ const productSlice = createSlice({
 			reducer: (state, action) => action.payload,
 			prepare: event => ({
 				payload: {
-					id: FuseUtils.generateGUID(),
-					name: '',
-					handle: '',
+					product_name: '',
+					slug: '',
 					description: '',
 					categories: [],
 					tags: [],
 					images: [],
-					priceTaxExcl: 0,
-					priceTaxIncl: 0,
-					taxRate: 0,
-					comparedPrice: 0,
-					quantity: 0,
-					sku: '',
-					width: '',
-					height: '',
-					depth: '',
-					weight: '',
-					extraShippingFee: 0,
+					product_location: {
+						type: '',
+						coordinates: [{ lat: 0, lng: 0 }]
+					},
+					product_attributes: [],
+					product_categories: [],
+					products_catalogue: [],
+					sectors: 0,
+					origin: { city: '', country: '' },
+					product_pricing: {
+						currency: '',
+						price: ''
+					},
+					featuredImageId: 0,
 					active: true
 				}
 			})

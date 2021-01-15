@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import axios from 'axios';
+import domainConfig from './../../../../fuse-configs/domainConfig';
 
 export const getOrders = createAsyncThunk('eCommerceApp/orders/getOrders', async () => {
-	const response = await axios.get('/api/e-commerce-app/orders');
-	const data = await response.data;
+	const response = await axios.get(`${domainConfig.api_url}api/v1/categories/`);
+	const data = await response.data.data;
 
 	return data;
 });

@@ -20,6 +20,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { saveProduct, newProduct, getProduct } from '../store/productSlice';
+import { getOrders, selectOrders } from './../store/ordersSlice';
 import reducer from '../store';
 
 const useStyles = makeStyles(theme => ({
@@ -60,10 +61,13 @@ const useStyles = makeStyles(theme => ({
 function Product(props) {
 	const dispatch = useDispatch();
 	const product = useSelector(({ eCommerceApp }) => eCommerceApp.product);
+	const prodcategories = useSelector(selectOrders);
 	const theme = useTheme();
 
 	const classes = useStyles(props);
 	const [tabValue, setTabValue] = useState(0);
+	const [data, setData] = useState(prodcategories);
+
 	const { form, handleChange, setForm } = useForm(null);
 	const routeParams = useParams();
 
@@ -73,6 +77,7 @@ function Product(props) {
 
 			if (productId === 'new') {
 				dispatch(newProduct());
+				dispatch(getOrders());
 			} else {
 				dispatch(getProduct(routeParams));
 			}
@@ -130,9 +135,33 @@ function Product(props) {
 			console.log('error on load image');
 		};
 	}
+	function handleCatalogueUploadChange(e) {
+		const file = e.target.files[0];
+		if (!file) {
+			return;
+		}
+		const reader = new FileReader();
+		reader.readAsBinaryString(file);
 
+		reader.onload = () => {
+			setForm(
+				_.set({ ...form }, `products_catalogue`, [
+					{
+						id: FuseUtils.generateGUID(),
+						url: `data:${file.type};base64,${btoa(reader.result)}`,
+						type: 'image'
+					},
+					...form.products_catalogue
+				])
+			);
+		};
+
+		reader.onerror = () => {
+			console.log('error on load image');
+		};
+	}
 	function canBeSubmitted() {
-		return form.name.length > 0 && !_.isEqual(product, form);
+		return form.product_name.length > 0 && !_.isEqual(product, form);
 	}
 
 	if ((!product || (product && routeParams.productId !== product.id)) && routeParams.productId !== 'new') {
@@ -170,20 +199,20 @@ function Product(props) {
 										<img
 											className="w-32 sm:w-48 rounded"
 											src={_.find(form.images, { id: form.featuredImageId }).url}
-											alt={form.name}
+											alt={form.product_name}
 										/>
 									) : (
 										<img
 											className="w-32 sm:w-48 rounded"
 											src="assets/images/ecommerce/product-image-placeholder.png"
-											alt={form.name}
+											alt={form.product_name}
 										/>
 									)}
 								</FuseAnimate>
 								<div className="flex flex-col min-w-0 mx-8 sm:mc-16">
 									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 										<Typography className="text-16 sm:text-20 truncate">
-											{form.name ? form.name : 'New Product'}
+											{form.product_name ? form.product_name : 'New Product'}
 										</Typography>
 									</FuseAnimate>
 									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
@@ -218,9 +247,9 @@ function Product(props) {
 				>
 					<Tab className="h-64 normal-case" label="Product Info" />
 					<Tab className="h-64 normal-case" label="Product Images" />
+					<Tab className="h-64 normal-case" label="Product Pricing" />
 					<Tab className="h-64 normal-case" label="Product attributes" />
 					<Tab className="h-64 normal-case" label="Product reviews" />
-					<Tab className="h-64 normal-case" label="Shipping" />
 				</Tabs>
 			}
 			content={
@@ -230,13 +259,13 @@ function Product(props) {
 							<div>
 								<TextField
 									className="mt-8 mb-16"
-									error={form.name === ''}
+									error={form.product_name === ''}
 									required
-									label="Name"
+									label="Product Name"
 									autoFocus
-									id="name"
-									name="name"
-									value={form.name}
+									id="product_name"
+									name="product_name"
+									value={form.product_name}
 									onChange={handleChange}
 									variant="outlined"
 									fullWidth
@@ -258,11 +287,11 @@ function Product(props) {
 
 								<FuseChipSelect
 									className="mt-8 mb-24"
-									value={form.categories.map(item => ({
+									value={form.product_categories.map(item => ({
 										value: item,
 										label: item
 									}))}
-									onChange={value => handleChipChange(value, 'categories')}
+									onChange={value => handleChipChange(value, 'product_categories')}
 									placeholder="Select multiple categories"
 									textFieldProps={{
 										label: 'Categories',
@@ -271,6 +300,10 @@ function Product(props) {
 										},
 										variant: 'outlined'
 									}}
+									options={prodcategories.map(item => ({
+										value: item._id,
+										label: item.name
+									}))}
 									isMulti
 								/>
 
@@ -295,6 +328,9 @@ function Product(props) {
 						)}
 						{tabValue === 1 && (
 							<div>
+								<div className="flex justify-center sm:justify-start flex-wrap -mx-8 mb-8">
+									<p>Product images</p>
+								</div>
 								<div className="flex justify-center sm:justify-start flex-wrap -mx-8">
 									<label
 										htmlFor="button-file"
@@ -315,6 +351,46 @@ function Product(props) {
 										</Icon>
 									</label>
 									{form.images.map(media => (
+										<div
+											onClick={() => setFeaturedImage(media.id)}
+											onKeyDown={() => setFeaturedImage(media.id)}
+											role="button"
+											tabIndex={0}
+											className={clsx(
+												classes.productImageItem,
+												'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5',
+												media.id === form.featuredImageId && 'featured'
+											)}
+											key={media.id}
+										>
+											<Icon className={classes.productImageFeaturedStar}>star</Icon>
+											<img className="max-w-none w-auto h-full" src={media.url} alt="product" />
+										</div>
+									))}
+								</div>
+								<div className="flex justify-center sm:justify-start flex-wrap -mx-8 mb-8">
+									<p>Product catalogue</p>
+								</div>
+								<div className="flex justify-center sm:justify-start flex-wrap -mx-8">
+									<label
+										htmlFor="button-file"
+										className={clsx(
+											classes.productImageUpload,
+											'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5'
+										)}
+									>
+										<input
+											accept="image/*"
+											className="hidden"
+											id="button-file"
+											type="file"
+											onChange={handleCatalogueUploadChange}
+										/>
+										<Icon fontSize="large" color="action">
+											cloud_upload
+										</Icon>
+									</label>
+									{form.products_catalogue.map(media => (
 										<div
 											onClick={() => setFeaturedImage(media.id)}
 											onKeyDown={() => setFeaturedImage(media.id)}

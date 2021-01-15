@@ -1,6 +1,7 @@
 import FuseUtils from '@fuse/utils/FuseUtils';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import domainConfig from './../../fuse-configs/domainConfig';
 /* eslint-disable camelcase */
 
 class JwtService extends FuseUtils.EventEmitter {
@@ -47,7 +48,7 @@ class JwtService extends FuseUtils.EventEmitter {
 
 	createUser = data => {
 		return new Promise((resolve, reject) => {
-			axios.post('https://api.constructionmarketuae.com/api/v1/users/signup', data).then(response => {
+			axios.post(`${domainConfig.api_url}api/v1/users/signup`, data).then(response => {
 				console.log(response);
 				if (response.data.user) {
 					this.setSession(response.data.access_token);
@@ -62,7 +63,7 @@ class JwtService extends FuseUtils.EventEmitter {
 	signInWithEmailAndPassword = (email, password) => {
 		return new Promise((resolve, reject) => {
 			axios
-				.post('https://api.constructionmarketuae.com/api/v1/users/login', {
+				.post(`${domainConfig.api_url}api/v1/users/login`, {
 					email,
 					password
 				})
@@ -81,7 +82,7 @@ class JwtService extends FuseUtils.EventEmitter {
 		var access_token = this.getAccessToken();
 		return new Promise((resolve, reject) => {
 			axios
-				.get(`https://api.constructionmarketuae.com/api/v1/users/auth/access-token/${access_token}`)
+				.get(`${domainConfig.api_url}api/v1/users/auth/access-token/${access_token}`)
 				.then(response => {
 					if (response.data.user) {
 						this.setSession(response.data.access_token);
@@ -99,7 +100,7 @@ class JwtService extends FuseUtils.EventEmitter {
 	};
 
 	updateUserData = user => {
-		return axios.post('/api/auth/user/update', {
+		return axios.patch(`${domainConfig.api_url}/api/auth/user/update`, {
 			user
 		});
 	};

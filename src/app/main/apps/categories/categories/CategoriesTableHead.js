@@ -17,52 +17,31 @@ import React, { useState } from 'react';
 
 const rows = [
 	{
-		id: 'id',
+		id: 'image',
+		align: 'left',
+		disablePadding: true,
+		label: '',
+		sort: false
+	},
+	{
+		id: 'name',
 		align: 'left',
 		disablePadding: false,
-		label: 'ID',
+		label: 'Name',
 		sort: true
 	},
 	{
-		id: 'reference',
+		id: 'description',
 		align: 'left',
 		disablePadding: false,
-		label: 'Reference',
+		label: 'Description',
 		sort: true
 	},
 	{
-		id: 'customer',
-		align: 'left',
-		disablePadding: false,
-		label: 'Customer',
-		sort: true
-	},
-	{
-		id: 'total',
+		id: 'active',
 		align: 'right',
 		disablePadding: false,
-		label: 'Total',
-		sort: true
-	},
-	{
-		id: 'payment',
-		align: 'left',
-		disablePadding: false,
-		label: 'Payment',
-		sort: true
-	},
-	{
-		id: 'status',
-		align: 'left',
-		disablePadding: false,
-		label: 'Status',
-		sort: true
-	},
-	{
-		id: 'date',
-		align: 'left',
-		disablePadding: false,
-		label: 'Date',
+		label: 'Active',
 		sort: true
 	}
 ];
@@ -73,23 +52,21 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function OrdersTableHead(props) {
+function ProductsTableHead(props) {
 	const classes = useStyles(props);
-	const [selectedOrdersMenu, setSelectedOrdersMenu] = useState(null);
+	const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
 
 	const createSortHandler = property => event => {
 		props.onRequestSort(event, property);
 	};
 
-	function openSelectedOrdersMenu(event) {
-		setSelectedOrdersMenu(event.currentTarget);
+	function openSelectedProductsMenu(event) {
+		setSelectedProductsMenu(event.currentTarget);
 	}
 
-	function closeSelectedOrdersMenu() {
-		setSelectedOrdersMenu(null);
+	function closeSelectedProductsMenu() {
+		setSelectedProductsMenu(null);
 	}
-
-	// const {onSelectAllClick, order, orderBy, numSelected, rowCount} = props;
 
 	return (
 		<TableHead>
@@ -108,22 +85,22 @@ function OrdersTableHead(props) {
 							)}
 						>
 							<IconButton
-								aria-owns={selectedOrdersMenu ? 'selectedOrdersMenu' : null}
+								aria-owns={selectedProductsMenu ? 'selectedProductsMenu' : null}
 								aria-haspopup="true"
-								onClick={openSelectedOrdersMenu}
+								onClick={openSelectedProductsMenu}
 							>
 								<Icon>more_horiz</Icon>
 							</IconButton>
 							<Menu
-								id="selectedOrdersMenu"
-								anchorEl={selectedOrdersMenu}
-								open={Boolean(selectedOrdersMenu)}
-								onClose={closeSelectedOrdersMenu}
+								id="selectedProductsMenu"
+								anchorEl={selectedProductsMenu}
+								open={Boolean(selectedProductsMenu)}
+								onClose={closeSelectedProductsMenu}
 							>
 								<MenuList>
 									<MenuItem
 										onClick={() => {
-											closeSelectedOrdersMenu();
+											closeSelectedProductsMenu();
 										}}
 									>
 										<ListItemIcon className="min-w-40">
@@ -168,4 +145,4 @@ function OrdersTableHead(props) {
 	);
 }
 
-export default OrdersTableHead;
+export default ProductsTableHead;

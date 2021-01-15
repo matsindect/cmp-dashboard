@@ -34,7 +34,7 @@ const navigationConfig = [
 				]
 			},
 			{
-				id: 'e-commerce',
+				id: 'products',
 				title: 'Products',
 				translate: 'Products',
 				type: 'collapse',
@@ -56,13 +56,6 @@ const navigationConfig = [
 						exact: true
 					},
 					{
-						id: 'e-commerce-product-detail',
-						title: 'Product Detail',
-						type: 'item',
-						url: '/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print',
-						exact: true
-					},
-					{
 						id: 'e-commerce-product-categories',
 						title: 'Product Categories',
 						type: 'item',
@@ -72,73 +65,66 @@ const navigationConfig = [
 				]
 			},
 			{
-				id: 'e-commerce',
+				id: 'sectors',
 				title: 'Sectors',
 				translate: 'Sectors',
 				type: 'collapse',
-				icon: 'shopping_cart',
+				icon: 'scatter_plot',
 				url: '/apps/sectors',
 				children: [
 					{
 						id: 'e-commerce-sectors',
 						title: 'All Sectors',
 						type: 'item',
-						url: '/apps/sectors/sectors',
+						url: '/apps/sectors',
 						exact: true
 					},
 					{
 						id: 'e-commerce-new-sector',
 						title: 'New Sector',
 						type: 'item',
-						url: '/apps/sectors/sectors/new',
-						exact: true
-					},
-					{
-						id: 'e-commerce-Sector-detail',
-						title: 'Sector Detail',
-						type: 'item',
-						url: '/apps/sectors/sectors/1/a-walk-amongst-friends-canvas-print',
+						url: '/apps/sectors/new',
 						exact: true
 					}
 				]
 			},
 			{
-				id: 'e-commerce',
+				id: 'categories',
 				title: 'Categories',
 				translate: 'Categories',
 				type: 'collapse',
-				icon: 'shopping_cart',
-				url: '/apps/e-commerce',
+				icon: 'pie_chart',
+				url: '/apps/categories',
 				children: [
 					{
 						id: 'e-commerce-categories',
 						title: 'All Categories',
 						type: 'item',
-						url: '/apps/e-commerce/categories',
+						url: '/apps/categories',
 						exact: true
 					},
 					{
 						id: 'e-commerce-new-catecory',
 						title: 'New Catecory',
 						type: 'item',
-						url: '/apps/e-commerce/categories/new',
+						url: '/apps/categories/new',
 						exact: true
 					},
 					{
 						id: 'e-commerce-catecory-detail',
 						title: 'Catecory Detail',
 						type: 'item',
-						url: '/apps/e-commerce/categories/1/a-walk-amongst-friends-canvas-print',
+						url: '/apps/categories/1/a-walk-amongst-friends-canvas-print',
 						exact: true
 					}
 				]
 			},
 			{
-				id: 'e-commerce',
+				id: 'suppliers',
 				title: 'Suppliers',
 				translate: 'Suppliers',
 				type: 'collapse',
-				icon: 'shopping_cart',
+				icon: 'supervised_user_circle',
 				url: '/apps/e-commerce',
 				children: [
 					{
@@ -172,11 +158,11 @@ const navigationConfig = [
 				]
 			},
 			{
-				id: 'e-commerce',
+				id: 'contractors',
 				title: 'Contractors',
 				translate: 'Contractors',
 				type: 'collapse',
-				icon: 'shopping_cart',
+				icon: 'supervisor_account',
 				url: '/apps/e-commerce',
 				children: [
 					{
@@ -198,13 +184,6 @@ const navigationConfig = [
 						title: 'Contractor Detail',
 						type: 'item',
 						url: '/apps/e-commerce/contractors/1/a-walk-amongst-friends-canvas-print',
-						exact: true
-					},
-					{
-						id: 'e-commerce-contractor-categories',
-						title: 'Contractor Categories',
-						type: 'item',
-						url: '/apps/e-commerce/orders',
 						exact: true
 					}
 				]

@@ -64,7 +64,7 @@ function ProductsTable(props) {
 	}
 
 	function handleClick(item) {
-		props.history.push(`/apps/e-commerce/products/${item.id}/${item.handle}`);
+		props.history.push(`/apps/e-commerce/products/${item.id}/${item.slug}`);
 	}
 
 	function handleCheck(event, id) {
@@ -153,23 +153,23 @@ function ProductsTable(props) {
 												<img
 													className="w-full block rounded"
 													src={_.find(n.images, { id: n.featuredImageId }).url}
-													alt={n.name}
+													alt={n.product_name}
 												/>
 											) : (
 												<img
 													className="w-full block rounded"
 													src="assets/images/ecommerce/product-image-placeholder.png"
-													alt={n.name}
+													alt={n.product_name}
 												/>
 											)}
 										</TableCell>
 
 										<TableCell className="p-4 md:p-16" component="th" scope="row">
-											{n.name}
+											{n.product_name}
 										</TableCell>
 
 										<TableCell className="p-4 md:p-16 truncate" component="th" scope="row">
-											{n.categories.join(', ')}
+											{n.product_categories.join(', ')}
 										</TableCell>
 
 										<TableCell className="p-4 md:p-16" component="th" scope="row" align="right">

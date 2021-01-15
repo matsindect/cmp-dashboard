@@ -31,6 +31,7 @@ function FuseNavVerticalGroup(props) {
 	const theme = useTheme();
 	const mdDown = useMediaQuery(theme.breakpoints.down('md'));
 	const { item, nestedLevel } = props;
+
 	const classes = useStyles({
 		itemPadding: nestedLevel > 0 ? 40 + nestedLevel * 16 : 24
 	});

@@ -3,6 +3,7 @@ import { showMessage } from 'app/store/fuse/messageSlice';
 import firebaseService from 'app/services/firebaseService';
 import jwtService from 'app/services/jwtService';
 import { setUserData } from './userSlice';
+import domainConfig from './../../fuse-configs/domainConfig';
 
 export const submitLogin = ({ email, password }) => async dispatch => {
 	return jwtService
@@ -60,7 +61,7 @@ const initialState = {
 };
 
 const loginSlice = createSlice({
-	name: 'https://api.constructionmarketuae.com/api/v1/users/login',
+	name: `${domainConfig.api_url}api/v1/users/login`,
 	initialState,
 	reducers: {
 		loginSuccess: (state, action) => {

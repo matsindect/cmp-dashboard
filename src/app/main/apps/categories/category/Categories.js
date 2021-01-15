@@ -1,14 +1,11 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
-import FuseChipSelect from '@fuse/core/FuseChipSelect';
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useForm, useDeepCompareEffect } from '@fuse/hooks';
-import FuseUtils from '@fuse/utils';
 import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import { orange } from '@material-ui/core/colors';
 import Icon from '@material-ui/core/Icon';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
@@ -19,7 +16,7 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { saveSector, newSector, getSector } from '../store/sectorSlice';
+import { saveCategory, newCategory, getCategory } from '../store/categorySlice';
 import reducer from '../store';
 
 const useStyles = makeStyles(theme => ({
@@ -57,9 +54,9 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function Sector(props) {
+function Category(props) {
 	const dispatch = useDispatch();
-	const sector = useSelector(({ cmp }) => cmp.sector);
+	const category = useSelector(({ cmp }) => cmp.category);
 	const theme = useTheme();
 
 	const classes = useStyles(props);
@@ -68,24 +65,24 @@ function Sector(props) {
 	const routeParams = useParams();
 
 	useDeepCompareEffect(() => {
-		function updateSectorState() {
-			const { sectorId } = routeParams;
+		function updateCategoryState() {
+			const { categoryId } = routeParams;
 
-			if (sectorId === 'new') {
-				dispatch(newSector());
+			if (categoryId === 'new') {
+				dispatch(newCategory());
 			} else {
-				dispatch(getSector(routeParams));
+				dispatch(getCategory(routeParams));
 			}
 		}
 
-		updateSectorState();
+		updateCategoryState();
 	}, [dispatch, routeParams]);
 
 	useEffect(() => {
-		if ((sector && !form) || (sector && form && sector.id !== form.id)) {
-			setForm(sector);
+		if ((category && !form) || (category && form && category.id !== form.id)) {
+			setForm(category);
 		}
-	}, [form, sector, setForm]);
+	}, [form, category, setForm]);
 
 	function handleChangeTab(event, value) {
 		setTabValue(value);
@@ -131,10 +128,10 @@ function Sector(props) {
 	}
 
 	function canBeSubmitted() {
-		return form.name.length > 0 && !_.isEqual(sector, form);
+		return form.name.length > 0 && !_.isEqual(category, form);
 	}
 
-	if ((!sector || (sector && routeParams.sectorId !== sector._id)) && routeParams.sectorId !== 'new') {
+	if ((!category || (category && routeParams.categoryId !== category._id)) && routeParams.categoryId !== 'new') {
 		return <FuseLoading />;
 	}
 
@@ -153,13 +150,13 @@ function Sector(props) {
 									className="normal-case flex items-center sm:mb-12"
 									component={Link}
 									role="button"
-									to="/apps/sectors"
+									to="/apps/categories/categories"
 									color="inherit"
 								>
 									<Icon className="text-20">
 										{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}
 									</Icon>
-									<span className="mx-4">Sectors</span>
+									<span className="mx-4">Category</span>
 								</Typography>
 							</FuseAnimate>
 
@@ -182,11 +179,11 @@ function Sector(props) {
 								<div className="flex flex-col min-w-0 mx-8 sm:mc-16">
 									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 										<Typography className="text-16 sm:text-20 truncate">
-											{form.name ? form.name : 'New Sector'}
+											{form.name ? form.name : 'New Category'}
 										</Typography>
 									</FuseAnimate>
 									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
-										<Typography variant="caption">Sector Detail</Typography>
+										<Typography variant="caption">Category Detail</Typography>
 									</FuseAnimate>
 								</div>
 							</div>
@@ -197,7 +194,7 @@ function Sector(props) {
 								variant="contained"
 								color="secondary"
 								disabled={!canBeSubmitted()}
-								onClick={() => dispatch(saveSector(form))}
+								onClick={() => dispatch(saveCategory(form))}
 							>
 								Save
 							</Button>
@@ -215,7 +212,7 @@ function Sector(props) {
 					scrollButtons="auto"
 					classes={{ root: 'w-full h-64' }}
 				>
-					<Tab className="h-64 normal-case" label="Sector Info" />
+					<Tab className="h-64 normal-case" label="Category Info" />
 				</Tabs>
 			}
 			content={
@@ -249,24 +246,6 @@ function Sector(props) {
 									rows={5}
 									variant="outlined"
 									fullWidth
-								/>
-
-								<FuseChipSelect
-									className="mt-8 mb-24"
-									value={form.categories.map(item => ({
-										value: item,
-										label: item
-									}))}
-									onChange={value => handleChipChange(value, 'categories')}
-									placeholder="Select multiple categories"
-									textFieldProps={{
-										label: 'Categories',
-										InputLabelProps: {
-											shrink: true
-										},
-										variant: 'outlined'
-									}}
-									isMulti
 								/>
 
 								<div>
@@ -322,4 +301,4 @@ function Sector(props) {
 	);
 }
 
-export default withReducer('cmp', reducer)(Sector);
+export default withReducer('cmp', reducer)(Category);
