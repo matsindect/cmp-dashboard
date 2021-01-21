@@ -20,20 +20,25 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import KeyValue from './key.value';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import MuiPhoneNumber from 'material-ui-phone-number';
+import TwitterIcon from '@material-ui/icons/Twitter';
+import FacebookIcon from '@material-ui/icons/Facebook';
+import InstagramIcon from '@material-ui/icons/Instagram';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import YouTubeIcon from '@material-ui/icons/YouTube';
 
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { saveProduct, newProduct, getProduct } from '../store/productSlice';
-import { getOrders, selectOrders } from './../store/ordersSlice';
-import { getSectors, selectSectors } from './../store/sectorsSlice';
+import { saveProduct, newProduct, getProduct } from '../store/ContractorSlice';
+import { getOrders, selectOrders } from '../store/ordersSlice';
+import { getSectors, selectSectors } from '../store/sectorsSlice';
 import reducer from '../store';
 
 const useStyles = makeStyles(theme => ({
@@ -231,7 +236,7 @@ function Product(props) {
 									<Icon className="text-20">
 										{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}
 									</Icon>
-									<span className="mx-4">Products</span>
+									<span className="mx-4">Contractor</span>
 								</Typography>
 							</FuseAnimate>
 
@@ -254,11 +259,11 @@ function Product(props) {
 								<div className="flex flex-col min-w-0 mx-8 sm:mc-16">
 									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 										<Typography className="text-16 sm:text-20 truncate">
-											{form.product_name ? form.product_name : 'New Product'}
+											{form.product_name ? form.product_name : 'New Contractor'}
 										</Typography>
 									</FuseAnimate>
 									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
-										<Typography variant="caption">Product Detail</Typography>
+										<Typography variant="caption">Contractor Detail</Typography>
 									</FuseAnimate>
 								</div>
 							</div>
@@ -287,11 +292,11 @@ function Product(props) {
 					scrollButtons="auto"
 					classes={{ root: 'w-full h-64' }}
 				>
-					<Tab className="h-64 normal-case" label="Product Info" />
-					<Tab className="h-64 normal-case" label="Product Images" />
-					<Tab className="h-64 normal-case" label="Product Pricing" />
-					<Tab className="h-64 normal-case" label="Product attributes" />
-					<Tab className="h-64 normal-case" label="Product reviews" />
+					<Tab className="h-64 normal-case" label="Company Info" />
+					<Tab className="h-64 normal-case" label="Images and Files" />
+					<Tab className="h-64 normal-case" label="Services and Products" />
+					<Tab className="h-64 normal-case" label="Contact persons" />
+					<Tab className="h-64 normal-case" label="Social" />
 				</Tabs>
 			}
 			content={
@@ -303,7 +308,7 @@ function Product(props) {
 									className="mt-8 mb-16"
 									error={form.product_name === ''}
 									required
-									label="Product Name"
+									label="Company Name"
 									autoFocus
 									id="product_name"
 									name="product_name"
@@ -312,7 +317,6 @@ function Product(props) {
 									variant="outlined"
 									fullWidth
 								/>
-
 								<TextField
 									className="mt-8 mb-16"
 									id="description"
@@ -326,7 +330,67 @@ function Product(props) {
 									variant="outlined"
 									fullWidth
 								/>
-
+								<MuiPhoneNumber
+									defaultCountry={'ae'}
+									variant="outlined"
+									label="Phone number"
+									fullWidth
+									className="mt-8 mb-16"
+								/>
+								<MuiPhoneNumber
+									defaultCountry={'ae'}
+									variant="outlined"
+									label="Fax"
+									fullWidth
+									className="mt-8 mb-16"
+								/>
+								<TextField
+									className="mt-8 mb-16"
+									id="address"
+									name="description"
+									onChange={handleChange}
+									label="Address"
+									type="text"
+									value={form.description}
+									multiline
+									rows={5}
+									variant="outlined"
+									fullWidth
+								/>
+								<TextField
+									className="mt-8 mb-16"
+									error={form.product_name === ''}
+									required
+									label="Company Email"
+									autoFocus
+									id="email"
+									name="product_name"
+									value={form.product_name}
+									onChange={handleChange}
+									variant="outlined"
+									fullWidth
+								/>
+								<FuseChipSelect
+									className="mt-8 mb-24"
+									value={form.product_categories.map(item => ({
+										value: item,
+										label: item
+									}))}
+									onChange={value => handleChipChange(value, 'product_categories')}
+									placeholder="Select business type"
+									textFieldProps={{
+										label: 'Business Type',
+										InputLabelProps: {
+											shrink: true
+										},
+										variant: 'outlined'
+									}}
+									options={prodcategories.map(item => ({
+										value: item._id,
+										label: item.name
+									}))}
+									isMulti
+								/>
 								<FuseChipSelect
 									className="mt-8 mb-24"
 									value={form.product_categories.map(item => ({
@@ -458,45 +522,27 @@ function Product(props) {
 						)}
 						{tabValue === 2 && (
 							<div>
-								<FormControl variant="filled" className={classes.formControl}>
-									<FuseChipSelect
-										className="mt-8 mb-16"
-										value={form.sectors.map(item => ({
-											value: item,
-											label: item
-										}))}
-										onChange={value => handleChipChange(value, 'currency')}
-										placeholder=""
-										textFieldProps={{
-											label: 'Currency',
-											InputLabelProps: {
-												shrink: true
-											},
-											variant: 'outlined'
-										}}
-										options={sectors.map(item => ({
-											value: item._id,
-											label: item.name
-										}))}
-									/>
-								</FormControl>
-								<FormControl variant="filled" className={classes.formControl}>
-									<TextField
-										className="mt-8 mb-16"
-										label="Price"
-										id="priceTaxExcl"
-										name="priceTaxExcl"
-										value={form.product_pricing.price}
-										onChange={handleChange}
-										// InputProps={{
-										// 	startAdornment: <InputAdornment position="start">$</InputAdornment>
-										// }}
-										type="number"
-										variant="outlined"
-										autoFocus
-										fullWidth
-									/>
-								</FormControl>
+								<FuseChipSelect
+									className="mt-8 mb-16"
+									value={form.sectors.map(item => ({
+										value: item,
+										label: item
+									}))}
+									onChange={value => handleChipChange(value, 'sectors')}
+									placeholder="Select city of origin"
+									textFieldProps={{
+										label: 'Products',
+										InputLabelProps: {
+											shrink: true
+										},
+										variant: 'outlined'
+									}}
+									options={sectors.map(item => ({
+										value: item._id,
+										label: item.name
+									}))}
+									isMulti
+								/>
 								<FuseChipSelect
 									className="mt-8 mb-16"
 									value={form.sectors.map(item => ({
@@ -506,7 +552,7 @@ function Product(props) {
 									onChange={value => handleChipChange(value, 'sectors')}
 									placeholder="Select country of origin"
 									textFieldProps={{
-										label: 'Country origin',
+										label: 'Services',
 										InputLabelProps: {
 											shrink: true
 										},
@@ -527,7 +573,7 @@ function Product(props) {
 									onChange={value => handleChipChange(value, 'sectors')}
 									placeholder="Select city of origin"
 									textFieldProps={{
-										label: 'City origin',
+										label: 'Sub services',
 										InputLabelProps: {
 											shrink: true
 										},
@@ -550,7 +596,7 @@ function Product(props) {
 												<TextField
 													className="mt-8 mb-16"
 													required
-													label="Key"
+													label="Name"
 													autoFocus
 													id="key"
 													name="key"
@@ -563,7 +609,28 @@ function Product(props) {
 												<TextField
 													className="mt-8 mb-16"
 													required
-													label="Value"
+													label="Email"
+													autoFocus
+													id="value"
+													name="value"
+													onChange={e => handleInputChange(e, i)}
+													variant="outlined"
+													fullWidth
+												/>
+											</FormControl>
+											<FormControl variant="filled" className={classes.formControl}>
+												<MuiPhoneNumber
+													defaultCountry={'ae'}
+													variant="outlined"
+													label="Phone number"
+													className="mt-8 mb-16"
+												/>
+											</FormControl>
+											<FormControl variant="filled" className={classes.formControl}>
+												<TextField
+													className="mt-8 mb-16"
+													required
+													label="Designation"
 													autoFocus
 													id="value"
 													name="value"
@@ -588,7 +655,6 @@ function Product(props) {
 													)}
 												</div>
 											</FormControl>
-											<div style={{ marginTop: 20 }}>{JSON.stringify(inputList)}</div>
 										</div>
 									);
 								})}
@@ -596,64 +662,84 @@ function Product(props) {
 						)}
 						{tabValue === 4 && (
 							<div>
-								<div className="flex -mx-4">
-									<TextField
-										className="mt-8 mb-16 mx-4"
-										label="Width"
-										autoFocus
-										id="width"
-										name="width"
-										value={form.width}
-										onChange={handleChange}
-										variant="outlined"
-										fullWidth
-									/>
-
-									<TextField
-										className="mt-8 mb-16 mx-4"
-										label="Height"
-										id="height"
-										name="height"
-										value={form.height}
-										onChange={handleChange}
-										variant="outlined"
-										fullWidth
-									/>
-
-									<TextField
-										className="mt-8 mb-16 mx-4"
-										label="Depth"
-										id="depth"
-										name="depth"
-										value={form.depth}
-										onChange={handleChange}
-										variant="outlined"
-										fullWidth
-									/>
-								</div>
-
 								<TextField
-									className="mt-8 mb-16"
-									label="Weight"
-									id="weight"
-									name="weight"
-									value={form.weight}
+									className="mt-8 mb-16 mx-4"
+									label="twitter"
+									InputProps={{
+										endAdornment: (
+											<InputAdornment>
+												<IconButton>
+													<TwitterIcon />
+												</IconButton>
+											</InputAdornment>
+										)
+									}}
 									onChange={handleChange}
 									variant="outlined"
 									fullWidth
 								/>
-
 								<TextField
-									className="mt-8 mb-16"
-									label="Extra Shipping Fee"
-									id="extraShippingFee"
-									name="extraShippingFee"
-									value={form.extraShippingFee}
+									className="mt-8 mb-16 mx-4"
+									label="facebook"
+									InputProps={{
+										endAdornment: (
+											<InputAdornment>
+												<IconButton>
+													<FacebookIcon />
+												</IconButton>
+											</InputAdornment>
+										)
+									}}
 									onChange={handleChange}
 									variant="outlined"
+									fullWidth
+								/>
+								<TextField
+									className="mt-8 mb-16 mx-4"
+									label="instagram"
 									InputProps={{
-										startAdornment: <InputAdornment position="start">$</InputAdornment>
+										endAdornment: (
+											<InputAdornment>
+												<IconButton>
+													<InstagramIcon />
+												</IconButton>
+											</InputAdornment>
+										)
 									}}
+									onChange={handleChange}
+									variant="outlined"
+									fullWidth
+								/>
+								<TextField
+									className="mt-8 mb-16 mx-4"
+									label="linkedin"
+									InputProps={{
+										endAdornment: (
+											<InputAdornment>
+												<IconButton>
+													<LinkedInIcon />
+												</IconButton>
+											</InputAdornment>
+										)
+									}}
+									onChange={handleChange}
+									variant="outlined"
+									fullWidth
+								/>
+								<TextField
+									className="mt-8 mb-16 mx-4"
+									label="youtube"
+									InputProps={{
+										endAdornment: (
+											<InputAdornment>
+												<IconButton>
+													<YouTubeIcon />
+												</IconButton>
+											</InputAdornment>
+										)
+									}}
+									onChange={handleChange}
+									variant="outlined"
 									fullWidth
 								/>
 							</div>

@@ -9,11 +9,11 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectMainTheme } from 'app/store/fuse/settingsSlice';
-import { setCategoriesSearchText } from '../store/categoriesSlice';
+import { setCitiesMainSearchText } from '../store/citiesMainSlice';
 
-function CategoriesHeader(props) {
+function SectorsHeader(props) {
 	const dispatch = useDispatch();
-	const searchText = useSelector(({ cmpCategories }) => cmpCategories.categories.searchText);
+	const searchText = useSelector(({ cmpCitiesMain }) => cmpCitiesMain.citiesMain.searchText);
 	const mainTheme = useSelector(selectMainTheme);
 
 	return (
@@ -24,7 +24,7 @@ function CategoriesHeader(props) {
 				</FuseAnimate>
 				<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 					<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-						Categories
+						Cities
 					</Typography>
 				</FuseAnimate>
 			</div>
@@ -44,7 +44,7 @@ function CategoriesHeader(props) {
 								inputProps={{
 									'aria-label': 'Search'
 								}}
-								onChange={ev => dispatch(setCategoriesSearchText(ev))}
+								onChange={ev => dispatch(setCitiesMainSearchText(ev))}
 							/>
 						</Paper>
 					</FuseAnimate>
@@ -53,12 +53,12 @@ function CategoriesHeader(props) {
 			<FuseAnimate animation="transition.slideRightIn" delay={300}>
 				<Button
 					component={Link}
-					to="/apps/categories/new"
+					to="/apps/cities/new"
 					className="whitespace-no-wrap normal-case"
 					variant="contained"
 					color="secondary"
 				>
-					<span className="hidden sm:flex">Add New Category</span>
+					<span className="hidden sm:flex">Add New Cities</span>
 					<span className="flex sm:hidden">New</span>
 				</Button>
 			</FuseAnimate>
@@ -66,4 +66,4 @@ function CategoriesHeader(props) {
 	);
 }
 
-export default CategoriesHeader;
+export default SectorsHeader;

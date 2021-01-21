@@ -1,11 +1,14 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
+import FuseChipSelect from '@fuse/core/FuseChipSelect';
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useForm, useDeepCompareEffect } from '@fuse/hooks';
+import FuseUtils from '@fuse/utils';
 import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import { orange } from '@material-ui/core/colors';
 import Icon from '@material-ui/core/Icon';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
@@ -16,7 +19,7 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { saveCategory, newCategory, getCategory } from '../store/categorySlice';
+import { saveCity, newCity, getCity } from '../store/cityMainSlice';
 import reducer from '../store';
 
 const useStyles = makeStyles(theme => ({
@@ -54,9 +57,9 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function Category(props) {
+function Sector(props) {
 	const dispatch = useDispatch();
-	const category = useSelector(({ cmp }) => cmp.category);
+	const city = useSelector(({ cmpCitiesMain }) => cmpCitiesMain.cityMain);
 	const theme = useTheme();
 
 	const classes = useStyles(props);
@@ -65,24 +68,24 @@ function Category(props) {
 	const routeParams = useParams();
 
 	useDeepCompareEffect(() => {
-		function updateCategoryState() {
-			const { categoryId } = routeParams;
+		function updateCityState() {
+			const { cityId } = routeParams;
 
-			if (categoryId === 'new') {
-				dispatch(newCategory());
+			if (cityId === 'new') {
+				dispatch(newCity());
 			} else {
-				dispatch(getCategory(routeParams));
+				dispatch(getCity(routeParams));
 			}
 		}
 
-		updateCategoryState();
+		updateCityState();
 	}, [dispatch, routeParams]);
 
 	useEffect(() => {
-		if ((category && !form) || (category && form && category.id !== form.id)) {
-			setForm(category);
+		if ((city && !form) || (city && form && city.id !== form.id)) {
+			setForm(city);
 		}
-	}, [form, category, setForm]);
+	}, [form, city, setForm]);
 
 	function handleChangeTab(event, value) {
 		setTabValue(value);
@@ -128,10 +131,10 @@ function Category(props) {
 	}
 
 	function canBeSubmitted() {
-		return form.name.length > 0 && !_.isEqual(category, form);
+		return form.name.length > 0 && !_.isEqual(city, form);
 	}
 
-	if ((!category || (category && routeParams.categoryId !== category._id)) && routeParams.categoryId !== 'new') {
+	if ((!city || (city && routeParams.cityId !== city._id)) && routeParams.cityId !== 'new') {
 		return <FuseLoading />;
 	}
 
@@ -150,13 +153,13 @@ function Category(props) {
 									className="normal-case flex items-center sm:mb-12"
 									component={Link}
 									role="button"
-									to="/apps/categories/categories"
+									to="/apps/cities"
 									color="inherit"
 								>
 									<Icon className="text-20">
 										{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}
 									</Icon>
-									<span className="mx-4">Category</span>
+									<span className="mx-4">Cities</span>
 								</Typography>
 							</FuseAnimate>
 
@@ -179,11 +182,11 @@ function Category(props) {
 								<div className="flex flex-col min-w-0 mx-8 sm:mc-16">
 									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 										<Typography className="text-16 sm:text-20 truncate">
-											{form.name ? form.name : 'New Category'}
+											{form.name ? form.name : 'New City'}
 										</Typography>
 									</FuseAnimate>
 									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
-										<Typography variant="caption">Category Detail</Typography>
+										<Typography variant="caption">City Detail</Typography>
 									</FuseAnimate>
 								</div>
 							</div>
@@ -194,7 +197,7 @@ function Category(props) {
 								variant="contained"
 								color="secondary"
 								disabled={!canBeSubmitted()}
-								onClick={() => dispatch(saveCategory(form))}
+								onClick={() => dispatch(saveCity(form))}
 							>
 								Save
 							</Button>
@@ -212,7 +215,7 @@ function Category(props) {
 					scrollButtons="auto"
 					classes={{ root: 'w-full h-64' }}
 				>
-					<Tab className="h-64 normal-case" label="Category Info" />
+					<Tab className="h-64 normal-case" label="Sector Info" />
 				</Tabs>
 			}
 			content={
@@ -247,6 +250,24 @@ function Category(props) {
 									variant="outlined"
 									fullWidth
 								/>
+
+								{/* <FuseChipSelect
+									className="mt-8 mb-24"
+									value={form.categories.map(item => ({
+										value: item,
+										label: item
+									}))}
+									onChange={value => handleChipChange(value, 'categories')}
+									placeholder="Select multiple categories"
+									textFieldProps={{
+										label: 'Categories',
+										InputLabelProps: {
+											shrink: true
+										},
+										variant: 'outlined'
+									}}
+									isMulti
+								/> */}
 
 								<div>
 									<div className="flex justify-center sm:justify-start flex-wrap -mx-8">
@@ -301,4 +322,4 @@ function Category(props) {
 	);
 }
 
-export default withReducer('cmpCategories', reducer)(Category);
+export default withReducer('cmpCitiesMain', reducer)(Sector);

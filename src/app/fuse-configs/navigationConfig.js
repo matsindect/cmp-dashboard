@@ -58,9 +58,21 @@ const navigationConfig = [
 					{
 						id: 'e-commerce-product-categories',
 						title: 'Product Categories',
-						type: 'item',
-						url: '/apps/e-commerce/orders',
-						exact: true
+						type: 'collapse',
+						children: [
+							{
+								id: 'e-commerce-product-categories-all',
+								title: 'All categories',
+								type: 'item',
+								url: '#'
+							},
+							{
+								id: 'e-commerce-product-categories-new',
+								title: 'New Category',
+								type: 'item',
+								url: 'http://fusetheme.com'
+							}
+						]
 					}
 				]
 			},
@@ -73,17 +85,41 @@ const navigationConfig = [
 				url: '/apps/sectors',
 				children: [
 					{
-						id: 'e-commerce-sectors',
+						id: 'cmp-sectors',
 						title: 'All Sectors',
 						type: 'item',
 						url: '/apps/sectors',
 						exact: true
 					},
 					{
-						id: 'e-commerce-new-sector',
+						id: 'cmp-new-sector',
 						title: 'New Sector',
 						type: 'item',
 						url: '/apps/sectors/new',
+						exact: true
+					}
+				]
+			},
+			{
+				id: 'services',
+				title: 'Services',
+				translate: 'Services',
+				type: 'collapse',
+				icon: 'room_service',
+				url: '/apps/services',
+				children: [
+					{
+						id: 'cmp-services',
+						title: 'All Services',
+						type: 'item',
+						url: '/apps/services',
+						exact: true
+					},
+					{
+						id: 'cmp-new-service',
+						title: 'New Service',
+						type: 'item',
+						url: '/apps/services/new',
 						exact: true
 					}
 				]
@@ -97,24 +133,17 @@ const navigationConfig = [
 				url: '/apps/categories',
 				children: [
 					{
-						id: 'e-commerce-categories',
+						id: 'cmp-categories',
 						title: 'All Categories',
 						type: 'item',
 						url: '/apps/categories',
 						exact: true
 					},
 					{
-						id: 'e-commerce-new-catecory',
+						id: 'cmp-new-category',
 						title: 'New Catecory',
 						type: 'item',
 						url: '/apps/categories/new',
-						exact: true
-					},
-					{
-						id: 'e-commerce-catecory-detail',
-						title: 'Catecory Detail',
-						type: 'item',
-						url: '/apps/categories/1/a-walk-amongst-friends-canvas-print',
 						exact: true
 					}
 				]
@@ -125,34 +154,20 @@ const navigationConfig = [
 				translate: 'Suppliers',
 				type: 'collapse',
 				icon: 'supervised_user_circle',
-				url: '/apps/e-commerce',
+				url: '/apps/suppliers',
 				children: [
 					{
-						id: 'e-commerce-suppliers',
+						id: 'cmp-suppliers',
 						title: 'All Suppliers',
 						type: 'item',
-						url: '/apps/e-commerce/suppliers',
+						url: '/apps/suppliers',
 						exact: true
 					},
 					{
-						id: 'e-commerce-new-supplier',
+						id: 'cmp-new-supplier',
 						title: 'New Supplier',
 						type: 'item',
-						url: '/apps/e-commerce/suppliers/new',
-						exact: true
-					},
-					{
-						id: 'e-commerce-supplier-detail',
-						title: 'Supplier Detail',
-						type: 'item',
-						url: '/apps/e-commerce/suppliers/1/a-walk-amongst-friends-canvas-print',
-						exact: true
-					},
-					{
-						id: 'e-commerce-supplier-categories',
-						title: 'Supplier Categories',
-						type: 'item',
-						url: '/apps/e-commerce/orders',
+						url: '/apps/suppliers/new',
 						exact: true
 					}
 				]
@@ -163,27 +178,102 @@ const navigationConfig = [
 				translate: 'Contractors',
 				type: 'collapse',
 				icon: 'supervisor_account',
-				url: '/apps/e-commerce',
+				url: '/apps/contractors',
 				children: [
 					{
-						id: 'e-commerce-contractors',
+						id: 'cmp-contractors',
 						title: 'All Contractors',
 						type: 'item',
-						url: '/apps/e-commerce/contractors',
+						url: '/apps/contractors',
 						exact: true
 					},
 					{
-						id: 'e-commerce-new-Contractor',
+						id: 'cmp-new-Contractor',
 						title: 'New Contractor',
 						type: 'item',
-						url: '/apps/e-commerce/contractors/new',
+						url: '/apps/contractors/new',
+						exact: true
+					}
+				]
+			},
+			{
+				id: 'consultants',
+				title: 'Consultants',
+				translate: 'Consultants',
+				type: 'collapse',
+				icon: 'supervisor_account',
+				url: '/apps/consultants',
+				children: [
+					{
+						id: 'cmp-consultants',
+						title: 'All Consultants',
+						type: 'item',
+						url: '/apps/consultants',
 						exact: true
 					},
 					{
-						id: 'e-commerce-contractor-detail',
-						title: 'Contractor Detail',
+						id: 'cmp-consultants-new',
+						title: 'New Consultant',
 						type: 'item',
-						url: '/apps/e-commerce/contractors/1/a-walk-amongst-friends-canvas-print',
+						url: '/apps/consultants/new',
+						exact: true
+					}
+				]
+			}
+		]
+	},
+	{
+		type: 'divider',
+		id: 'divider-2'
+	},
+	{
+		id: 'Settings',
+		title: 'Settings',
+		type: 'group',
+		icon: 'Settings',
+		children: [
+			{
+				id: 'cities',
+				title: 'Cities',
+				type: 'collapse',
+				icon: 'account_balance',
+				url: '/apps/cities',
+				children: [
+					{
+						id: 'cities-all',
+						title: 'All cities',
+						type: 'item',
+						url: '/apps/cities',
+						exact: true
+					},
+					{
+						id: 'cities-new',
+						title: 'New city',
+						type: 'item',
+						url: '/apps/cities/new',
+						exact: true
+					}
+				]
+			},
+			{
+				id: 'countries',
+				title: 'Countries',
+				type: 'collapse',
+				icon: 'emoji_flags',
+				url: '/apps/countries',
+				children: [
+					{
+						id: 'countries-all',
+						title: 'All countries',
+						type: 'item',
+						url: '/apps/countries',
+						exact: true
+					},
+					{
+						id: 'countires-new',
+						title: 'New country',
+						type: 'item',
+						url: '/apps/countries/new',
 						exact: true
 					}
 				]

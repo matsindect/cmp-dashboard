@@ -11,16 +11,16 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getCategories, selectCategories } from '../store/categoriesSlice';
-import CategoriesTableHead from './CategoriesTableHead';
+import { getCitiesMain, selectCitiesMain } from '../store/citiesMainSlice';
+import CitiesTableHead from './CitiesTableHead';
 
-function CategoriesTable(props) {
+function CitiesMainTable(props) {
 	const dispatch = useDispatch();
-	const categories = useSelector(selectCategories);
-	const searchText = useSelector(({ cmpCategories }) => cmpCategories.categories.searchText);
+	const cities = useSelector(selectCitiesMain);
+	const searchText = useSelector(({ cmpCitiesMain }) => cmpCitiesMain.citiesMain.searchText);
 
 	const [selected, setSelected] = useState([]);
-	const [data, setData] = useState(categories);
+	const [data, setData] = useState(cities);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -29,17 +29,17 @@ function CategoriesTable(props) {
 	});
 
 	useEffect(() => {
-		dispatch(getCategories());
+		dispatch(getCitiesMain());
 	}, [dispatch]);
 
 	useEffect(() => {
 		if (searchText.length !== 0) {
-			setData(_.filter(categories, item => item.name.toLowerCase().includes(searchText.toLowerCase())));
+			setData(_.filter(cities, item => item.name.toLowerCase().includes(searchText.toLowerCase())));
 			setPage(0);
 		} else {
-			setData(categories);
+			setData(cities);
 		}
-	}, [categories, searchText]);
+	}, [cities, searchText]);
 
 	function handleRequestSort(event, property) {
 		const id = property;
@@ -64,7 +64,7 @@ function CategoriesTable(props) {
 	}
 
 	function handleClick(item) {
-		props.history.push(`/apps/categories/${item._id}/${item.slug}`);
+		props.history.push(`/apps/cities/${item._id}/${item.slug}`);
 	}
 
 	function handleCheck(event, id) {
@@ -96,7 +96,7 @@ function CategoriesTable(props) {
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
 				<Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-					<CategoriesTableHead
+					<CitiesTableHead
 						numSelected={selected.length}
 						order={order}
 						onSelectAllClick={handleSelectAllClick}
@@ -167,6 +167,9 @@ function CategoriesTable(props) {
 										<TableCell className="p-4 md:p-16" component="th" scope="row">
 											{n.name}
 										</TableCell>
+										{/* <TableCell className="p-4 md:p-16 truncate" component="th" scope="row">
+											{n.categories.join(', ')}
+										</TableCell> */}
 										<TableCell className="p-4 md:p-16" component="th" scope="row">
 											{n.description}
 										</TableCell>
@@ -221,4 +224,4 @@ function CategoriesTable(props) {
 	);
 }
 
-export default withRouter(CategoriesTable);
+export default withRouter(CitiesMainTable);

@@ -11,16 +11,16 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getCategories, selectCategories } from '../store/categoriesSlice';
-import CategoriesTableHead from './CategoriesTableHead';
+import { getProducts, selectProducts } from '../store/consultantsSlice';
+import ProductsTableHead from './ConsultantsTableHead';
 
-function CategoriesTable(props) {
+function ProductsTable(props) {
 	const dispatch = useDispatch();
-	const categories = useSelector(selectCategories);
-	const searchText = useSelector(({ cmpCategories }) => cmpCategories.categories.searchText);
+	const products = useSelector(selectProducts);
+	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 
 	const [selected, setSelected] = useState([]);
-	const [data, setData] = useState(categories);
+	const [data, setData] = useState(products);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -29,17 +29,17 @@ function CategoriesTable(props) {
 	});
 
 	useEffect(() => {
-		dispatch(getCategories());
+		dispatch(getProducts());
 	}, [dispatch]);
 
 	useEffect(() => {
 		if (searchText.length !== 0) {
-			setData(_.filter(categories, item => item.name.toLowerCase().includes(searchText.toLowerCase())));
+			setData(_.filter(products, item => item.name.toLowerCase().includes(searchText.toLowerCase())));
 			setPage(0);
 		} else {
-			setData(categories);
+			setData(products);
 		}
-	}, [categories, searchText]);
+	}, [products, searchText]);
 
 	function handleRequestSort(event, property) {
 		const id = property;
@@ -64,7 +64,7 @@ function CategoriesTable(props) {
 	}
 
 	function handleClick(item) {
-		props.history.push(`/apps/categories/${item._id}/${item.slug}`);
+		props.history.push(`/apps/e-commerce/products/${item.id}/${item.slug}`);
 	}
 
 	function handleCheck(event, id) {
@@ -96,7 +96,7 @@ function CategoriesTable(props) {
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
 				<Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-					<CategoriesTableHead
+					<ProductsTableHead
 						numSelected={selected.length}
 						order={order}
 						onSelectAllClick={handleSelectAllClick}
@@ -123,7 +123,7 @@ function CategoriesTable(props) {
 						)
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map(n => {
-								const isSelected = selected.indexOf(n._id) !== -1;
+								const isSelected = selected.indexOf(n.id) !== -1;
 								return (
 									<TableRow
 										className="h-64 cursor-pointer"
@@ -131,7 +131,7 @@ function CategoriesTable(props) {
 										role="checkbox"
 										aria-checked={isSelected}
 										tabIndex={-1}
-										key={n._id}
+										key={n.id}
 										selected={isSelected}
 										onClick={event => handleClick(n)}
 									>
@@ -139,7 +139,7 @@ function CategoriesTable(props) {
 											<Checkbox
 												checked={isSelected}
 												onClick={event => event.stopPropagation()}
-												onChange={event => handleCheck(event, n._id)}
+												onChange={event => handleCheck(event, n.id)}
 											/>
 										</TableCell>
 
@@ -152,31 +152,32 @@ function CategoriesTable(props) {
 											{n.images.length > 0 && n.featuredImageId ? (
 												<img
 													className="w-full block rounded"
-													src={_.find(n.images, { _id: n.featuredImageId }).url}
-													alt={n.name}
+													src={_.find(n.images, { id: n.featuredImageId }).url}
+													alt={n.product_name}
 												/>
 											) : (
 												<img
 													className="w-full block rounded"
 													src="assets/images/ecommerce/product-image-placeholder.png"
-													alt={n.name}
+													alt={n.product_name}
 												/>
 											)}
 										</TableCell>
 
 										<TableCell className="p-4 md:p-16" component="th" scope="row">
-											{n.name}
-										</TableCell>
-										<TableCell className="p-4 md:p-16" component="th" scope="row">
-											{n.description}
+											{n.product_name}
 										</TableCell>
 
-										{/* <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
+										<TableCell className="p-4 md:p-16 truncate" component="th" scope="row">
+											{n.product_categories.join(', ')}
+										</TableCell>
+
+										<TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
 											<span>$</span>
 											{n.priceTaxIncl}
-										</TableCell> */}
+										</TableCell>
 
-										{/* <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
+										<TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
 											{n.quantity}
 											<i
 												className={clsx(
@@ -186,10 +187,10 @@ function CategoriesTable(props) {
 													n.quantity > 25 && 'bg-green'
 												)}
 											/>
-										</TableCell> */}
+										</TableCell>
 
 										<TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
-											{n.is_active ? (
+											{n.active ? (
 												<Icon className="text-green text-20">check_circle</Icon>
 											) : (
 												<Icon className="text-red text-20">remove_circle</Icon>
@@ -221,4 +222,4 @@ function CategoriesTable(props) {
 	);
 }
 
-export default withRouter(CategoriesTable);
+export default withRouter(ProductsTable);

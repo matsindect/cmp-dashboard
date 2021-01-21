@@ -12,6 +12,11 @@ import ScrumboardAppConfig from './scrumboard/ScrumboardAppConfig';
 import TodoAppConfig from './todo/TodoAppConfig';
 import Sectors from './sectors/sectorsConfig';
 import Categories from './categories/categoriesConfig';
+import Cities from './cities/citiesConfig';
+import Countries from './countries/countryConfig';
+import Consultants from './consultants/consultantsAppConfig';
+import Contractor from './contractor/contractorAppConfig';
+import Supplier from './suppliers/supplierAppConfig';
 
 const appsConfigs = [
 	AnalyticsDashboardAppConfig,
@@ -27,7 +32,12 @@ const appsConfigs = [
 	AcademyAppConfig,
 	NotesAppConfig,
 	Sectors,
-	Categories
+	Categories,
+	Cities,
+	Countries,
+	Consultants,
+	Contractor,
+	Supplier
 ];
 
 export default appsConfigs;
