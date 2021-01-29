@@ -31,16 +31,22 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import YouTubeIcon from '@material-ui/icons/YouTube';
+import Map from './googlemaps';
+import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+
+// import multer from 'multer';
+// import sharp from 'sharp';
 
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { saveProduct, newProduct, getProduct } from '../store/supplierSlice';
+import { saveSupplier, newSupplier, getSupplier } from '../store/supplierSlice';
 import { getOrders, selectOrders } from '../store/ordersSlice';
 import { getSectors, selectSectors } from '../store/sectorsSlice';
 import reducer from '../store';
-
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 const useStyles = makeStyles(theme => ({
 	formControl: {
 		margin: theme.spacing(1),
@@ -82,7 +88,7 @@ const useStyles = makeStyles(theme => ({
 
 function Product(props) {
 	const dispatch = useDispatch();
-	const product = useSelector(({ eCommerceApp }) => eCommerceApp.product);
+	const supplier = useSelector(({ cmpSupplier }) => cmpSupplier.supplier);
 	const prodcategories = useSelector(selectOrders);
 	const sectors = useSelector(selectSectors);
 	const theme = useTheme();
@@ -93,8 +99,15 @@ function Product(props) {
 
 	const { form, handleChange, setForm } = useForm(null);
 	const routeParams = useParams();
-	const [inputList, setInputList] = useState([{ key: '', value: '' }]);
+	const [inputList, setInputList] = useState([{ name: '', email: '', cellphone: '', designation: '' }]);
+	const [numFilename, setNumFilename] = useState(null);
+	const [numCatalogue, setNumCatalogue] = useState(null);
+	const [numPages, setNumPages] = useState(null);
+	const [pageNumber, setPageNumber] = useState(1);
 
+	function onDocumentLoadSuccess({ numPages }) {
+		setNumPages(numPages);
+	}
 	// handle input change
 	const handleInputChange = (e, index) => {
 		const { name, value } = e.target;
@@ -118,26 +131,26 @@ function Product(props) {
 	};
 
 	useDeepCompareEffect(() => {
-		function updateProductState() {
-			const { productId } = routeParams;
+		function updateSupplierState() {
+			const { supplierId } = routeParams;
 
-			if (productId === 'new') {
-				dispatch(newProduct());
+			if (supplierId === 'new') {
+				dispatch(newSupplier());
 				dispatch(getOrders());
 				dispatch(getSectors());
 			} else {
-				dispatch(getProduct(routeParams));
+				dispatch(getSupplier(routeParams));
 			}
 		}
 
-		updateProductState();
+		updateSupplierState();
 	}, [dispatch, routeParams]);
 
 	useEffect(() => {
-		if ((product && !form) || (product && form && product.id !== form.id)) {
-			setForm(product);
+		if ((supplier && !form) || (supplier && form && supplier.id !== form.id)) {
+			setForm(supplier);
 		}
-	}, [form, product, setForm]);
+	}, [form, supplier, setForm]);
 
 	function handleChangeTab(event, value) {
 		setTabValue(value);
@@ -156,7 +169,9 @@ function Product(props) {
 	function setFeaturedImage(id) {
 		setForm(_.set({ ...form }, 'featuredImageId', id));
 	}
-
+	function handleLocationChange(input) {
+		setForm(_.set({ ...form }, 'company.location', input));
+	}
 	function handleUploadChange(e) {
 		const file = e.target.files[0];
 		if (!file) {
@@ -164,7 +179,6 @@ function Product(props) {
 		}
 		const reader = new FileReader();
 		reader.readAsBinaryString(file);
-
 		reader.onload = () => {
 			setForm(
 				_.set({ ...form }, `images`, [
@@ -182,7 +196,46 @@ function Product(props) {
 			console.log('error on load image');
 		};
 	}
+
+	function handleUploadLicenseChange(e) {
+		console.log(e.target.files);
+		const file = e.target.files[0];
+		if (!file) {
+			return;
+		}
+
+		const reader = new FileReader();
+		reader.readAsBinaryString(file);
+
+		reader.onload = () => {
+			setForm(_.set({ ...form }, `license`, `data:${file.type};base64,${btoa(reader.result)}`));
+		};
+		setNumFilename(file);
+		reader.onerror = () => {
+			console.log('error on load image');
+		};
+	}
+
+	function handleUploadLogoChange(e) {
+		console.log(e.target.files);
+		const file = e.target.files[0];
+		if (!file) {
+			return;
+		}
+		const reader = new FileReader();
+		reader.readAsBinaryString(file);
+
+		reader.onload = () => {
+			setForm(_.set({ ...form }, `logo`, `data:${file.type};base64,${btoa(reader.result)}`));
+		};
+
+		reader.onerror = () => {
+			console.log('error on load image');
+		};
+	}
+
 	function handleCatalogueUploadChange(e) {
+		console.log(e.target.files);
 		const file = e.target.files[0];
 		if (!file) {
 			return;
@@ -196,7 +249,8 @@ function Product(props) {
 					{
 						id: FuseUtils.generateGUID(),
 						url: `data:${file.type};base64,${btoa(reader.result)}`,
-						type: 'image'
+						type: 'image',
+						file: file
 					},
 					...form.products_catalogue
 				])
@@ -208,10 +262,10 @@ function Product(props) {
 		};
 	}
 	function canBeSubmitted() {
-		return form.product_name.length > 0 && !_.isEqual(product, form);
+		return form.company.name.length > 0 && !_.isEqual(supplier, form);
 	}
 
-	if ((!product || (product && routeParams.productId !== product.id)) && routeParams.productId !== 'new') {
+	if ((!supplier || (supplier && routeParams.supplierId !== supplier.id)) && routeParams.supplierId !== 'new') {
 		return <FuseLoading />;
 	}
 
@@ -230,7 +284,7 @@ function Product(props) {
 									className="normal-case flex items-center sm:mb-12"
 									component={Link}
 									role="button"
-									to="/apps/e-commerce/products"
+									to="/apps/suppliers"
 									color="inherit"
 								>
 									<Icon className="text-20">
@@ -246,20 +300,20 @@ function Product(props) {
 										<img
 											className="w-32 sm:w-48 rounded"
 											src={_.find(form.images, { id: form.featuredImageId }).url}
-											alt={form.product_name}
+											alt={form.company.name}
 										/>
 									) : (
 										<img
 											className="w-32 sm:w-48 rounded"
 											src="assets/images/ecommerce/product-image-placeholder.png"
-											alt={form.product_name}
+											alt={form.company.name}
 										/>
 									)}
 								</FuseAnimate>
 								<div className="flex flex-col min-w-0 mx-8 sm:mc-16">
 									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 										<Typography className="text-16 sm:text-20 truncate">
-											{form.product_name ? form.product_name : 'New Supplier'}
+											{form.company.name ? form.company.name : 'New Supplier'}
 										</Typography>
 									</FuseAnimate>
 									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
@@ -274,7 +328,7 @@ function Product(props) {
 								variant="contained"
 								color="secondary"
 								disabled={!canBeSubmitted()}
-								onClick={() => dispatch(saveProduct(form))}
+								onClick={() => dispatch(saveSupplier(form))}
 							>
 								Save
 							</Button>
@@ -295,6 +349,7 @@ function Product(props) {
 					<Tab className="h-64 normal-case" label="Company Info" />
 					<Tab className="h-64 normal-case" label="Images and Files" />
 					<Tab className="h-64 normal-case" label="Services and Products" />
+					<Tab className="h-64 normal-case" label="Location" />
 					<Tab className="h-64 normal-case" label="Contact persons" />
 					<Tab className="h-64 normal-case" label="Social" />
 				</Tabs>
@@ -306,25 +361,25 @@ function Product(props) {
 							<div>
 								<TextField
 									className="mt-8 mb-16"
-									error={form.product_name === ''}
+									error={form.company.name === ''}
 									required
 									label="Company Name"
 									autoFocus
-									id="product_name"
-									name="product_name"
-									value={form.product_name}
+									id="name"
+									name="name"
+									value={form.company.name}
 									onChange={handleChange}
 									variant="outlined"
 									fullWidth
 								/>
 								<TextField
 									className="mt-8 mb-16"
-									id="description"
-									name="description"
+									id="about"
+									name="about"
 									onChange={handleChange}
-									label="Description"
+									label="About the company"
 									type="text"
-									value={form.description}
+									value={form.company.about}
 									multiline
 									rows={5}
 									variant="outlined"
@@ -334,6 +389,9 @@ function Product(props) {
 									defaultCountry={'ae'}
 									variant="outlined"
 									label="Phone number"
+									id="tel"
+									name="tel"
+									value={form.company.tel}
 									fullWidth
 									className="mt-8 mb-16"
 								/>
@@ -341,63 +399,249 @@ function Product(props) {
 									defaultCountry={'ae'}
 									variant="outlined"
 									label="Fax"
+									id="fax"
+									name="fax"
+									value={form.company.fax}
 									fullWidth
 									className="mt-8 mb-16"
 								/>
+
 								<TextField
 									className="mt-8 mb-16"
-									id="address"
-									name="description"
-									onChange={handleChange}
-									label="Address"
-									type="text"
-									value={form.description}
-									multiline
-									rows={5}
-									variant="outlined"
-									fullWidth
-								/>
-								<TextField
-									className="mt-8 mb-16"
-									error={form.product_name === ''}
 									required
 									label="Company Email"
 									autoFocus
 									id="email"
-									name="product_name"
-									value={form.product_name}
+									name="email"
+									value={form.company.email}
 									onChange={handleChange}
 									variant="outlined"
 									fullWidth
 								/>
-								<FuseChipSelect
-									className="mt-8 mb-24"
-									value={form.product_categories.map(item => ({
-										value: item,
-										label: item
-									}))}
-									onChange={value => handleChipChange(value, 'product_categories')}
-									placeholder="Select business type"
-									textFieldProps={{
-										label: 'Business Type',
-										InputLabelProps: {
-											shrink: true
-										},
-										variant: 'outlined'
-									}}
-									options={prodcategories.map(item => ({
-										value: item._id,
-										label: item.name
-									}))}
-									isMulti
+								<TextField
+									className="mt-8 mb-16"
+									label="Company website"
+									autoFocus
+									id="website"
+									name="website"
+									value={form.company.website}
+									onChange={handleChange}
+									variant="outlined"
+									fullWidth
 								/>
+							</div>
+						)}
+						{tabValue === 1 && (
+							<div>
+								<div className="flex justify-center sm:justify-start flex-wrap -mx-8 mb-8">
+									<p>Logo</p>
+								</div>
+								<div className="flex justify-center sm:justify-start flex-wrap -mx-8">
+									<label
+										htmlFor="logo-file"
+										className={clsx(
+											classes.productImageUpload,
+											'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5'
+										)}
+									>
+										<input
+											accept="image/*"
+											className="hidden"
+											id="logo-file"
+											type="file"
+											name="logo"
+											onChange={handleUploadLogoChange}
+										/>
+										<Icon fontSize="large" color="action">
+											cloud_upload
+										</Icon>
+									</label>
+									{form.logo ? (
+										<div
+											role="button"
+											tabIndex={0}
+											className={clsx(
+												classes.productImageItem,
+												'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5'
+											)}
+										>
+											<img
+												className="max-w-none w-auto h-full"
+												src={
+													form.logo.startsWith('profile-logo/')
+														? `http://localhost:8086/${form.logo}`
+														: form.logo
+												}
+												alt="product"
+											/>
+										</div>
+									) : null}
+								</div>
+								<div className="flex justify-center sm:justify-start flex-wrap -mx-8 mb-8">
+									<p>License</p>
+								</div>
+								<div className="flex justify-center sm:justify-start flex-wrap -mx-8">
+									<label
+										htmlFor="license-file"
+										className={clsx(
+											classes.productImageUpload,
+											'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5'
+										)}
+									>
+										<input
+											accept="image/*"
+											className="hidden"
+											id="license-file"
+											type="file"
+											name="license"
+											onChange={handleUploadLicenseChange}
+										/>
+										<Icon fontSize="large" color="action">
+											cloud_upload
+										</Icon>
+									</label>
+									{form.license ? (
+										<div
+											role="button"
+											tabIndex={0}
+											className={clsx(
+												classes.productImageItem,
+												'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5'
+											)}
+										>
+											<Document
+												file={
+													form.license.startsWith('profile-license/')
+														? `http://localhost:8086/${form.license}`
+														: numFilename
+												}
+												onLoadSuccess={onDocumentLoadSuccess}
+												options={{
+													cMapUrl: `//cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjs.version}/cmaps/`,
+													cMapPacked: true
+												}}
+											>
+												{Array.from(new Array(numPages), (el, index) => (
+													<Page key={`page_${index + 1}`} pageNumber={index + 1} />
+												))}
+											</Document>
+											<p>
+												Page {pageNumber} of {numPages}
+											</p>
+										</div>
+									) : null}
+								</div>
+								<div className="flex justify-center sm:justify-start flex-wrap -mx-8 mb-8">
+									<p>Gallary images</p>
+								</div>
+								<div className="flex justify-center sm:justify-start flex-wrap -mx-8">
+									<label
+										htmlFor="button-file"
+										className={clsx(
+											classes.productImageUpload,
+											'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5'
+										)}
+									>
+										<input
+											accept="image/*"
+											className="hidden"
+											id="button-file"
+											type="file"
+											name="images"
+											onChange={handleUploadChange}
+										/>
+										<Icon fontSize="large" color="action">
+											cloud_upload
+										</Icon>
+									</label>
+									{form.images.map(media => (
+										<div
+											onClick={() => setFeaturedImage(media.id)}
+											onKeyDown={() => setFeaturedImage(media.id)}
+											role="button"
+											tabIndex={0}
+											className={clsx(
+												classes.productImageItem,
+												'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5',
+												media.id === form.featuredImageId && 'featured'
+											)}
+											key={media.id}
+										>
+											<Icon className={classes.productImageFeaturedStar}>star</Icon>
+											<img
+												className="max-w-none w-auto h-full"
+												src={
+													media.url.startsWith('gallary/')
+														? `http://localhost:8086/${media.url}`
+														: media.url
+												}
+												alt="product"
+											/>
+										</div>
+									))}
+								</div>
+								<div className="flex justify-center sm:justify-start flex-wrap -mx-8 mb-8">
+									<p>Products catalogue</p>
+								</div>
+								<div className="flex justify-center sm:justify-start flex-wrap -mx-8">
+									<label
+										htmlFor="product-file"
+										className={clsx(
+											classes.productImageUpload,
+											'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5'
+										)}
+									>
+										<input
+											accept="image/*"
+											className="hidden"
+											id="product-file"
+											name="products_catalogue"
+											type="file"
+											onChange={handleCatalogueUploadChange}
+										/>
+										<Icon fontSize="large" color="action">
+											cloud_upload
+										</Icon>
+									</label>
+									{form.products_catalogue.map(media => (
+										<div
+											onClick={() => setFeaturedImage(media.id)}
+											onKeyDown={() => setFeaturedImage(media.id)}
+											role="button"
+											tabIndex={0}
+											className={clsx(
+												classes.productImageItem,
+												'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5',
+												media.id === form.featuredImageId && 'featured'
+											)}
+											key={media.id}
+										>
+											<Document
+												file={
+													media.url.startsWith('profile-catalogues/')
+														? `http://localhost:8086/${media.url}`
+														: media.file
+												}
+												onLoadSuccess={onDocumentLoadSuccess}
+												options={{
+													cMapUrl: `//cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjs.version}/cmaps/`,
+													cMapPacked: true
+												}}
+											></Document>
+										</div>
+									))}
+								</div>
+							</div>
+						)}
+						{tabValue === 2 && (
+							<div>
 								<FuseChipSelect
 									className="mt-8 mb-24"
-									value={form.product_categories.map(item => ({
+									value={form.categories.map(item => ({
 										value: item,
 										label: item
 									}))}
-									onChange={value => handleChipChange(value, 'product_categories')}
+									onChange={value => handleChipChange(value, 'categories')}
 									placeholder="Select multiple categories"
 									textFieldProps={{
 										label: 'Categories',
@@ -412,7 +656,24 @@ function Product(props) {
 									}))}
 									isMulti
 								/>
-
+								<FuseChipSelect
+									className="mt-8 mb-24"
+									value={form.company.businesstype}
+									onChange={value => handleChipChange(value, 'categories')}
+									placeholder="Select business type"
+									textFieldProps={{
+										label: 'Business Type',
+										InputLabelProps: {
+											shrink: true
+										},
+										variant: 'outlined'
+									}}
+									options={prodcategories.map(item => ({
+										value: item._id,
+										label: item.name
+									}))}
+									isMulti
+								/>
 								<FuseChipSelect
 									className="mt-8 mb-16"
 									value={form.sectors.map(item => ({
@@ -434,123 +695,15 @@ function Product(props) {
 									}))}
 									isMulti
 								/>
-							</div>
-						)}
-						{tabValue === 1 && (
-							<div>
-								<div className="flex justify-center sm:justify-start flex-wrap -mx-8 mb-8">
-									<p>Product images</p>
-								</div>
-								<div className="flex justify-center sm:justify-start flex-wrap -mx-8">
-									<label
-										htmlFor="button-file"
-										className={clsx(
-											classes.productImageUpload,
-											'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5'
-										)}
-									>
-										<input
-											accept="image/*"
-											className="hidden"
-											id="button-file"
-											type="file"
-											onChange={handleUploadChange}
-										/>
-										<Icon fontSize="large" color="action">
-											cloud_upload
-										</Icon>
-									</label>
-									{form.images.map(media => (
-										<div
-											onClick={() => setFeaturedImage(media.id)}
-											onKeyDown={() => setFeaturedImage(media.id)}
-											role="button"
-											tabIndex={0}
-											className={clsx(
-												classes.productImageItem,
-												'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5',
-												media.id === form.featuredImageId && 'featured'
-											)}
-											key={media.id}
-										>
-											<Icon className={classes.productImageFeaturedStar}>star</Icon>
-											<img className="max-w-none w-auto h-full" src={media.url} alt="product" />
-										</div>
-									))}
-								</div>
-								<div className="flex justify-center sm:justify-start flex-wrap -mx-8 mb-8">
-									<p>Product catalogue</p>
-								</div>
-								<div className="flex justify-center sm:justify-start flex-wrap -mx-8">
-									<label
-										htmlFor="button-file"
-										className={clsx(
-											classes.productImageUpload,
-											'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5'
-										)}
-									>
-										<input
-											accept="image/*"
-											className="hidden"
-											id="button-file"
-											type="file"
-											onChange={handleCatalogueUploadChange}
-										/>
-										<Icon fontSize="large" color="action">
-											cloud_upload
-										</Icon>
-									</label>
-									{form.products_catalogue.map(media => (
-										<div
-											onClick={() => setFeaturedImage(media.id)}
-											onKeyDown={() => setFeaturedImage(media.id)}
-											role="button"
-											tabIndex={0}
-											className={clsx(
-												classes.productImageItem,
-												'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5',
-												media.id === form.featuredImageId && 'featured'
-											)}
-											key={media.id}
-										>
-											<Icon className={classes.productImageFeaturedStar}>star</Icon>
-											<img className="max-w-none w-auto h-full" src={media.url} alt="product" />
-										</div>
-									))}
-								</div>
-							</div>
-						)}
-						{tabValue === 2 && (
-							<div>
+
 								<FuseChipSelect
 									className="mt-8 mb-16"
-									value={form.sectors.map(item => ({
+									value={form.services.map(item => ({
 										value: item,
 										label: item
 									}))}
-									onChange={value => handleChipChange(value, 'sectors')}
-									placeholder="Select city of origin"
-									textFieldProps={{
-										label: 'Products',
-										InputLabelProps: {
-											shrink: true
-										},
-										variant: 'outlined'
-									}}
-									options={sectors.map(item => ({
-										value: item._id,
-										label: item.name
-									}))}
-									isMulti
-								/>
-								<FuseChipSelect
-									className="mt-8 mb-16"
-									value={form.sectors.map(item => ({
-										value: item,
-										label: item
-									}))}
-									onChange={value => handleChipChange(value, 'sectors')}
-									placeholder="Select country of origin"
+									onChange={value => handleChipChange(value, 'services')}
+									placeholder="Select services"
 									textFieldProps={{
 										label: 'Services',
 										InputLabelProps: {
@@ -566,14 +719,35 @@ function Product(props) {
 								/>
 								<FuseChipSelect
 									className="mt-8 mb-16"
-									value={form.sectors.map(item => ({
+									value={form.sub_services.map(item => ({
 										value: item,
 										label: item
 									}))}
-									onChange={value => handleChipChange(value, 'sectors')}
-									placeholder="Select city of origin"
+									onChange={value => handleChipChange(value, 'sub_services')}
+									placeholder="Select sub services"
 									textFieldProps={{
 										label: 'Sub services',
+										InputLabelProps: {
+											shrink: true
+										},
+										variant: 'outlined'
+									}}
+									options={sectors.map(item => ({
+										value: item._id,
+										label: item.name
+									}))}
+									isMulti
+								/>
+								<FuseChipSelect
+									className="mt-8 mb-16"
+									value={form.products.map(item => ({
+										value: item,
+										label: item
+									}))}
+									onChange={value => handleChipChange(value, 'products')}
+									placeholder="Select products"
+									textFieldProps={{
+										label: 'Products',
 										InputLabelProps: {
 											shrink: true
 										},
@@ -589,6 +763,22 @@ function Product(props) {
 						)}
 						{tabValue === 3 && (
 							<div>
+								<Map
+									// google={this.props.google}
+									center={{
+										lat: 23.4241,
+										lng: 53.8478
+									}}
+									height="300px"
+									zoom={15}
+									// onChange={this.onChange}
+									form={form}
+									handleLocationChange={handleLocationChange}
+								/>
+							</div>
+						)}
+						{tabValue === 4 && (
+							<div>
 								{inputList.map((x, i) => {
 									return (
 										<div className="box">
@@ -598,8 +788,8 @@ function Product(props) {
 													required
 													label="Name"
 													autoFocus
-													id="key"
-													name="key"
+													id="name"
+													name="name"
 													onChange={e => handleInputChange(e, i)}
 													variant="outlined"
 													fullWidth
@@ -611,8 +801,8 @@ function Product(props) {
 													required
 													label="Email"
 													autoFocus
-													id="value"
-													name="value"
+													id="email"
+													name="email"
 													onChange={e => handleInputChange(e, i)}
 													variant="outlined"
 													fullWidth
@@ -624,6 +814,7 @@ function Product(props) {
 													variant="outlined"
 													label="Phone number"
 													className="mt-8 mb-16"
+													name="cellphone"
 												/>
 											</FormControl>
 											<FormControl variant="filled" className={classes.formControl}>
@@ -632,8 +823,8 @@ function Product(props) {
 													required
 													label="Designation"
 													autoFocus
-													id="value"
-													name="value"
+													id="designation"
+													name="designation"
 													onChange={e => handleInputChange(e, i)}
 													variant="outlined"
 													fullWidth
@@ -660,7 +851,7 @@ function Product(props) {
 								})}
 							</div>
 						)}
-						{tabValue === 4 && (
+						{tabValue === 5 && (
 							<div>
 								<TextField
 									className="mt-8 mb-16 mx-4"
@@ -674,6 +865,9 @@ function Product(props) {
 											</InputAdornment>
 										)
 									}}
+									id="twitter"
+									name="twitter"
+									value={form.twitter}
 									onChange={handleChange}
 									variant="outlined"
 									fullWidth
@@ -690,6 +884,9 @@ function Product(props) {
 											</InputAdornment>
 										)
 									}}
+									id="facebook"
+									name="facebook"
+									value={form.facebook}
 									onChange={handleChange}
 									variant="outlined"
 									fullWidth
@@ -706,6 +903,9 @@ function Product(props) {
 											</InputAdornment>
 										)
 									}}
+									id="instagram"
+									name="instagram"
+									value={form.instagram}
 									onChange={handleChange}
 									variant="outlined"
 									fullWidth
@@ -722,6 +922,9 @@ function Product(props) {
 											</InputAdornment>
 										)
 									}}
+									id="lnkedin"
+									name="lnkedin"
+									value={form.lnkedin}
 									onChange={handleChange}
 									variant="outlined"
 									fullWidth
@@ -738,6 +941,9 @@ function Product(props) {
 											</InputAdornment>
 										)
 									}}
+									id="youtube"
+									name="youtube"
+									value={form.youtube}
 									onChange={handleChange}
 									variant="outlined"
 									fullWidth
@@ -752,4 +958,4 @@ function Product(props) {
 	);
 }
 
-export default withReducer('eCommerceApp', reducer)(Product);
+export default withReducer('cmpSupplier', reducer)(Product);

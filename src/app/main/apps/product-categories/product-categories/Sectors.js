@@ -2,10 +2,10 @@ import FusePageCarded from '@fuse/core/FusePageCarded';
 import withReducer from 'app/store/withReducer';
 import React from 'react';
 import reducer from '../store';
-import ProductsHeader from './SuppliersHeader';
-import ProductsTable from './SuppliersTable';
+import SectorsHeader from './SectorsHeader';
+import SectorsTable from './SectorsTable';
 
-function Products() {
+function Sectors() {
 	return (
 		<FusePageCarded
 			classes={{
@@ -13,11 +13,11 @@ function Products() {
 				contentCard: 'overflow-hidden',
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
-			header={<ProductsHeader />}
-			content={<ProductsTable />}
+			header={<SectorsHeader />}
+			content={<SectorsTable />}
 			innerScroll
 		/>
 	);
 }
 
-export default withReducer('cmpSupplier', reducer)(Products);
+export default withReducer('cmp', reducer)(Sectors);

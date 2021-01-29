@@ -7,7 +7,7 @@ const supplierAppConfig = {
 	},
 	routes: [
 		{
-			path: '/apps/suppliers/:productId/:productHandle?',
+			path: '/apps/suppliers/:supplierId/:supplierHandle?',
 			component: React.lazy(() => import('./supplier/Supplier'))
 		},
 		{

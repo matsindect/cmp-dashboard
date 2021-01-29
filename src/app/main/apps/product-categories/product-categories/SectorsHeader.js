@@ -9,11 +9,11 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectMainTheme } from 'app/store/fuse/settingsSlice';
-import { setSuppliersSearchText } from '../store/suppliersSlice';
+import { setSectorsSearchText } from '../store/productCategoriesSlice';
 
-function ProductsHeader(props) {
+function SectorsHeader(props) {
 	const dispatch = useDispatch();
-	const searchText = useSelector(({ cmpSupplier }) => cmpSupplier.suppliers.searchText);
+	const searchText = useSelector(({ cmp }) => cmp.sectors.searchText);
 	const mainTheme = useSelector(selectMainTheme);
 
 	return (
@@ -24,7 +24,7 @@ function ProductsHeader(props) {
 				</FuseAnimate>
 				<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 					<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-						Supplier
+						Product Categories
 					</Typography>
 				</FuseAnimate>
 			</div>
@@ -44,7 +44,7 @@ function ProductsHeader(props) {
 								inputProps={{
 									'aria-label': 'Search'
 								}}
-								onChange={ev => dispatch(setSuppliersSearchText(ev))}
+								onChange={ev => dispatch(setSectorsSearchText(ev))}
 							/>
 						</Paper>
 					</FuseAnimate>
@@ -53,12 +53,12 @@ function ProductsHeader(props) {
 			<FuseAnimate animation="transition.slideRightIn" delay={300}>
 				<Button
 					component={Link}
-					to="/apps/suppliers/new"
+					to="/apps/product-categories/new"
 					className="whitespace-no-wrap normal-case"
 					variant="contained"
 					color="secondary"
 				>
-					<span className="hidden sm:flex">Add New Supplier</span>
+					<span className="hidden sm:flex">Add New Product Category</span>
 					<span className="flex sm:hidden">New</span>
 				</Button>
 			</FuseAnimate>
@@ -66,4 +66,4 @@ function ProductsHeader(props) {
 	);
 }
 
-export default ProductsHeader;
+export default SectorsHeader;

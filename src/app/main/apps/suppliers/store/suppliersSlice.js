@@ -2,26 +2,26 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 import axios from 'axios';
 import domainConfig from '../../../../fuse-configs/domainConfig';
 
-export const getProducts = createAsyncThunk('eCommerceApp/products/getProducts', async () => {
-	const response = await axios.get(`${domainConfig.api_url}api/v1/products/`);
+export const getSuppliers = createAsyncThunk('cmpSupplier/suppliers/getSuppliers', async () => {
+	const response = await axios.get(`${domainConfig.api_url}api/v1/profiles/`);
 	const data = await response.data.data;
 
 	return data;
 });
 
-const productsAdapter = createEntityAdapter({});
+const suppliersAdapter = createEntityAdapter({});
 
-export const { selectAll: selectProducts, selectById: selectProductById } = productsAdapter.getSelectors(
-	state => state.eCommerceApp.products
+export const { selectAll: selectSuppliers, selectById: selectSupplierById } = suppliersAdapter.getSelectors(
+	state => state.cmpSupplier.suppliers
 );
 
-const productsSlice = createSlice({
-	name: 'eCommerceApp/products',
-	initialState: productsAdapter.getInitialState({
+const suppliersSlice = createSlice({
+	name: 'cmpSupplier/suppliers',
+	initialState: suppliersAdapter.getInitialState({
 		searchText: ''
 	}),
 	reducers: {
-		setProductsSearchText: {
+		setSuppliersSearchText: {
 			reducer: (state, action) => {
 				state.searchText = action.payload;
 			},
@@ -29,10 +29,10 @@ const productsSlice = createSlice({
 		}
 	},
 	extraReducers: {
-		[getProducts.fulfilled]: productsAdapter.setAll
+		[getSuppliers.fulfilled]: suppliersAdapter.setAll
 	}
 });
 
-export const { setProductsSearchText } = productsSlice.actions;
+export const { setSuppliersSearchText } = suppliersSlice.actions;
 
-export default productsSlice.reducer;
+export default suppliersSlice.reducer;

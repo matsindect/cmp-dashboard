@@ -3,49 +3,55 @@ import axios from 'axios';
 import FuseUtils from '@fuse/utils';
 import domainConfig from '../../../../fuse-configs/domainConfig';
 
-export const getProduct = createAsyncThunk('eCommerceApp/product/getProduct', async params => {
+export const getSupplier = createAsyncThunk('cmpSupplier/supplier/getSupplier', async params => {
 	console.log(params);
-	const response = await axios.get(`${domainConfig.api_url}api/v1/products/${params.productId}`);
+	const response = await axios.get(`${domainConfig.api_url}api/v1/profiles/${params.supplierId}`);
 	const data = await response.data.data;
 
 	return data;
 });
 
-export const saveProduct = createAsyncThunk('eCommerceApp/product/saveProduct', async product => {
-	console.log(product);
-	const response = await axios.post(`${domainConfig.api_url}api/v1/products/`, product);
+export const saveSupplier = createAsyncThunk('cmpSupplier/supplier/saveSupplier', async supplier => {
+	console.log(supplier);
+	const response = await axios.post(`${domainConfig.api_url}api/v1/profiles`, supplier);
 	const data = await response.data.data;
 
 	return data;
 });
 
-const productSlice = createSlice({
-	name: 'eCommerceApp/product',
+const supplierSlice = createSlice({
+	name: 'cmpSupplier/supplier',
 	initialState: null,
 	reducers: {
-		newProduct: {
+		newSupplier: {
 			reducer: (state, action) => action.payload,
 			prepare: event => ({
 				payload: {
-					product_name: '',
-					slug: '',
-					description: '',
-					categories: [],
-					tags: [],
-					images: [],
-					product_location: {
-						type: '',
-						coordinates: [{ lat: 0, lng: 0 }]
+					company: {
+						name: '',
+						location: {},
+						about: '',
+						tel: '',
+						fax: '',
+						website: '',
+						email: '',
+						businesstype: '',
+						logo: '',
+						license: ''
 					},
-					product_attributes: [],
-					product_categories: [],
 					products_catalogue: [],
+					images: [],
+					contact_person: [],
+					categories: [],
 					sectors: [],
-					origin: { city: '', country: '' },
-					product_pricing: {
-						currency: '',
-						price: ''
-					},
+					services: [],
+					sub_services: [],
+					products: [],
+					youtube: '',
+					twitter: '',
+					facebook: '',
+					lnkedin: '',
+					instagram: '',
 					featuredImageId: 0,
 					active: true
 				}
@@ -53,11 +59,11 @@ const productSlice = createSlice({
 		}
 	},
 	extraReducers: {
-		[getProduct.fulfilled]: (state, action) => action.payload,
-		[saveProduct.fulfilled]: (state, action) => action.payload
+		[getSupplier.fulfilled]: (state, action) => action.payload,
+		[saveSupplier.fulfilled]: (state, action) => action.payload
 	}
 });
 
-export const { newProduct } = productSlice.actions;
+export const { newSupplier } = supplierSlice.actions;
 
-export default productSlice.reducer;
+export default supplierSlice.reducer;

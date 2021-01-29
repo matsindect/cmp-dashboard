@@ -1,14 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const getOrder = createAsyncThunk('eCommerceApp/order/getOrder', async params => {
+export const getOrder = createAsyncThunk('cmpSupplier/order/getOrder', async params => {
 	const response = await axios.get('/api/e-commerce-app/order', { params });
 	const data = await response.data;
 
 	return data;
 });
 
-export const saveOrder = createAsyncThunk('eCommerceApp/order/saveOrder', async order => {
+export const saveOrder = createAsyncThunk('cmpSupplier/order/saveOrder', async order => {
 	const response = await axios.post('/api/e-commerce-app/order/save', order);
 	const data = await response.data;
 
@@ -16,7 +16,7 @@ export const saveOrder = createAsyncThunk('eCommerceApp/order/saveOrder', async 
 });
 
 const orderSlice = createSlice({
-	name: 'eCommerceApp/order',
+	name: 'cmpSupplier/order',
 	initialState: null,
 	reducers: {},
 	extraReducers: {

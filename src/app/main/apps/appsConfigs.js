@@ -17,6 +17,7 @@ import Countries from './countries/countryConfig';
 import Consultants from './consultants/consultantsAppConfig';
 import Contractor from './contractor/contractorAppConfig';
 import Supplier from './suppliers/supplierAppConfig';
+import ProductCategories from './product-categories/productCategoriesConfig';
 
 const appsConfigs = [
 	AnalyticsDashboardAppConfig,
@@ -37,7 +38,8 @@ const appsConfigs = [
 	Countries,
 	Consultants,
 	Contractor,
-	Supplier
+	Supplier,
+	ProductCategories
 ];
 
 export default appsConfigs;

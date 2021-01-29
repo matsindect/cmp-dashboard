@@ -11,16 +11,16 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getSuppliers, selectSuppliers } from '../store/suppliersSlice';
-import ProductsTableHead from './SuppliersTableHead';
+import { getSectors, selectSectors } from '../store/productCategoriesSlice';
+import SectorsTableHead from './SectorsTableHead';
 
-function ProductsTable(props) {
+function SectorsTable(props) {
 	const dispatch = useDispatch();
-	const suppliers = useSelector(selectSuppliers);
-	const searchText = useSelector(({ cmpSupplier }) => cmpSupplier.suppliers.searchText);
+	const setors = useSelector(selectSectors);
+	const searchText = useSelector(({ cmp }) => cmp.sectors.searchText);
 
 	const [selected, setSelected] = useState([]);
-	const [data, setData] = useState(suppliers);
+	const [data, setData] = useState(setors);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -29,17 +29,17 @@ function ProductsTable(props) {
 	});
 
 	useEffect(() => {
-		dispatch(getSuppliers());
+		dispatch(getSectors());
 	}, [dispatch]);
 
 	useEffect(() => {
 		if (searchText.length !== 0) {
-			setData(_.filter(suppliers, item => item.name.toLowerCase().includes(searchText.toLowerCase())));
+			setData(_.filter(setors, item => item.name.toLowerCase().includes(searchText.toLowerCase())));
 			setPage(0);
 		} else {
-			setData(suppliers);
+			setData(setors);
 		}
-	}, [suppliers, searchText]);
+	}, [setors, searchText]);
 
 	function handleRequestSort(event, property) {
 		const id = property;
@@ -64,7 +64,7 @@ function ProductsTable(props) {
 	}
 
 	function handleClick(item) {
-		props.history.push(`/apps/suppliers/${item.id}/${item.slug}`);
+		props.history.push(`/apps/sectors/${item._id}/${item.slug}`);
 	}
 
 	function handleCheck(event, id) {
@@ -96,7 +96,7 @@ function ProductsTable(props) {
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
 				<Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-					<ProductsTableHead
+					<SectorsTableHead
 						numSelected={selected.length}
 						order={order}
 						onSelectAllClick={handleSelectAllClick}
@@ -123,7 +123,7 @@ function ProductsTable(props) {
 						)
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map(n => {
-								const isSelected = selected.indexOf(n.id) !== -1;
+								const isSelected = selected.indexOf(n._id) !== -1;
 								return (
 									<TableRow
 										className="h-64 cursor-pointer"
@@ -131,7 +131,7 @@ function ProductsTable(props) {
 										role="checkbox"
 										aria-checked={isSelected}
 										tabIndex={-1}
-										key={n.id}
+										key={n._id}
 										selected={isSelected}
 										onClick={event => handleClick(n)}
 									>
@@ -139,7 +139,7 @@ function ProductsTable(props) {
 											<Checkbox
 												checked={isSelected}
 												onClick={event => event.stopPropagation()}
-												onChange={event => handleCheck(event, n.id)}
+												onChange={event => handleCheck(event, n._id)}
 											/>
 										</TableCell>
 
@@ -152,7 +152,7 @@ function ProductsTable(props) {
 											{n.images.length > 0 && n.featuredImageId ? (
 												<img
 													className="w-full block rounded"
-													src={_.find(n.images, { id: n.featuredImageId }).url}
+													src={_.find(n.images, { _id: n.featuredImageId }).url}
 													alt={n.name}
 												/>
 											) : (
@@ -165,20 +165,31 @@ function ProductsTable(props) {
 										</TableCell>
 
 										<TableCell className="p-4 md:p-16" component="th" scope="row">
-											{n.company.name}
+											{n.name}
 										</TableCell>
-
 										<TableCell className="p-4 md:p-16 truncate" component="th" scope="row">
-											{n.sectors.join(', ')}
+											{n.categories.join(', ')}
+										</TableCell>
+										<TableCell className="p-4 md:p-16" component="th" scope="row">
+											{n.description}
 										</TableCell>
 
-										<TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
-											{n.company.email}
-										</TableCell>
+										{/* <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
+											<span>$</span>
+											{n.priceTaxIncl}
+										</TableCell> */}
 
-										<TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
-											{n.company.tel}
-										</TableCell>
+										{/* <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
+											{n.quantity}
+											<i
+												className={clsx(
+													'inline-block w-8 h-8 rounded mx-8',
+													n.quantity <= 5 && 'bg-red',
+													n.quantity > 5 && n.quantity <= 25 && 'bg-orange',
+													n.quantity > 25 && 'bg-green'
+												)}
+											/>
+										</TableCell> */}
 
 										<TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
 											{n.is_active ? (
@@ -213,4 +224,4 @@ function ProductsTable(props) {
 	);
 }
 
-export default withRouter(ProductsTable);
+export default withRouter(SectorsTable);

@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 import axios from 'axios';
 import domainConfig from '../../../../fuse-configs/domainConfig';
 
-export const getCities = createAsyncThunk('eCommerceApp/cities/getCities', async () => {
+export const getCities = createAsyncThunk('cmpSupplier/cities/getCities', async () => {
 	const response = await axios.get(`${domainConfig.api_url}api/v1/settings/city/`);
 	const data = await response.data.data;
 
@@ -12,11 +12,11 @@ export const getCities = createAsyncThunk('eCommerceApp/cities/getCities', async
 const citiesAdapter = createEntityAdapter({});
 
 export const { selectAll: selectCities, selectById: selecCityById } = citiesAdapter.getSelectors(
-	state => state.eCommerceApp.cities
+	state => state.cmpSupplier.cities
 );
 
 const citiesSlice = createSlice({
-	name: 'eCommerceApp/cities',
+	name: 'cmpSupplier/cities',
 	initialState: citiesAdapter.getInitialState({
 		searchText: ''
 	}),

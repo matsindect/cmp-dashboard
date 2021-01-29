@@ -2,14 +2,14 @@ import { combineReducers } from '@reduxjs/toolkit';
 import order from './orderSlice';
 import orders from './ordersSlice';
 import sectors from './sectorsSlice';
-import product from './supplierSlice';
-import products from './suppliersSlice';
+import supplier from './supplierSlice';
+import suppliers from './suppliersSlice';
 import cities from './citiesSlice';
 import countries from './countriesSlice';
 
 const reducer = combineReducers({
-	products,
-	product,
+	suppliers,
+	supplier,
 	orders,
 	sectors,
 	cities,

@@ -34,73 +34,6 @@ const navigationConfig = [
 				]
 			},
 			{
-				id: 'products',
-				title: 'Products',
-				translate: 'Products',
-				type: 'collapse',
-				icon: 'shopping_cart',
-				url: '/apps/e-commerce',
-				children: [
-					{
-						id: 'e-commerce-products',
-						title: 'All Products',
-						type: 'item',
-						url: '/apps/e-commerce/products',
-						exact: true
-					},
-					{
-						id: 'e-commerce-new-product',
-						title: 'New Product',
-						type: 'item',
-						url: '/apps/e-commerce/products/new',
-						exact: true
-					},
-					{
-						id: 'e-commerce-product-categories',
-						title: 'Product Categories',
-						type: 'collapse',
-						children: [
-							{
-								id: 'e-commerce-product-categories-all',
-								title: 'All categories',
-								type: 'item',
-								url: '#'
-							},
-							{
-								id: 'e-commerce-product-categories-new',
-								title: 'New Category',
-								type: 'item',
-								url: 'http://fusetheme.com'
-							}
-						]
-					}
-				]
-			},
-			{
-				id: 'sectors',
-				title: 'Sectors',
-				translate: 'Sectors',
-				type: 'collapse',
-				icon: 'scatter_plot',
-				url: '/apps/sectors',
-				children: [
-					{
-						id: 'cmp-sectors',
-						title: 'All Sectors',
-						type: 'item',
-						url: '/apps/sectors',
-						exact: true
-					},
-					{
-						id: 'cmp-new-sector',
-						title: 'New Sector',
-						type: 'item',
-						url: '/apps/sectors/new',
-						exact: true
-					}
-				]
-			},
-			{
 				id: 'services',
 				title: 'Services',
 				translate: 'Services',
@@ -124,30 +57,7 @@ const navigationConfig = [
 					}
 				]
 			},
-			{
-				id: 'categories',
-				title: 'Categories',
-				translate: 'Categories',
-				type: 'collapse',
-				icon: 'pie_chart',
-				url: '/apps/categories',
-				children: [
-					{
-						id: 'cmp-categories',
-						title: 'All Categories',
-						type: 'item',
-						url: '/apps/categories',
-						exact: true
-					},
-					{
-						id: 'cmp-new-category',
-						title: 'New Catecory',
-						type: 'item',
-						url: '/apps/categories/new',
-						exact: true
-					}
-				]
-			},
+
 			{
 				id: 'suppliers',
 				title: 'Suppliers',
@@ -219,6 +129,52 @@ const navigationConfig = [
 						exact: true
 					}
 				]
+			},
+			{
+				id: 'products',
+				title: 'Products',
+				translate: 'Products',
+				type: 'collapse',
+				icon: 'shopping_cart',
+				url: '/apps/e-commerce',
+				children: [
+					{
+						id: 'e-commerce-products',
+						title: 'All Products',
+						type: 'item',
+						url: '/apps/e-commerce/products',
+						exact: true
+					},
+					{
+						id: 'e-commerce-new-product',
+						title: 'New Product',
+						type: 'item',
+						url: '/apps/e-commerce/products/new',
+						exact: true
+					},
+					{
+						id: 'e-commerce-product-categories',
+						title: 'Product Categories',
+						type: 'collapse',
+						url: '/apps/product-categories',
+						children: [
+							{
+								id: 'e-commerce-product-categories-all',
+								title: 'All Categories',
+								type: 'item',
+								url: '/apps/product-categories',
+								exact: true
+							},
+							{
+								id: 'e-commerce-product-categories-new',
+								title: 'New Category',
+								type: 'item',
+								url: '/apps/product-categories/new',
+								exact: true
+							}
+						]
+					}
+				]
 			}
 		]
 	},
@@ -232,6 +188,54 @@ const navigationConfig = [
 		type: 'group',
 		icon: 'Settings',
 		children: [
+			{
+				id: 'categories',
+				title: 'Categories',
+				translate: 'Categories',
+				type: 'collapse',
+				icon: 'pie_chart',
+				url: '/apps/categories',
+				children: [
+					{
+						id: 'cmp-categories',
+						title: 'All Categories',
+						type: 'item',
+						url: '/apps/categories',
+						exact: true
+					},
+					{
+						id: 'cmp-new-category',
+						title: 'New Catecory',
+						type: 'item',
+						url: '/apps/categories/new',
+						exact: true
+					}
+				]
+			},
+			{
+				id: 'sectors',
+				title: 'Sectors',
+				translate: 'Sectors',
+				type: 'collapse',
+				icon: 'scatter_plot',
+				url: '/apps/sectors',
+				children: [
+					{
+						id: 'cmp-sectors',
+						title: 'All Sectors',
+						type: 'item',
+						url: '/apps/sectors',
+						exact: true
+					},
+					{
+						id: 'cmp-new-sector',
+						title: 'New Sector',
+						type: 'item',
+						url: '/apps/sectors/new',
+						exact: true
+					}
+				]
+			},
 			{
 				id: 'cities',
 				title: 'Cities',
