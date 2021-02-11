@@ -34,7 +34,7 @@ import YouTubeIcon from '@material-ui/icons/YouTube';
 import Map from './googlemaps';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-
+import './pdf.css';
 // import multer from 'multer';
 // import sharp from 'sharp';
 
@@ -104,6 +104,7 @@ function Product(props) {
 	const [numCatalogue, setNumCatalogue] = useState(null);
 	const [numPages, setNumPages] = useState(null);
 	const [pageNumber, setPageNumber] = useState(1);
+	// onLoadSuccess={onDocumentLoadSuccess}
 
 	function onDocumentLoadSuccess({ numPages }) {
 		setNumPages(numPages);
@@ -124,7 +125,19 @@ function Product(props) {
 		setInputList(list);
 		form.product_attributes = list;
 	};
-
+	const convertBlob = url => {
+		let reader = new window.FileReader();
+		fetch(url)
+			.then(response => response.blob())
+			.then(blob => {
+				reader.readAsDataURL(blob);
+				reader.onloadend = () => {
+					var base64string = reader.result; //Passed to pdfjs
+					console.log(base64string);
+					return base64string;
+				};
+			});
+	};
 	// handle click event of the Add button
 	const handleAddClick = () => {
 		setInputList([...inputList, { key: '', value: '' }]);
@@ -501,33 +514,27 @@ function Product(props) {
 										</Icon>
 									</label>
 									{form.license ? (
-										<div
-											role="button"
-											tabIndex={0}
-											className={clsx(
-												classes.productImageItem,
-												'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5'
-											)}
-										>
-											<Document
-												file={
-													form.license.startsWith('profile-license/')
-														? `http://localhost:8086/${form.license}`
-														: numFilename
-												}
-												onLoadSuccess={onDocumentLoadSuccess}
-												options={{
-													cMapUrl: `//cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjs.version}/cmaps/`,
-													cMapPacked: true
-												}}
-											>
-												{Array.from(new Array(numPages), (el, index) => (
-													<Page key={`page_${index + 1}`} pageNumber={index + 1} />
-												))}
-											</Document>
-											<p>
-												Page {pageNumber} of {numPages}
-											</p>
+										<div className="Example">
+											<div className="container">
+												{/* <div className="Example__container__load">
+													<label htmlFor="file">Load from file:</label>{' '}
+													<input onChange={onFileChange} type="file" />
+												</div> */}
+												<div className="document">
+													<Document
+														file={form.license != '' ? form.license : numFilename}
+														onLoadSuccess={onDocumentLoadSuccess}
+														options={{
+															cMapUrl: `//cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjs.version}/cmaps/`,
+															cMapPacked: true
+														}}
+													>
+														{Array.from(new Array(numPages), (el, index) => (
+															<Page key={`page_${index + 1}`} pageNumber={index + 1} />
+														))}
+													</Document>
+												</div>
+											</div>
 										</div>
 									) : null}
 								</div>
