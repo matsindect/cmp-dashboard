@@ -1,11 +1,14 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
+import FuseChipSelect from '@fuse/core/FuseChipSelect';
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useForm, useDeepCompareEffect } from '@fuse/hooks';
+import FuseUtils from '@fuse/utils';
 import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import { orange } from '@material-ui/core/colors';
 import Icon from '@material-ui/core/Icon';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
@@ -16,7 +19,8 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { saveCategory, newCategory, getCategory } from '../store/categorySlice';
+import { saveServices, newService, getServices } from '../store/serviceSlice';
+import {getSectors, selectSectors} from "../store/sectorsSlice"
 import reducer from '../store';
 
 const useStyles = makeStyles(theme => ({
@@ -54,9 +58,11 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function Category(props) {
+function Sector(props) {
 	const dispatch = useDispatch();
-	const category = useSelector(({ cmp }) => cmp.category);
+	const sector = useSelector(({ cmpServices }) => cmpServices.service);
+	const sector_arr = useSelector(selectSectors);
+
 	const theme = useTheme();
 
 	const classes = useStyles(props);
@@ -65,24 +71,25 @@ function Category(props) {
 	const routeParams = useParams();
 
 	useDeepCompareEffect(() => {
-		function updateCategoryState() {
-			const { categoryId } = routeParams;
+		function updateSectorState() {
+			const { sectorId } = routeParams;
 
-			if (categoryId === 'new') {
-				dispatch(newCategory());
+			if (sectorId === 'new') {
+				dispatch(newService());
+				dispatch(getSectors())
 			} else {
-				dispatch(getCategory(routeParams));
+				dispatch(getServices(routeParams));
 			}
 		}
 
-		updateCategoryState();
+		updateSectorState();
 	}, [dispatch, routeParams]);
 
 	useEffect(() => {
-		if ((category && !form) || (category && form && category.id !== form.id)) {
-			setForm(category);
+		if ((sector && !form) || (sector && form && sector.id !== form.id)) {
+			setForm(sector);
 		}
-	}, [form, category, setForm]);
+	}, [form, sector, setForm]);
 
 	function handleChangeTab(event, value) {
 		setTabValue(value);
@@ -128,10 +135,10 @@ function Category(props) {
 	}
 
 	function canBeSubmitted() {
-		return form.name.length > 0 && !_.isEqual(category, form);
+		return form.name.length > 0 && !_.isEqual(sector, form);
 	}
 
-	if ((!category || (category && routeParams.categoryId !== category._id)) && routeParams.categoryId !== 'new') {
+	if ((!sector || (sector && routeParams.sectorId !== sector._id)) && routeParams.sectorId !== 'new') {
 		return <FuseLoading />;
 	}
 
@@ -150,13 +157,13 @@ function Category(props) {
 									className="normal-case flex items-center sm:mb-12"
 									component={Link}
 									role="button"
-									to="/apps/categories/categories"
+									to="/apps/services"
 									color="inherit"
 								>
 									<Icon className="text-20">
 										{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}
 									</Icon>
-									<span className="mx-4">Category</span>
+									<span className="mx-4">Service</span>
 								</Typography>
 							</FuseAnimate>
 
@@ -179,11 +186,11 @@ function Category(props) {
 								<div className="flex flex-col min-w-0 mx-8 sm:mc-16">
 									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 										<Typography className="text-16 sm:text-20 truncate">
-											{form.name ? form.name : 'New Category'}
+											{form.name ? form.name : 'New Service'}
 										</Typography>
 									</FuseAnimate>
 									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
-										<Typography variant="caption">Category Detail</Typography>
+										<Typography variant="caption">Service Detail</Typography>
 									</FuseAnimate>
 								</div>
 							</div>
@@ -194,7 +201,7 @@ function Category(props) {
 								variant="contained"
 								color="secondary"
 								disabled={!canBeSubmitted()}
-								onClick={() => dispatch(saveCategory(form))}
+								onClick={() => dispatch(saveServices(form))}
 							>
 								Save
 							</Button>
@@ -212,7 +219,7 @@ function Category(props) {
 					scrollButtons="auto"
 					classes={{ root: 'w-full h-64' }}
 				>
-					<Tab className="h-64 normal-case" label="Category Info" />
+					<Tab className="h-64 normal-case" label="Service Info" />
 				</Tabs>
 			}
 			content={
@@ -246,6 +253,44 @@ function Category(props) {
 									rows={5}
 									variant="outlined"
 									fullWidth
+								/>
+								<FuseChipSelect
+									className="mt-8 mb-24"
+									value={form.parent.map(item => ({
+										value: item,
+										label: item
+									}))}
+									onChange={value => handleChipChange(value, 'parent')}
+									placeholder="Select multiple parents"
+									textFieldProps={{
+										label: 'Parent service',
+										InputLabelProps: {
+											shrink: true
+										},
+										variant: 'outlined'
+									}}
+									isMulti
+								/>
+								<FuseChipSelect
+									className="mt-8 mb-24"
+									value={form.sectors.map(item => ({
+										value: item,
+										label: item
+									}))}
+									onChange={value => handleChipChange(value, 'sectors')}
+									placeholder="Select multiple sectors"
+									textFieldProps={{
+										label: 'Sectors',
+										InputLabelProps: {
+											shrink: true
+										},
+										variant: 'outlined'
+									}}
+									options={sector_arr.map(item => ({
+										value: item._id,
+										label: item.name
+									}))}
+									isMulti
 								/>
 
 								<div>
@@ -301,4 +346,4 @@ function Category(props) {
 	);
 }
 
-export default withReducer('cmpCategories', reducer)(Category);
+export default withReducer('cmpServices', reducer)(Sector);

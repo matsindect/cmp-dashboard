@@ -1,11 +1,14 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
+import FuseChipSelect from '@fuse/core/FuseChipSelect';
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
 import { useForm, useDeepCompareEffect } from '@fuse/hooks';
+import FuseUtils from '@fuse/utils';
 import _ from '@lodash';
 import Button from '@material-ui/core/Button';
 import { orange } from '@material-ui/core/colors';
 import Icon from '@material-ui/core/Icon';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
@@ -16,10 +19,32 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { saveCategory, newCategory, getCategory } from '../store/categorySlice';
+import { saveProductAttributes, newProductAttributes, getProductAttributes } from '../store/productAttributeSlice';
+import FormControl from '@material-ui/core/FormControl';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+
 import reducer from '../store';
 
 const useStyles = makeStyles(theme => ({
+	formControl: {
+		// margin: theme.spacing(1),
+		minWidth: "90%",
+	},
+	center:{
+		display: 'block',
+		marginLeft:'auto',
+		marginRight:'auto',
+		justifyContent: 'center',
+		marginTop:20
+	},
+	variantButton:{
+		width:'10%',
+		position:"relative",
+		flexDirection: 'column',
+		display: 'inline-flex'
+	},
 	productImageFeaturedStar: {
 		position: 'absolute',
 		top: 0,
@@ -54,35 +79,38 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function Category(props) {
+function Sector(props) {
 	const dispatch = useDispatch();
-	const category = useSelector(({ cmp }) => cmp.category);
+	const sector = useSelector(({ cmpProductAttributes }) => cmpProductAttributes.productAttributes);
 	const theme = useTheme();
 
 	const classes = useStyles(props);
 	const [tabValue, setTabValue] = useState(0);
 	const { form, handleChange, setForm } = useForm(null);
 	const routeParams = useParams();
+	const [inputList, setInputList] = useState([{ key: '', value: '' }]);
+
 
 	useDeepCompareEffect(() => {
-		function updateCategoryState() {
-			const { categoryId } = routeParams;
+		function updateSectorState() {
+			const { sectorId } = routeParams;
 
-			if (categoryId === 'new') {
-				dispatch(newCategory());
+			if (sectorId === 'new') {
+				dispatch(newProductAttributes());
 			} else {
-				dispatch(getCategory(routeParams));
+				dispatch(getProductAttributes(routeParams));
 			}
 		}
 
-		updateCategoryState();
+		updateSectorState();
 	}, [dispatch, routeParams]);
 
 	useEffect(() => {
-		if ((category && !form) || (category && form && category.id !== form.id)) {
-			setForm(category);
+		if ((sector && !form) || (sector && form && sector.id !== form.id)) {
+			setForm(sector);
 		}
-	}, [form, category, setForm]);
+		
+	}, [form, sector, setForm]);
 
 	function handleChangeTab(event, value) {
 		setTabValue(value);
@@ -97,7 +125,7 @@ function Category(props) {
 			)
 		);
 	}
-
+console.log(form)
 	function setFeaturedImage(id) {
 		setForm(_.set({ ...form }, 'featuredImageId', id));
 	}
@@ -128,13 +156,34 @@ function Category(props) {
 	}
 
 	function canBeSubmitted() {
-		return form.name.length > 0 && !_.isEqual(category, form);
+		return form.name.length > 0 && !_.isEqual(sector, form);
 	}
 
-	if ((!category || (category && routeParams.categoryId !== category._id)) && routeParams.categoryId !== 'new') {
+	if ((!sector || (sector && routeParams.sectorId !== sector._id)) && routeParams.sectorId !== 'new') {
 		return <FuseLoading />;
 	}
 
+		// handle input change
+		const handleInputChange = (e, index) => {
+			const { name, value } = e.target;
+			const list = [...inputList];
+			list[index][name] = value;
+			setInputList(list);
+			form.product_attributes = list;
+		};
+	
+		// handle click event of the Remove button
+		const handleRemoveClick = index => {
+			const list = [...inputList];
+			list.splice(index, 1);
+			setInputList(list);
+			form.product_attributes = list;
+		};
+	
+		// handle click event of the Add button
+		const handleAddClick = () => {
+			setInputList([...inputList, { key: '', value: '' }]);
+		};
 	return (
 		<FusePageCarded
 			classes={{
@@ -150,13 +199,13 @@ function Category(props) {
 									className="normal-case flex items-center sm:mb-12"
 									component={Link}
 									role="button"
-									to="/apps/categories/categories"
+									to="/apps/product-attributes"
 									color="inherit"
 								>
 									<Icon className="text-20">
 										{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}
 									</Icon>
-									<span className="mx-4">Category</span>
+									<span className="mx-4">Attributes</span>
 								</Typography>
 							</FuseAnimate>
 
@@ -179,11 +228,11 @@ function Category(props) {
 								<div className="flex flex-col min-w-0 mx-8 sm:mc-16">
 									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 										<Typography className="text-16 sm:text-20 truncate">
-											{form.name ? form.name : 'New Category'}
+											{form.name ? form.name : 'New Product Attribute'}
 										</Typography>
 									</FuseAnimate>
 									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
-										<Typography variant="caption">Category Detail</Typography>
+										<Typography variant="caption">Product Attribute Detail</Typography>
 									</FuseAnimate>
 								</div>
 							</div>
@@ -194,7 +243,7 @@ function Category(props) {
 								variant="contained"
 								color="secondary"
 								disabled={!canBeSubmitted()}
-								onClick={() => dispatch(saveCategory(form))}
+								onClick={() => dispatch(saveProductAttributes(form))}
 							>
 								Save
 							</Button>
@@ -212,7 +261,7 @@ function Category(props) {
 					scrollButtons="auto"
 					classes={{ root: 'w-full h-64' }}
 				>
-					<Tab className="h-64 normal-case" label="Category Info" />
+					<Tab className="h-64 normal-case" label="Product Attribute Info" />
 				</Tabs>
 			}
 			content={
@@ -233,7 +282,45 @@ function Category(props) {
 									variant="outlined"
 									fullWidth
 								/>
-
+	
+								{inputList.map((x, i) => {
+									return (
+										<div className="box">
+											<FormControl variant="filled" className={classes.formControl}>
+												<TextField
+													className="mt-8 mb-16"
+													required
+													label="Variants"
+													autoFocus
+													id="variant"
+													name="variant"
+													onChange={e => handleInputChange(e, i)}
+													variant="outlined"
+													fullWidth
+												/>
+											</FormControl>
+											
+											<FormControl variant="filled" className={classes.variantButton}>
+												<div className="btn-box " className={classes.center}>
+													{inputList.length !== 1 && (
+														<IconButton
+															color="primary"
+															onClick={() => handleRemoveClick(i)}
+															aria-label="add variant"
+														>
+															<DeleteIcon />
+														</IconButton>
+													)}
+													{inputList.length - 1 === i && (
+														<AddCircleIcon onClick={handleAddClick} />
+													)}
+												</div>
+											</FormControl>
+											
+										</div>
+									);
+								})}
+						
 								<TextField
 									className="mt-8 mb-16"
 									id="description"
@@ -247,50 +334,43 @@ function Category(props) {
 									variant="outlined"
 									fullWidth
 								/>
-
-								<div>
-									<div className="flex justify-center sm:justify-start flex-wrap -mx-8">
-										<label
-											htmlFor="button-file"
-											className={clsx(
-												classes.productImageUpload,
-												'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5'
-											)}
-										>
-											<input
-												accept="image/*"
-												className="hidden"
-												id="button-file"
-												type="file"
-												onChange={handleUploadChange}
-											/>
-											<Icon fontSize="large" color="action">
-												cloud_upload
-											</Icon>
-										</label>
-										{form.images.map(media => (
-											<div
-												onClick={() => setFeaturedImage(media._id)}
-												onKeyDown={() => setFeaturedImage(media._id)}
-												role="button"
-												tabIndex={0}
-												className={clsx(
-													classes.productImageItem,
-													'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5',
-													media._id === form.featuredImageId && 'featured'
-												)}
-												key={media._id}
-											>
-												<Icon className={classes.productImageFeaturedStar}>star</Icon>
-												<img
-													className="max-w-none w-auto h-full"
-													src={media.url}
-													alt="product"
-												/>
-											</div>
-										))}
-									</div>
-								</div>
+								<FuseChipSelect
+									className="mt-8 mb-24"
+									value={form.categories.map(item => ({
+										value: item,
+										label: item
+									}))}
+									onChange={value => handleChipChange(value, 'categories')}
+									placeholder="Select multiple setors"
+									textFieldProps={{
+										label: 'Sectors',
+										InputLabelProps: {
+											shrink: true
+										},
+										variant: 'outlined'
+									}}
+									isMulti
+								/>
+								<FuseChipSelect
+									className="mt-8 mb-24"
+									value={form.categories.map(item => ({
+										value: item,
+										label: item
+									}))}
+									onChange={value => handleChipChange(value, 'categories')}
+									placeholder="Select multiple categories"
+									textFieldProps={{
+										label: 'Categories',
+										InputLabelProps: {
+											shrink: true
+										},
+										variant: 'outlined'
+									}}
+									isMulti
+								/>
+								
+								
+								
 							</div>
 						)}
 					</div>
@@ -301,4 +381,4 @@ function Category(props) {
 	);
 }
 
-export default withReducer('cmpCategories', reducer)(Category);
+export default withReducer('cmpProductAttributes', reducer)(Sector);

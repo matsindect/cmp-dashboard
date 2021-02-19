@@ -34,6 +34,7 @@ import { Link, useParams } from 'react-router-dom';
 import { saveProduct, newProduct, getProduct } from '../store/productSlice';
 import { getOrders, selectOrders } from './../store/ordersSlice';
 import { getSectors, selectSectors } from './../store/sectorsSlice';
+import { getProductAttributes, selectProductAttributes} from './../store/productAttributesSlice'
 import reducer from '../store';
 
 const useStyles = makeStyles(theme => ({
@@ -80,10 +81,12 @@ function Product(props) {
 	const product = useSelector(({ eCommerceApp }) => eCommerceApp.product);
 	const prodcategories = useSelector(selectOrders);
 	const sectors = useSelector(selectSectors);
+	const product_attributes = useSelector(selectProductAttributes)
 	const theme = useTheme();
 
 	const classes = useStyles(props);
 	const [tabValue, setTabValue] = useState(0);
+	const [variant, setVariant] = useState(null);
 	const [data, setData] = useState(prodcategories);
 
 	const { form, handleChange, setForm } = useForm(null);
@@ -109,7 +112,7 @@ function Product(props) {
 
 	// handle click event of the Add button
 	const handleAddClick = () => {
-		setInputList([...inputList, { key: '', value: '' }]);
+		setInputList([...inputList, { key: '', value: '', unit:'' }]);
 	};
 
 	useDeepCompareEffect(() => {
@@ -120,6 +123,7 @@ function Product(props) {
 				dispatch(newProduct());
 				dispatch(getOrders());
 				dispatch(getSectors());
+				dispatch(getProductAttributes())
 			} else {
 				dispatch(getProduct(routeParams));
 			}
@@ -143,9 +147,16 @@ function Product(props) {
 			_.set(
 				{ ...form },
 				name,
-				value.map(item => item.value)
+				value.map(item => item.label)
 			)
 		);
+	}
+	function getVariant(value) {
+
+		const vari = product_attributes.varriants.filter(variant =>{
+				return String(variant._id) === String(value)
+		})
+		setVariant(vari);
 	}
 
 	function setFeaturedImage(id) {
@@ -546,19 +557,50 @@ function Product(props) {
 								{inputList.map((x, i) => {
 									return (
 										<div className="box">
-											<FormControl variant="filled" className={classes.formControl}>
-												<TextField
-													className="mt-8 mb-16"
-													required
-													label="Key"
-													autoFocus
-													id="key"
-													name="key"
-													onChange={e => handleInputChange(e, i)}
-													variant="outlined"
-													fullWidth
-												/>
-											</FormControl>
+											<FuseChipSelect
+												className="mt-8 mb-16"
+												value={form.product_attributes.map(item => ({
+													value: item,
+													label: item
+												}))}
+												onChange={value => {handleChipChange(value, 'product_attributes'); getVariant(value)}}
+												placeholder="Select city of product attribute"
+												textFieldProps={{
+													label: 'Product Attributes',
+													InputLabelProps: {
+														shrink: true
+													},
+													variant: 'outlined'
+												}}
+												options={product_attributes.map(item => ({
+													value: item._id,
+													label: item.name
+												}))}
+												isMulti
+											/>
+											{variant && 
+											
+											<FuseChipSelect
+												className="mt-8 mb-16"
+												value={variant.map(item => ({
+													value: item,
+													label: item
+												}))}
+												onChange={value => {handleChipChange(value, 'variant')}}
+												placeholder="Select  product variant"
+												textFieldProps={{
+													label: 'Product Attributes',
+													InputLabelProps: {
+														shrink: true
+													},
+													variant: 'outlined'
+												}}
+												options={variant.map(item => ({
+														value: item._id,
+														label: item.label
+												}))}
+												isMulti
+											/>}
 											<FormControl variant="filled" className={classes.formControl}>
 												<TextField
 													className="mt-8 mb-16"
@@ -572,6 +614,7 @@ function Product(props) {
 													fullWidth
 												/>
 											</FormControl>
+											
 											<FormControl variant="filled" className={classes.formControl}>
 												<div className="btn-box">
 													{inputList.length !== 1 && (
@@ -588,7 +631,7 @@ function Product(props) {
 													)}
 												</div>
 											</FormControl>
-											<div style={{ marginTop: 20 }}>{JSON.stringify(inputList)}</div>
+											
 										</div>
 									);
 								})}

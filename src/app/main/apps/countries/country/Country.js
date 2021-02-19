@@ -96,7 +96,7 @@ function Sector(props) {
 			_.set(
 				{ ...form },
 				name,
-				value.map(item => item.value)
+				value.map(item => item.label)
 			)
 		);
 	}

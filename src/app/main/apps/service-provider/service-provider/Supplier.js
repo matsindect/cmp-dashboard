@@ -45,6 +45,7 @@ import { Link, useParams } from 'react-router-dom';
 import { saveSupplier, newSupplier, getSupplier } from '../store/supplierSlice';
 import { getOrders, selectOrders } from '../store/ordersSlice';
 import { getSectors, selectSectors } from '../store/sectorsSlice';
+import { getBusinessTypes, selectBusinessTypes } from '../store/businessTypesSlice';
 import reducer from '../store';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 const useStyles = makeStyles(theme => ({
@@ -88,9 +89,10 @@ const useStyles = makeStyles(theme => ({
 
 function Product(props) {
 	const dispatch = useDispatch();
-	const supplier = useSelector(({ cmpSupplier }) => cmpSupplier.supplier);
+	const supplier = useSelector(({ cmpServiceProvider }) => cmpServiceProvider.supplier);
 	const prodcategories = useSelector(selectOrders);
 	const sectors = useSelector(selectSectors);
+	const businessTypes = useSelector(selectBusinessTypes);
 	const theme = useTheme();
 
 	const classes = useStyles(props);
@@ -151,6 +153,7 @@ function Product(props) {
 				dispatch(newSupplier());
 				dispatch(getOrders());
 				dispatch(getSectors());
+				dispatch(getBusinessTypes())
 			} else {
 				dispatch(getSupplier(routeParams));
 			}
@@ -303,7 +306,7 @@ function Product(props) {
 									<Icon className="text-20">
 										{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}
 									</Icon>
-									<span className="mx-4">Supplier</span>
+									<span className="mx-4">Service Provider</span>
 								</Typography>
 							</FuseAnimate>
 
@@ -326,11 +329,11 @@ function Product(props) {
 								<div className="flex flex-col min-w-0 mx-8 sm:mc-16">
 									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 										<Typography className="text-16 sm:text-20 truncate">
-											{form.company.name ? form.company.name : 'New Supplier'}
+											{form.company.name ? form.company.name : 'New Service Provider'}
 										</Typography>
 									</FuseAnimate>
 									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
-										<Typography variant="caption">Supplier Detail</Typography>
+										<Typography variant="caption">Service provider Detail</Typography>
 									</FuseAnimate>
 								</div>
 							</div>
@@ -361,7 +364,7 @@ function Product(props) {
 				>
 					<Tab className="h-64 normal-case" label="Company Info" />
 					<Tab className="h-64 normal-case" label="Images and Files" />
-					<Tab className="h-64 normal-case" label="Products" />
+					<Tab className="h-64 normal-case" label="Services" />
 					<Tab className="h-64 normal-case" label="Location" />
 					<Tab className="h-64 normal-case" label="Contact persons" />
 					<Tab className="h-64 normal-case" label="Social" />
@@ -665,8 +668,11 @@ function Product(props) {
 								/>
 								<FuseChipSelect
 									className="mt-8 mb-24"
-									value={form.company.businesstype}
-									onChange={value => handleChipChange(value, 'categories')}
+									value={form.company.businesstype.map(item => ({
+										value: item,
+										label: item
+									}))}
+									onChange={value => handleChipChange(value, 'company.businesstype')}
 									placeholder="Select business type"
 									textFieldProps={{
 										label: 'Business Type',
@@ -675,7 +681,7 @@ function Product(props) {
 										},
 										variant: 'outlined'
 									}}
-									options={prodcategories.map(item => ({
+									options={businessTypes.map(item => ({
 										value: item._id,
 										label: item.name
 									}))}
@@ -703,17 +709,16 @@ function Product(props) {
 									isMulti
 								/>
 
-								
 								<FuseChipSelect
 									className="mt-8 mb-16"
-									value={form.products.map(item => ({
+									value={form.services.map(item => ({
 										value: item,
 										label: item
 									}))}
-									onChange={value => handleChipChange(value, 'products')}
-									placeholder="Select products"
+									onChange={value => handleChipChange(value, 'services')}
+									placeholder="Select services"
 									textFieldProps={{
-										label: 'Products',
+										label: 'Services',
 										InputLabelProps: {
 											shrink: true
 										},
@@ -725,6 +730,28 @@ function Product(props) {
 									}))}
 									isMulti
 								/>
+								<FuseChipSelect
+									className="mt-8 mb-16"
+									value={form.sub_services.map(item => ({
+										value: item,
+										label: item
+									}))}
+									onChange={value => handleChipChange(value, 'sub_services')}
+									placeholder="Select sub services"
+									textFieldProps={{
+										label: 'Sub services',
+										InputLabelProps: {
+											shrink: true
+										},
+										variant: 'outlined'
+									}}
+									options={sectors.map(item => ({
+										value: item._id,
+										label: item.name
+									}))}
+									isMulti
+								/>
+								
 							</div>
 						)}
 						{tabValue === 3 && (
@@ -924,4 +951,4 @@ function Product(props) {
 	);
 }
 
-export default withReducer('cmpSupplier', reducer)(Product);
+export default withReducer('cmpServiceProvider', reducer)(Product);

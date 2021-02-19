@@ -18,6 +18,10 @@ import Consultants from './consultants/consultantsAppConfig';
 import Contractor from './contractor/contractorAppConfig';
 import Supplier from './suppliers/supplierAppConfig';
 import ProductCategories from './product-categories/productCategoriesConfig';
+import ProductAttribute from './product-attributes/productAttributeConfig'
+import BusinessTypes from './business-types/businessTypesConfig'
+import ServiceProvider from './service-provider/serviceProviderAppConfig'
+import Services from './services/servicesConfig'
 
 const appsConfigs = [
 	AnalyticsDashboardAppConfig,
@@ -39,7 +43,11 @@ const appsConfigs = [
 	Consultants,
 	Contractor,
 	Supplier,
-	ProductCategories
+	ProductCategories,
+	ProductAttribute,
+	BusinessTypes,
+	ServiceProvider,
+	Services
 ];
 
 export default appsConfigs;

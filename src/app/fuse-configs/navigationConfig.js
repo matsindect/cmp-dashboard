@@ -34,27 +34,50 @@ const navigationConfig = [
 				]
 			},
 			{
-				id: 'services',
-				title: 'Services',
-				translate: 'Services',
+				id: 'services-providers',
+				title: 'Services Providers',
+				translate: 'Services Providers',
 				type: 'collapse',
 				icon: 'room_service',
-				url: '/apps/services',
+				url: '/apps/services-providers',
 				children: [
 					{
 						id: 'cmp-services',
-						title: 'All Services',
+						title: 'All Services Provider',
 						type: 'item',
-						url: '/apps/services',
+						url: '/apps/services-providers',
 						exact: true
 					},
 					{
 						id: 'cmp-new-service',
-						title: 'New Service',
+						title: 'New Service Provider',
 						type: 'item',
-						url: '/apps/services/new',
+						url: '/apps/services-providers/new',
 						exact: true
-					}
+					},
+					{
+						id: 'service',
+						title: 'Services',
+						translate: 'Services',
+						type: 'collapse',
+						url: '/apps/services',
+						children: [
+							{
+								id: 'cmp-service',
+								title: 'All Services',
+								type: 'item',
+								url: '/apps/services',
+								exact: true
+							},
+							{
+								id: 'cmp-new-service-type',
+								title: 'New Service',
+								type: 'item',
+								url: '/apps/services/new',
+								exact: true
+							}
+						]
+					},
 				]
 			},
 
@@ -79,103 +102,82 @@ const navigationConfig = [
 						type: 'item',
 						url: '/apps/suppliers/new',
 						exact: true
-					}
-				]
-			},
-			{
-				id: 'contractors',
-				title: 'Contractors',
-				translate: 'Contractors',
-				type: 'collapse',
-				icon: 'supervisor_account',
-				url: '/apps/contractors',
-				children: [
-					{
-						id: 'cmp-contractors',
-						title: 'All Contractors',
-						type: 'item',
-						url: '/apps/contractors',
-						exact: true
 					},
 					{
-						id: 'cmp-new-Contractor',
-						title: 'New Contractor',
-						type: 'item',
-						url: '/apps/contractors/new',
-						exact: true
-					}
-				]
-			},
-			{
-				id: 'consultants',
-				title: 'Consultants',
-				translate: 'Consultants',
-				type: 'collapse',
-				icon: 'supervisor_account',
-				url: '/apps/consultants',
-				children: [
-					{
-						id: 'cmp-consultants',
-						title: 'All Consultants',
-						type: 'item',
-						url: '/apps/consultants',
-						exact: true
+						type: 'divider',
+						id: 'divider-2'
 					},
 					{
-						id: 'cmp-consultants-new',
-						title: 'New Consultant',
-						type: 'item',
-						url: '/apps/consultants/new',
-						exact: true
-					}
-				]
-			},
-			{
-				id: 'products',
-				title: 'Products',
-				translate: 'Products',
-				type: 'collapse',
-				icon: 'shopping_cart',
-				url: '/apps/e-commerce',
-				children: [
-					{
-						id: 'e-commerce-products',
-						title: 'All Products',
-						type: 'item',
-						url: '/apps/e-commerce/products',
-						exact: true
-					},
-					{
-						id: 'e-commerce-new-product',
-						title: 'New Product',
-						type: 'item',
-						url: '/apps/e-commerce/products/new',
-						exact: true
-					},
-					{
-						id: 'e-commerce-product-categories',
-						title: 'Product Categories',
+						id: 'products',
+						title: 'Products',
+						translate: 'Products',
 						type: 'collapse',
-						url: '/apps/product-categories',
+						icon: 'shopping_cart',
+						url: '/apps/e-commerce',
 						children: [
 							{
-								id: 'e-commerce-product-categories-all',
-								title: 'All Categories',
+								id: 'e-commerce-products',
+								title: 'All Products',
 								type: 'item',
-								url: '/apps/product-categories',
+								url: '/apps/e-commerce/products',
 								exact: true
 							},
 							{
-								id: 'e-commerce-product-categories-new',
-								title: 'New Category',
+								id: 'e-commerce-new-product',
+								title: 'New Product',
 								type: 'item',
-								url: '/apps/product-categories/new',
+								url: '/apps/e-commerce/products/new',
 								exact: true
+							},
+							{
+								id: 'e-commerce-product-categories',
+								title: 'Categories',
+								type: 'collapse',
+								url: '/apps/product-categories',
+								children: [
+									{
+										id: 'e-commerce-product-categories-all',
+										title: 'All Categories',
+										type: 'item',
+										url: '/apps/product-categories',
+										exact: true
+									},
+									{
+										id: 'e-commerce-product-categories-new',
+										title: 'New Category',
+										type: 'item',
+										url: '/apps/product-categories/new',
+										exact: true
+									}
+								]
+							},
+							{
+								id: 'e-commerce-product-attributes',
+								title: 'Attributes',
+								type: 'collapse',
+								url: '/apps/product-attributes',
+								children: [
+									{
+										id: 'e-commerce-product-attributes-all',
+										title: 'All Attributes',
+										type: 'item',
+										url: '/apps/product-attributes',
+										exact: true
+									},
+									{
+										id: 'e-commerce-product-attributes-new',
+										title: 'New Attributes',
+										type: 'item',
+										url: '/apps/product-attributes/new',
+										exact: true
+									}
+								]
 							}
 						]
 					}
 				]
-			}
+			},
+			
 		]
 	},
 	{
@@ -188,30 +190,6 @@ const navigationConfig = [
 		type: 'group',
 		icon: 'Settings',
 		children: [
-			{
-				id: 'categories',
-				title: 'Categories',
-				translate: 'Categories',
-				type: 'collapse',
-				icon: 'pie_chart',
-				url: '/apps/categories',
-				children: [
-					{
-						id: 'cmp-categories',
-						title: 'All Categories',
-						type: 'item',
-						url: '/apps/categories',
-						exact: true
-					},
-					{
-						id: 'cmp-new-category',
-						title: 'New Catecory',
-						type: 'item',
-						url: '/apps/categories/new',
-						exact: true
-					}
-				]
-			},
 			{
 				id: 'sectors',
 				title: 'Sectors',
@@ -236,6 +214,56 @@ const navigationConfig = [
 					}
 				]
 			},
+			{
+				id: 'categories',
+				title: 'Categories',
+				translate: 'Categories',
+				type: 'collapse',
+				icon: 'pie_chart',
+				url: '/apps/categories',
+				children: [
+					{
+						id: 'cmp-categories',
+						title: 'All Categories',
+						type: 'item',
+						url: '/apps/categories',
+						exact: true
+					},
+					{
+						id: 'cmp-new-category',
+						title: 'New Catecory',
+						type: 'item',
+						url: '/apps/categories/new',
+						exact: true
+					}
+				]
+			},
+			
+			{
+				id: 'business',
+				title: 'Business Types',
+				translate: 'Business Types',
+				type: 'collapse',
+				icon: 'pie_chart',
+				url: '/apps/business-types',
+				children: [
+					{
+						id: 'cmp-business',
+						title: 'All Business Types',
+						type: 'item',
+						url: '/apps/business-types',
+						exact: true
+					},
+					{
+						id: 'cmp-new-business-type',
+						title: 'New Business Type',
+						type: 'item',
+						url: '/apps/business-types/new',
+						exact: true
+					}
+				]
+			},
+			
 			{
 				id: 'cities',
 				title: 'Cities',
