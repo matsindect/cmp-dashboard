@@ -3,14 +3,14 @@ import axios from 'axios';
 import domainConfig from '../../../../fuse-configs/domainConfig';
 import FuseUtils from '@fuse/utils';
 
-export const getCategory = createAsyncThunk('cmp/category/getCategory', async params => {
+export const getCategory = createAsyncThunk('cmpCategories/category/getCategory', async params => {
 	const response = await axios.get(`${domainConfig.api_url}api/v1/categories/${params.categoryId}`);
 	const data = await response.data;
 
 	return data.data;
 });
 
-export const saveCategory = createAsyncThunk('cmp/category/saveCategory', async category => {
+export const saveCategory = createAsyncThunk('cmpCategories/category/saveCategory', async category => {
 	const response = await axios.post(`${domainConfig.api_url}api/v1/categories`, category);
 	const data = await response.data;
 
@@ -18,7 +18,7 @@ export const saveCategory = createAsyncThunk('cmp/category/saveCategory', async 
 });
 
 const categorySlice = createSlice({
-	name: 'cmp/category',
+	name: 'cmpCategories/category',
 	initialState: null,
 	reducers: {
 		newCategory: {

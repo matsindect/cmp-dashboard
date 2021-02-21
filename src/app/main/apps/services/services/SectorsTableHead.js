@@ -34,14 +34,14 @@ const rows = [
 		id: 'categories',
 		align: 'left',
 		disablePadding: false,
-		label: 'Category',
+		label: 'Sectors',
 		sort: true
 	},
 	{
 		id: 'description',
 		align: 'left',
 		disablePadding: false,
-		label: 'Description',
+		label: 'Business Type',
 		sort: true
 	},
 	{

@@ -2,8 +2,8 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 import axios from 'axios';
 import domainConfig from '../../../../fuse-configs/domainConfig';
 
-export const getProductCategoriess = createAsyncThunk('cmpProductCategogies/sectors/getProductCategoriess', async () => {
-	const response = await axios.get(`${domainConfig.api_url}api/v1/product-categories/`);
+export const getSectors = createAsyncThunk('cmpProductCategogies/sectors/getSectors', async () => {
+	const response = await axios.get(`${domainConfig.api_url}api/v1/sectors/`);
 
 	const data = await response.data;
 
@@ -12,7 +12,7 @@ export const getProductCategoriess = createAsyncThunk('cmpProductCategogies/sect
 
 const sectorsAdapter = createEntityAdapter({});
 
-export const { selectAll: selectProductCategoriess, selectById: selectSectorById } = sectorsAdapter.getSelectors(
+export const { selectAll: selectSectors, selectById: selectSectorById } = sectorsAdapter.getSelectors(
 	state => state.cmpProductCategogies.sectors
 );
 
@@ -30,7 +30,7 @@ const sectorsSlice = createSlice({
 		}
 	},
 	extraReducers: {
-		[getProductCategoriess.fulfilled]: sectorsAdapter.setAll
+		[getSectors.fulfilled]: sectorsAdapter.setAll
 	}
 });
 

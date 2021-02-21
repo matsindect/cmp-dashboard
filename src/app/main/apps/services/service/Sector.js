@@ -19,8 +19,10 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { saveServices, newService, getServices } from '../store/serviceSlice';
+import { saveServices, newService, getService } from '../store/serviceSlice';
 import {getSectors, selectSectors} from "../store/sectorsSlice"
+import {getBusinessTypes, selectBusinessTypes} from '../store/businessTypesSlice';
+import {getServices, selectServices} from '../store/servicesSlice'
 import reducer from '../store';
 
 const useStyles = makeStyles(theme => ({
@@ -62,6 +64,8 @@ function Sector(props) {
 	const dispatch = useDispatch();
 	const sector = useSelector(({ cmpServices }) => cmpServices.service);
 	const sector_arr = useSelector(selectSectors);
+	const business_types = useSelector(selectBusinessTypes);
+	const services= useSelector(selectServices)
 
 	const theme = useTheme();
 
@@ -77,8 +81,10 @@ function Sector(props) {
 			if (sectorId === 'new') {
 				dispatch(newService());
 				dispatch(getSectors())
+				dispatch(getBusinessTypes())
+				dispatch(getServices())
 			} else {
-				dispatch(getServices(routeParams));
+				dispatch(getService(routeParams));
 			}
 		}
 
@@ -269,6 +275,31 @@ function Sector(props) {
 										},
 										variant: 'outlined'
 									}}
+									options={services.map(item => ({
+										value: item._id,
+										label: item.name
+									}))}
+									isMulti
+								/>
+								<FuseChipSelect
+									className="mt-8 mb-24"
+									value={form.business_types.map(item => ({
+										value: item,
+										label: item
+									}))}
+									onChange={value => handleChipChange(value, 'business-types')}
+									placeholder="Select multiple business types"
+									textFieldProps={{
+										label: 'Business types',
+										InputLabelProps: {
+											shrink: true
+										},
+										variant: 'outlined'
+									}}
+									options={business_types.map(item => ({
+										value: item._id,
+										label: item.name
+									}))}
 									isMulti
 								/>
 								<FuseChipSelect

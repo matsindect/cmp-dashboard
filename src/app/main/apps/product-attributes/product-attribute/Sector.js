@@ -81,7 +81,7 @@ const useStyles = makeStyles(theme => ({
 
 function Sector(props) {
 	const dispatch = useDispatch();
-	const sector = useSelector(({ cmpProductAttributes }) => cmpProductAttributes.productAttributes);
+	const sector = useSelector(({ cmpProductAttributes }) => cmpProductAttributes.productAttribute);
 	const theme = useTheme();
 
 	const classes = useStyles(props);
@@ -285,7 +285,7 @@ console.log(form)
 	
 								{inputList.map((x, i) => {
 									return (
-										<div className="box">
+										<div className="box" key={i}>
 											<FormControl variant="filled" className={classes.formControl}>
 												<TextField
 													className="mt-8 mb-16"

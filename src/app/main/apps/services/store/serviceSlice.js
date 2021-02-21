@@ -3,7 +3,7 @@ import axios from 'axios';
 import domainConfig from '../../../../fuse-configs/domainConfig';
 import FuseUtils from '@fuse/utils';
 
-export const getServices = createAsyncThunk('cmpServices/service/getServices', async params => {
+export const getService= createAsyncThunk('cmpServices/service/getService', async params => {
 	const response = await axios.get(`${domainConfig.api_url}api/v1/services/${params.sectorId}`);
 	const data = await response.data;
 	console.log(data);
@@ -31,13 +31,14 @@ const serviceSlice = createSlice({
 					sectors:[],
 					parent:[],
 					images: [],
-					active: true,
+					business_types:[],
+					is_active: true,
 				}
 			})
 		}
 	},
 	extraReducers: {
-		[getServices.fulfilled]: (state, action) => action.payload,
+		[getService.fulfilled]: (state, action) => action.payload,
 		[saveServices.fulfilled]: (state, action) => action.payload
 	}
 });

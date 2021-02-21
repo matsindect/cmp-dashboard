@@ -13,7 +13,7 @@ import { setSectorsSearchText } from '../store/productCategoriesSlice';
 
 function SectorsHeader(props) {
 	const dispatch = useDispatch();
-	const searchText = useSelector(({ cmp }) => cmp.sectors.searchText);
+	const searchText = useSelector(({ cmpProductCategogies }) => cmpProductCategogies.sectors.searchText);
 	const mainTheme = useSelector(selectMainTheme);
 
 	return (

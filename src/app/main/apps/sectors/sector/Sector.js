@@ -20,6 +20,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { saveSector, newSector, getSector } from '../store/sectorSlice';
+import {getSectors, selectSectors} from '../store/sectorsSlice'
+import {getCategories, selectCategories} from '../store/categoriesSlice'
 import reducer from '../store';
 
 const useStyles = makeStyles(theme => ({
@@ -60,6 +62,8 @@ const useStyles = makeStyles(theme => ({
 function Sector(props) {
 	const dispatch = useDispatch();
 	const sector = useSelector(({ cmp }) => cmp.sector);
+	const sector_parent =useSelector(selectSectors)
+	const categories = useSelector(selectCategories)
 	const theme = useTheme();
 
 	const classes = useStyles(props);
@@ -73,6 +77,8 @@ function Sector(props) {
 
 			if (sectorId === 'new') {
 				dispatch(newSector());
+				dispatch(getSectors());
+				dispatch(getCategories())
 			} else {
 				dispatch(getSector(routeParams));
 			}
@@ -266,9 +272,33 @@ function Sector(props) {
 										},
 										variant: 'outlined'
 									}}
+									options={categories.map(item => ({
+										value: item._id,
+										label: item.name
+									}))}
 									isMulti
 								/>
-
+								<FuseChipSelect
+									className="mt-8 mb-24"
+									value={form.parent.map(item => ({
+										value: item,
+										label: item
+									}))}
+									onChange={value => handleChipChange(value, 'parent')}
+									placeholder="Select multiple parent"
+									textFieldProps={{
+										label: 'Parent',
+										InputLabelProps: {
+											shrink: true
+										},
+										variant: 'outlined'
+									}}
+									options={sector_parent.map(item => ({
+										value: item._id,
+										label: item.name
+									}))}
+									isMulti
+								/>
 								<div>
 									<div className="flex justify-center sm:justify-start flex-wrap -mx-8">
 										<label

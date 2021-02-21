@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 
 function Category(props) {
 	const dispatch = useDispatch();
-	const category = useSelector(({ cmp }) => cmp.category);
+	const category = useSelector(({ cmpCategories }) => cmpCategories.category);
 	const theme = useTheme();
 
 	const classes = useStyles(props);

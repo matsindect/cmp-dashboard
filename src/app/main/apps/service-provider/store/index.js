@@ -7,6 +7,7 @@ import suppliers from './suppliersSlice';
 import cities from './citiesSlice';
 import countries from './countriesSlice';
 import businessTypes from './businessTypesSlice'
+import services from './servicesSlice'
 
 const reducer = combineReducers({
 	suppliers,
@@ -16,7 +17,8 @@ const reducer = combineReducers({
 	cities,
 	countries,
 	order,
-	businessTypes
+	businessTypes,
+	services
 });
 
 export default reducer;

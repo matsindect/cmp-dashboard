@@ -3,22 +3,22 @@ import axios from 'axios';
 import domainConfig from '../../../../fuse-configs/domainConfig';
 import FuseUtils from '@fuse/utils';
 
-export const getSector = createAsyncThunk('cmp/sector/getSector', async params => {
-	const response = await axios.get(`${domainConfig.api_url}api/v1/sectors/${params.sectorId}`);
+export const getSector = createAsyncThunk('cmpProductCategogies/sector/getSector', async params => {
+	const response = await axios.get(`${domainConfig.api_url}api/v1/product-categories/${params.sectorId}`);
 	const data = await response.data;
 	console.log(data);
 	return data.data;
 });
 
-export const saveSector = createAsyncThunk('cmp/sector/saveSector', async sector => {
-	const response = await axios.post(`${domainConfig.api_url}api/v1/sectors`, sector);
+export const saveSector = createAsyncThunk('cmpProductCategogies/sector/saveSector', async sector => {
+	const response = await axios.post(`${domainConfig.api_url}api/v1/product-categories`, sector);
 	const data = await response.data;
 	console.log(data);
 	return data.data;
 });
 
 const sectorSlice = createSlice({
-	name: 'cmp/sector',
+	name: 'cmpProductCategogies/sector',
 	initialState: null,
 	reducers: {
 		newSector: {

@@ -45,6 +45,7 @@ import { Link, useParams } from 'react-router-dom';
 import { saveSupplier, newSupplier, getSupplier } from '../store/supplierSlice';
 import { getOrders, selectOrders } from '../store/ordersSlice';
 import { getSectors, selectSectors } from '../store/sectorsSlice';
+import {getServices,selectServices } from '../store/servicesSlice'
 import { getBusinessTypes, selectBusinessTypes } from '../store/businessTypesSlice';
 import reducer from '../store';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -93,6 +94,7 @@ function Product(props) {
 	const prodcategories = useSelector(selectOrders);
 	const sectors = useSelector(selectSectors);
 	const businessTypes = useSelector(selectBusinessTypes);
+	const services = useSelector(selectServices)
 	const theme = useTheme();
 
 	const classes = useStyles(props);
@@ -154,6 +156,7 @@ function Product(props) {
 				dispatch(getOrders());
 				dispatch(getSectors());
 				dispatch(getBusinessTypes())
+				dispatch(getServices())
 			} else {
 				dispatch(getSupplier(routeParams));
 			}
@@ -724,7 +727,7 @@ function Product(props) {
 										},
 										variant: 'outlined'
 									}}
-									options={sectors.map(item => ({
+									options={services.map(item => ({
 										value: item._id,
 										label: item.name
 									}))}
@@ -745,7 +748,7 @@ function Product(props) {
 										},
 										variant: 'outlined'
 									}}
-									options={sectors.map(item => ({
+									options={services.map(item => ({
 										value: item._id,
 										label: item.name
 									}))}

@@ -11,13 +11,13 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getSectors, selectSectors } from '../store/productCategoriesSlice';
+import { getProductCategoriess, selectProductCategoriess } from '../store/productCategoriesSlice';
 import SectorsTableHead from './SectorsTableHead';
 
 function SectorsTable(props) {
 	const dispatch = useDispatch();
-	const setors = useSelector(selectSectors);
-	const searchText = useSelector(({ cmp }) => cmp.sectors.searchText);
+	const setors = useSelector(selectProductCategoriess);
+	const searchText = useSelector(({ cmpProductCategogies }) => cmpProductCategogies.sectors.searchText);
 
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(setors);
@@ -29,7 +29,7 @@ function SectorsTable(props) {
 	});
 
 	useEffect(() => {
-		dispatch(getSectors());
+		dispatch(getProductCategoriess());
 	}, [dispatch]);
 
 	useEffect(() => {

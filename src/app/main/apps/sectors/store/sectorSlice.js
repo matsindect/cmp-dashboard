@@ -30,6 +30,7 @@ const sectorSlice = createSlice({
 					categories: [],
 					order: 0,
 					images: [],
+					parent:[],
 					active: true
 				}
 			})

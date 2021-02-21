@@ -8,7 +8,7 @@ const CategoriesConfig = {
 	routes: [
 		{
 			path: '/apps/categories/:categoryId/:categorieslug?',
-			component: React.lazy(() => import('./category/Categories'))
+			component: React.lazy(() => import('./category/Category'))
 		},
 		{
 			path: '/apps/categories',

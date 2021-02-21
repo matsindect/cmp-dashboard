@@ -20,4 +20,4 @@ function Sectors() {
 	);
 }
 
-export default withReducer('cmp', reducer)(Sectors);
+export default withReducer('cmpProductCategogies', reducer)(Sectors);
