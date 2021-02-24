@@ -64,7 +64,7 @@ function ProductsTable(props) {
 	}
 
 	function handleClick(item) {
-		props.history.push(`/apps/suppliers/${item.id}/${item.slug}`);
+		props.history.push(`/apps/service-provider/${item.id}/${item.slug}`);
 	}
 
 	function handleCheck(event, id) {
@@ -124,6 +124,10 @@ function ProductsTable(props) {
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map(n => {
 								const isSelected = selected.indexOf(n.id) !== -1;
+								const sectors =[]
+								n.sectors.map(item=>{
+									sectors.push(item.label)
+								})
 								return (
 									<TableRow
 										className="h-64 cursor-pointer"
@@ -169,7 +173,7 @@ function ProductsTable(props) {
 										</TableCell>
 
 										<TableCell className="p-4 md:p-16 truncate" component="th" scope="row">
-											{n.sectors.join(', ')}
+											{sectors.join(', ')}
 										</TableCell>
 
 										<TableCell className="p-4 md:p-16" component="th" scope="row" align="right">

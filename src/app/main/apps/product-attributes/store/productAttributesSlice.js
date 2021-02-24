@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 import axios from 'axios';
 import domainConfig from '../../../../fuse-configs/domainConfig';
 
-export const getProductAttributes = createAsyncThunk('cmpProductAttributes/productAttributes/getProductAttributes', async () => {
+export const getProductAttributes = createAsyncThunk('cmpProductAttributes/productAttributes/getProductAttribute', async () => {
 	const response = await axios.get(`${domainConfig.api_url}api/v1/product-attributes/`);
 	const data = await response.data.data;
 

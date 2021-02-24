@@ -9,11 +9,11 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectMainTheme } from 'app/store/fuse/settingsSlice';
-import { setSectorsSearchText } from '../store/productCategoriesSlice';
+import { setProductCategoriesSearchText } from '../store/productCategoriesSlice';
 
 function SectorsHeader(props) {
 	const dispatch = useDispatch();
-	const searchText = useSelector(({ cmpProductCategogies }) => cmpProductCategogies.sectors.searchText);
+	const searchText = useSelector(({ cmpProductCategogies }) => cmpProductCategogies.productCategories.searchText);
 	const mainTheme = useSelector(selectMainTheme);
 
 	return (
@@ -44,7 +44,7 @@ function SectorsHeader(props) {
 								inputProps={{
 									'aria-label': 'Search'
 								}}
-								onChange={ev => dispatch(setSectorsSearchText(ev))}
+								onChange={ev => dispatch(setProductCategoriesSearchText(ev))}
 							/>
 						</Paper>
 					</FuseAnimate>

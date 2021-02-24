@@ -20,6 +20,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { saveProductAttributes, newProductAttributes, getProductAttributes } from '../store/productAttributeSlice';
+import {getSectors, selectSectors} from '../store/sectorsSlice';
+import {getCategories,selectCategories } from '../store/categoriesSlice'
 import FormControl from '@material-ui/core/FormControl';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -83,6 +85,8 @@ function Sector(props) {
 	const dispatch = useDispatch();
 	const sector = useSelector(({ cmpProductAttributes }) => cmpProductAttributes.productAttribute);
 	const theme = useTheme();
+	const sectors = useSelector(selectSectors)
+	const categories = useSelector(selectCategories)
 
 	const classes = useStyles(props);
 	const [tabValue, setTabValue] = useState(0);
@@ -97,6 +101,8 @@ function Sector(props) {
 
 			if (sectorId === 'new') {
 				dispatch(newProductAttributes());
+				dispatch(getSectors());
+				dispatch(getCategories());
 			} else {
 				dispatch(getProductAttributes(routeParams));
 			}
@@ -121,7 +127,7 @@ function Sector(props) {
 			_.set(
 				{ ...form },
 				name,
-				value.map(item => item.label)
+				value.map(item => item)
 			)
 		);
 	}
@@ -336,11 +342,11 @@ console.log(form)
 								/>
 								<FuseChipSelect
 									className="mt-8 mb-24"
-									value={form.categories.map(item => ({
+									value={form.sectors.map(item => ({
 										value: item,
 										label: item
 									}))}
-									onChange={value => handleChipChange(value, 'categories')}
+									onChange={value => handleChipChange(value, 'sectors')}
 									placeholder="Select multiple setors"
 									textFieldProps={{
 										label: 'Sectors',
@@ -349,6 +355,10 @@ console.log(form)
 										},
 										variant: 'outlined'
 									}}
+									options={sectors.map(item => ({
+										value: item._id,
+										label: item.name
+									}))}
 									isMulti
 								/>
 								<FuseChipSelect
@@ -366,6 +376,10 @@ console.log(form)
 										},
 										variant: 'outlined'
 									}}
+									options={categories.map(item => ({
+										value: item._id,
+										label: item.name
+									}))}
 									isMulti
 								/>
 								

@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
 
 function Sector(props) {
 	const dispatch = useDispatch();
-	const sector = useSelector(({ cmpProductCategogies }) => cmpProductCategogies.sector);
+	const sector = useSelector(({ cmpProductCategogies }) => cmpProductCategogies.productCategory);
 	const parent = useSelector(selectProductCategoriess)
 	const sectors = useSelector(selectSectors)
 	const theme = useTheme();
@@ -98,11 +98,12 @@ function Sector(props) {
 	}
 
 	function handleChipChange(value, name) {
+		console.log(value)
 		setForm(
 			_.set(
 				{ ...form },
 				name,
-				value.map(item => item.label)
+				value.map(item => item)
 			)
 		);
 	}
@@ -281,8 +282,8 @@ function Sector(props) {
 								<FuseChipSelect
 									className="mt-8 mb-24"
 									value={form.sectors.map(item => ({
-										value: item,
-										label: item
+										value: item._id,
+										label: item.label
 									}))}
 									onChange={value => handleChipChange(value, 'sectors')}
 									placeholder="Select multiple setors"

@@ -17,7 +17,7 @@ export const saveProductAttributes = createAsyncThunk('cmpProductAttributes/prod
 	return data.data;
 });
 
-const productAttributeSlice = createSlice({
+const productAttributesSlice = createSlice({
 	name: 'cmpProductAttributes/productAttribute',
 	initialState: null,
 	reducers: {
@@ -43,6 +43,6 @@ const productAttributeSlice = createSlice({
 	}
 });
 
-export const { newProductAttributes } = productAttributeSlice.actions;
+export const { newProductAttributes } = productAttributesSlice.actions;
 
-export default productAttributeSlice.reducer;
+export default productAttributesSlice.reducer;

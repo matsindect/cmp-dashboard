@@ -106,7 +106,7 @@ function Sector(props) {
 			_.set(
 				{ ...form },
 				name,
-				value.map(item => item.label)
+				value.map(item => item)
 			)
 		);
 	}
@@ -287,7 +287,7 @@ function Sector(props) {
 										value: item,
 										label: item
 									}))}
-									onChange={value => handleChipChange(value, 'business-types')}
+									onChange={value => handleChipChange(value, 'business_types')}
 									placeholder="Select multiple business types"
 									textFieldProps={{
 										label: 'Business types',

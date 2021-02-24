@@ -147,7 +147,7 @@ function Product(props) {
 			_.set(
 				{ ...form },
 				name,
-				value.map(item => item.label)
+				value.map(item => item)
 			)
 		);
 	}

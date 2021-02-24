@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 import axios from 'axios';
 import domainConfig from '../../../../fuse-configs/domainConfig';
 
-export const getProductCategoriess = createAsyncThunk('cmpProductCategogies/sectors/getProductCategoriess', async () => {
+export const getProductCategoriess = createAsyncThunk('cmpProductCategogies/productCategories/getProductCategories', async () => {
 	const response = await axios.get(`${domainConfig.api_url}api/v1/product-categories/`);
 
 	const data = await response.data;
@@ -10,19 +10,19 @@ export const getProductCategoriess = createAsyncThunk('cmpProductCategogies/sect
 	return data.data;
 });
 
-const sectorsAdapter = createEntityAdapter({});
+const productCategoriesAdapter = createEntityAdapter({});
 
-export const { selectAll: selectProductCategoriess, selectById: selectSectorById } = sectorsAdapter.getSelectors(
-	state => state.cmpProductCategogies.sectors
+export const { selectAll: selectProductCategoriess, selectById: selectproductCategoriesById } = productCategoriesAdapter.getSelectors(
+	state => state.cmpProductCategogies.productCategories
 );
 
-const sectorsSlice = createSlice({
-	name: 'cmpProductCategogies/sectors',
-	initialState: sectorsAdapter.getInitialState({
+const productCategoriesSlice = createSlice({
+	name: 'cmpProductCategogies/productCategories',
+	initialState: productCategoriesAdapter.getInitialState({
 		searchText: ''
 	}),
 	reducers: {
-		setSectorsSearchText: {
+		setProductCategoriesSearchText: {
 			reducer: (state, action) => {
 				state.searchText = action.payload;
 			},
@@ -30,10 +30,10 @@ const sectorsSlice = createSlice({
 		}
 	},
 	extraReducers: {
-		[getProductCategoriess.fulfilled]: sectorsAdapter.setAll
+		[getProductCategoriess.fulfilled]: productCategoriesAdapter.setAll
 	}
 });
 
-export const { setSectorsSearchText } = sectorsSlice.actions;
+export const { setProductCategoriesSearchText } = productCategoriesSlice.actions;
 
-export default sectorsSlice.reducer;
+export default productCategoriesSlice.reducer;

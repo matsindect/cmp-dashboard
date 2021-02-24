@@ -124,6 +124,10 @@ function ProductsTable(props) {
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map(n => {
 								const isSelected = selected.indexOf(n.id) !== -1;
+								const product_categories =[]
+								n.product_categories.map(item=>{
+									product_categories.push(item.label)
+								})
 								return (
 									<TableRow
 										className="h-64 cursor-pointer"
@@ -169,7 +173,7 @@ function ProductsTable(props) {
 										</TableCell>
 
 										<TableCell className="p-4 md:p-16 truncate" component="th" scope="row">
-											{n.product_categories.join(', ')}
+											{product_categories.join(', ')}
 										</TableCell>
 
 										<TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
