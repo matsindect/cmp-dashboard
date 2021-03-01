@@ -260,8 +260,8 @@ function Sector(props) {
 								<FuseChipSelect
 									className="mt-8 mb-24"
 									value={form.categories.map(item => ({
-										value: item,
-										label: item
+										value: item.value,
+										label: item.label
 									}))}
 									onChange={value => handleChipChange(value, 'categories')}
 									placeholder="Select multiple categories"
@@ -281,8 +281,8 @@ function Sector(props) {
 								<FuseChipSelect
 									className="mt-8 mb-24"
 									value={form.parent.map(item => ({
-										value: item,
-										label: item
+										value: item.value,
+										label: item.label
 									}))}
 									onChange={value => handleChipChange(value, 'parent')}
 									placeholder="Select multiple parent"

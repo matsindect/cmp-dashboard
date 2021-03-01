@@ -343,8 +343,8 @@ console.log(form)
 								<FuseChipSelect
 									className="mt-8 mb-24"
 									value={form.sectors.map(item => ({
-										value: item,
-										label: item
+										value: item.value,
+										label: item.label
 									}))}
 									onChange={value => handleChipChange(value, 'sectors')}
 									placeholder="Select multiple setors"
@@ -364,8 +364,8 @@ console.log(form)
 								<FuseChipSelect
 									className="mt-8 mb-24"
 									value={form.categories.map(item => ({
-										value: item,
-										label: item
+										value: item.value,
+										label: item.label
 									}))}
 									onChange={value => handleChipChange(value, 'categories')}
 									placeholder="Select multiple categories"

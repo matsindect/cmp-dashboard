@@ -41,7 +41,7 @@ const productSlice = createSlice({
 					product_categories: [],
 					products_catalogue: [],
 					sectors: [],
-					origin: { city: '', country: '' },
+					origin: { city: [], country: [] },
 					product_pricing: {
 						currency: '',
 						price: ''

@@ -20,6 +20,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { getSectors, selectSectors } from '../store/sectorsSlice';
+import {getBusinessTypes, selectBusinessTypes} from "../store/businessTypesSlice"
 import { saveBusinessType, newBusinessType, getBusinessType } from '../store/businessTypeSlice';
 import reducer from '../store';
 
@@ -62,6 +63,7 @@ function Sector(props) {
 	const dispatch = useDispatch();
 	const sector = useSelector(({ cmpBusinessType }) => cmpBusinessType.businessType);
 	const sectors = useSelector(selectSectors);
+	const businesstypes = useSelector(selectBusinessTypes);
 	
 	const theme = useTheme();
 
@@ -77,6 +79,7 @@ function Sector(props) {
 			if (businesstypeId === 'new') {
 				dispatch(newBusinessType());
 				dispatch(getSectors())
+				dispatch(getBusinessTypes())
 			} else {
 				dispatch(getBusinessType(routeParams));
 			}
@@ -257,8 +260,8 @@ function Sector(props) {
 								<FuseChipSelect
 									className="mt-8 mb-24"
 									value={form.parent.map(item => ({
-										value: item,
-										label: item
+										value: item.value,
+										label: item.label
 									}))}
 									onChange={value => handleChipChange(value, 'parent')}
 									placeholder="Select multiple parents"
@@ -269,13 +272,17 @@ function Sector(props) {
 										},
 										variant: 'outlined'
 									}}
+									options={businesstypes.map(item => ({
+										value: item._id,
+										label: item.name
+									}))}
 									isMulti
 								/>
 								<FuseChipSelect
 									className="mt-8 mb-24"
 									value={form.sectors.map(item => ({
-										value: item,
-										label: item
+										value: item.value,
+										label: item.label
 									}))}
 									onChange={value => handleChipChange(value, 'sectors')}
 									placeholder="Select multiple sectors"

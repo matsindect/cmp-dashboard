@@ -4,7 +4,7 @@ import Autocomplete from 'react-google-autocomplete';
 import Geocode from 'react-geocode';
 import TextField from '@material-ui/core/TextField';
 
-Geocode.setApiKey('AIzaSyDBMARSuk2l-TxaUBlHY3m5RVb7bN2C08c');
+Geocode.setApiKey('AIzaSyBRs2fqntuOQQHdTOKzb9omjtvNKqTiFzM');
 Geocode.enableDebug();
 class Map extends React.Component {
 	constructor(props) {

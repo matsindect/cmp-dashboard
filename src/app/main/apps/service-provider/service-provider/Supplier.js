@@ -651,8 +651,8 @@ function Product(props) {
 								<FuseChipSelect
 									className="mt-8 mb-24"
 									value={form.categories.map(item => ({
-										value: item,
-										label: item
+										value: item.value,
+										label: item.label
 									}))}
 									onChange={value => handleChipChange(value, 'categories')}
 									placeholder="Select multiple categories"
@@ -672,8 +672,8 @@ function Product(props) {
 								<FuseChipSelect
 									className="mt-8 mb-24"
 									value={form.company.businesstype.map(item => ({
-										value: item,
-										label: item
+										value: item.value,
+										label: item.label
 									}))}
 									onChange={value => handleChipChange(value, 'company.businesstype')}
 									placeholder="Select business type"
@@ -693,8 +693,8 @@ function Product(props) {
 								<FuseChipSelect
 									className="mt-8 mb-16"
 									value={form.sectors.map(item => ({
-										value: item,
-										label: item
+										value: item.value,
+										label: item.label
 									}))}
 									onChange={value => handleChipChange(value, 'sectors')}
 									placeholder="Select multiple sectors"
@@ -715,8 +715,8 @@ function Product(props) {
 								<FuseChipSelect
 									className="mt-8 mb-16"
 									value={form.services.map(item => ({
-										value: item,
-										label: item
+										value: item.value,
+										label: item.label
 									}))}
 									onChange={value => handleChipChange(value, 'services')}
 									placeholder="Select services"
@@ -736,8 +736,8 @@ function Product(props) {
 								<FuseChipSelect
 									className="mt-8 mb-16"
 									value={form.sub_services.map(item => ({
-										value: item,
-										label: item
+										value: item.value,
+										label: item.label
 									}))}
 									onChange={value => handleChipChange(value, 'sub_services')}
 									placeholder="Select sub services"

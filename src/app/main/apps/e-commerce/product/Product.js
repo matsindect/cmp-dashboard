@@ -33,6 +33,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { saveProduct, newProduct, getProduct } from '../store/productSlice';
 import { getOrders, selectOrders } from './../store/ordersSlice';
+import {getCities, selectCities} from '../store/citiesSlice'
+import {getCountries, selectCountries} from '../store/countriesSlice'
 import { getSectors, selectSectors } from './../store/sectorsSlice';
 import { getProductAttributes, selectProductAttributes} from './../store/productAttributesSlice'
 import reducer from '../store';
@@ -82,6 +84,8 @@ function Product(props) {
 	const prodcategories = useSelector(selectOrders);
 	const sectors = useSelector(selectSectors);
 	const product_attributes = useSelector(selectProductAttributes)
+	const cities = useSelector(selectCities)
+	const countries = useSelector(selectCountries)
 	const theme = useTheme();
 
 	const classes = useStyles(props);
@@ -124,6 +128,8 @@ function Product(props) {
 				dispatch(getOrders());
 				dispatch(getSectors());
 				dispatch(getProductAttributes())
+				dispatch(getCities())
+				dispatch(getCountries())
 			} else {
 				dispatch(getProduct(routeParams));
 			}
@@ -341,8 +347,8 @@ function Product(props) {
 								<FuseChipSelect
 									className="mt-8 mb-24"
 									value={form.product_categories.map(item => ({
-										value: item,
-										label: item
+										value: item.value,
+										label: item.label
 									}))}
 									onChange={value => handleChipChange(value, 'product_categories')}
 									placeholder="Select multiple categories"
@@ -363,8 +369,8 @@ function Product(props) {
 								<FuseChipSelect
 									className="mt-8 mb-16"
 									value={form.sectors.map(item => ({
-										value: item,
-										label: item
+										value: item.value,
+										label: item.label
 									}))}
 									onChange={value => handleChipChange(value, 'sectors')}
 									placeholder="Select multiple sectors"
@@ -485,7 +491,7 @@ function Product(props) {
 											},
 											variant: 'outlined'
 										}}
-										options={sectors.map(item => ({
+										options={cities.map(item => ({
 											value: item._id,
 											label: item.name
 										}))}
@@ -508,13 +514,13 @@ function Product(props) {
 										fullWidth
 									/>
 								</FormControl>
-								<FuseChipSelect
+								{/* <FuseChipSelect
 									className="mt-8 mb-16"
-									value={form.sectors.map(item => ({
-										value: item,
-										label: item
+									value={form.origin.country.map(item => ({
+										value: item.value,
+										label: item.label
 									}))}
-									onChange={value => handleChipChange(value, 'sectors')}
+									onChange={value => handleChipChange(value, 'country')}
 									placeholder="Select country of origin"
 									textFieldProps={{
 										label: 'Country origin',
@@ -523,7 +529,7 @@ function Product(props) {
 										},
 										variant: 'outlined'
 									}}
-									options={sectors.map(item => ({
+									options={countries.map(item => ({
 										value: item._id,
 										label: item.name
 									}))}
@@ -531,11 +537,11 @@ function Product(props) {
 								/>
 								<FuseChipSelect
 									className="mt-8 mb-16"
-									value={form.sectors.map(item => ({
+									value={form.origin.city.map(item => ({
 										value: item,
 										label: item
 									}))}
-									onChange={value => handleChipChange(value, 'sectors')}
+									onChange={value => handleChipChange(value, 'city')}
 									placeholder="Select city of origin"
 									textFieldProps={{
 										label: 'City origin',
@@ -544,12 +550,12 @@ function Product(props) {
 										},
 										variant: 'outlined'
 									}}
-									options={sectors.map(item => ({
+									options={cities.map(item => ({
 										value: item._id,
 										label: item.name
 									}))}
 									isMulti
-								/>
+								/> */}
 							</div>
 						)}
 						{tabValue === 3 && (
@@ -560,8 +566,8 @@ function Product(props) {
 											<FuseChipSelect
 												className="mt-8 mb-16"
 												value={form.product_attributes.map(item => ({
-													value: item,
-													label: item
+													value: item.value,
+													label: item.label
 												}))}
 												onChange={value => {handleChipChange(value, 'product_attributes'); getVariant(value)}}
 												placeholder="Select city of product attribute"
