@@ -92,7 +92,7 @@ function Sector(props) {
 	const [tabValue, setTabValue] = useState(0);
 	const { form, handleChange, setForm } = useForm(null);
 	const routeParams = useParams();
-	const [inputList, setInputList] = useState([{ key: '', value: '' }]);
+	const [inputList, setInputList] = useState([{ label:'' }]);
 
 
 	useDeepCompareEffect(() => {
@@ -175,7 +175,7 @@ console.log(form)
 			const list = [...inputList];
 			list[index][name] = value;
 			setInputList(list);
-			form.product_attributes = list;
+			form.variants = list;
 		};
 	
 		// handle click event of the Remove button
@@ -183,12 +183,12 @@ console.log(form)
 			const list = [...inputList];
 			list.splice(index, 1);
 			setInputList(list);
-			form.product_attributes = list;
+			form.variants = list;
 		};
 	
 		// handle click event of the Add button
 		const handleAddClick = () => {
-			setInputList([...inputList, { key: '', value: '' }]);
+			setInputList([...inputList, { label:'' }]);
 		};
 	return (
 		<FusePageCarded
@@ -299,7 +299,7 @@ console.log(form)
 													label="Variants"
 													autoFocus
 													id="variant"
-													name="variant"
+													name="label"
 													onChange={e => handleInputChange(e, i)}
 													variant="outlined"
 													fullWidth

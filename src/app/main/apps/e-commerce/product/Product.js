@@ -90,7 +90,7 @@ function Product(props) {
 
 	const classes = useStyles(props);
 	const [tabValue, setTabValue] = useState(0);
-	const [variant, setVariant] = useState(null);
+	const [variant, setVariant] = useState([]);
 	const [data, setData] = useState(prodcategories);
 
 	const { form, handleChange, setForm } = useForm(null);
@@ -159,11 +159,16 @@ function Product(props) {
 	}
 	function getVariant(value) {
 
-		const vari = product_attributes.varriants.filter(variant =>{
-				return String(variant._id) === String(value)
-		})
-		setVariant(vari);
-	}
+		product_attributes.map((attrib)=>{
+				if(String(attrib._id) === String(value.map(item => {return item.value})[0])){
+					attrib.variants.map(state =>{
+						setVariant([...variant, state]);
+						console.log(state)
+					})
+					
+				}
+		
+	})}
 
 	function setFeaturedImage(id) {
 		setForm(_.set({ ...form }, 'featuredImageId', id));
@@ -584,7 +589,7 @@ function Product(props) {
 												}))}
 												isMulti
 											/>
-											{variant && 
+											{variant > 0 && 
 											
 											<FuseChipSelect
 												className="mt-8 mb-16"
@@ -601,7 +606,7 @@ function Product(props) {
 													},
 													variant: 'outlined'
 												}}
-												options={variant.map(item => ({
+												options={variant[0].map(item => ({
 														value: item._id,
 														label: item.label
 												}))}

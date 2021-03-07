@@ -34,7 +34,7 @@ const rows = [
 		id: 'categories',
 		align: 'left',
 		disablePadding: false,
-		label: 'Category',
+		label: 'Sectors',
 		sort: true
 	},
 	{

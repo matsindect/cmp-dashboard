@@ -32,7 +32,8 @@ const productAttributesSlice = createSlice({
 					parent: [],
 					order: 0,
 					images: [],
-					is_active: true
+					is_active: true,
+					variants:[]
 				}
 			})
 		}
