@@ -171,23 +171,6 @@ function CategoriesTable(props) {
 											{n.description}
 										</TableCell>
 
-										{/* <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
-											<span>$</span>
-											{n.priceTaxIncl}
-										</TableCell> */}
-
-										{/* <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
-											{n.quantity}
-											<i
-												className={clsx(
-													'inline-block w-8 h-8 rounded mx-8',
-													n.quantity <= 5 && 'bg-red',
-													n.quantity > 5 && n.quantity <= 25 && 'bg-orange',
-													n.quantity > 25 && 'bg-green'
-												)}
-											/>
-										</TableCell> */}
-
 										<TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
 											{n.is_active ? (
 												<Icon className="text-green text-20">check_circle</Icon>

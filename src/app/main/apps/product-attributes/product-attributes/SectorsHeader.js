@@ -24,7 +24,7 @@ function SectorsHeader(props) {
 				</FuseAnimate>
 				<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 					<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-						Product Categories
+						Product Attributes
 					</Typography>
 				</FuseAnimate>
 			</div>
@@ -53,12 +53,12 @@ function SectorsHeader(props) {
 			<FuseAnimate animation="transition.slideRightIn" delay={300}>
 				<Button
 					component={Link}
-					to="/apps/product-categories/new"
+					to="/apps/product-attributes/new"
 					className="whitespace-no-wrap normal-case"
 					variant="contained"
 					color="secondary"
 				>
-					<span className="hidden sm:flex">Add New Product Category</span>
+					<span className="hidden sm:flex">Add New Product attribute</span>
 					<span className="flex sm:hidden">New</span>
 				</Button>
 			</FuseAnimate>

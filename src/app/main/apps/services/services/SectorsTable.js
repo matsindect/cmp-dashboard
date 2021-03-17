@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getServices, selectServices } from '../store/servicesSlice';
 import SectorsTableHead from './SectorsTableHead';
+import StarIcon from '@material-ui/icons/Star';
 
 function SectorsTable(props) {
 	const dispatch = useDispatch();
@@ -132,82 +133,84 @@ function SectorsTable(props) {
 								n.business_types.map(item=>{
 									business_types.push(item.label)
 								})
-								return (
-									<TableRow
-										className="h-64 cursor-pointer"
-										hover
-										role="checkbox"
-										aria-checked={isSelected}
-										tabIndex={-1}
-										key={n._id}
-										selected={isSelected}
-										onClick={event => handleClick(n)}
-									>
-										<TableCell className="w-40 md:w-64 text-center" padding="none">
-											<Checkbox
-												checked={isSelected}
-												onClick={event => event.stopPropagation()}
-												onChange={event => handleCheck(event, n._id)}
-											/>
-										</TableCell>
-
-										<TableCell
-											className="w-52 px-4 md:px-0"
-											component="th"
-											scope="row"
-											padding="none"
+								
+									return (
+										<TableRow
+											className="h-64 cursor-pointer"
+											hover
+											role="checkbox"
+											aria-checked={isSelected}
+											tabIndex={-1}
+											key={n._id}
+											selected={isSelected}
+											onClick={event => handleClick(n)}
 										>
-											{n.images.length > 0 && n.featuredImageId ? (
-												<img
-													className="w-full block rounded"
-													src={_.find(n.images, { _id: n.featuredImageId }).url}
-													alt={n.name}
+											<TableCell className="w-40 md:w-64 text-center" padding="none">
+												<Checkbox
+													checked={isSelected}
+													onClick={event => event.stopPropagation()}
+													onChange={event => handleCheck(event, n._id)}
 												/>
-											) : (
-												<img
-													className="w-full block rounded"
-													src="assets/images/ecommerce/product-image-placeholder.png"
-													alt={n.name}
-												/>
-											)}
-										</TableCell>
+												
+											</TableCell>
 
-										<TableCell className="p-4 md:p-16" component="th" scope="row">
-											{n.name}
-										</TableCell>
-										<TableCell className="p-4 md:p-16 truncate" component="th" scope="row">
-											{sectors.join(', ')}
-										</TableCell>
-										<TableCell className="p-4 md:p-16" component="th" scope="row">
-											{business_types.join(', ')}
-										</TableCell>
-
-										{/* <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
-											<span>$</span>
-											{n.priceTaxIncl}
-										</TableCell> */}
-
-										{/* <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
-											{n.quantity}
-											<i
-												className={clsx(
-													'inline-block w-8 h-8 rounded mx-8',
-													n.quantity <= 5 && 'bg-red',
-													n.quantity > 5 && n.quantity <= 25 && 'bg-orange',
-													n.quantity > 25 && 'bg-green'
+											<TableCell
+												className="w-52 px-4 md:px-0"
+												component="th"
+												scope="row"
+												padding="none"
+											>
+												{n.images.length > 0 && n.featuredImageId ? (
+													<img
+														className="w-full block rounded"
+														src={_.find(n.images, { _id: n.featuredImageId }).url}
+														alt={n.name}
+													/>
+												) : (
+													<img
+														className="w-full block rounded"
+														src="assets/images/ecommerce/product-image-placeholder.png"
+														alt={n.name}
+													/>
 												)}
-											/>
-										</TableCell> */}
+											</TableCell>
 
-										<TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
-											{n.is_active ? (
-												<Icon className="text-green text-20">check_circle</Icon>
-											) : (
-												<Icon className="text-red text-20">remove_circle</Icon>
-											)}
-										</TableCell>
-									</TableRow>
-								);
+											<TableCell className="p-4 md:p-16" component="th" scope="row">
+												<span>{n.parent.length === 0 ? <StarIcon/>: null}</span> {n.name} 
+											</TableCell>
+											<TableCell className="p-4 md:p-16 truncate" component="th" scope="row">
+												{sectors.splice(0,5).join(' | ')}
+											</TableCell>
+											<TableCell className="p-4 md:p-16" component="th" scope="row">
+												{business_types.join(' | ')}
+											</TableCell>
+
+											{/* <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
+												<span>$</span>
+												{n.priceTaxIncl}
+											</TableCell> */}
+
+											{/* <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
+												{n.quantity}
+												<i
+													className={clsx(
+														'inline-block w-8 h-8 rounded mx-8',
+														n.quantity <= 5 && 'bg-red',
+														n.quantity > 5 && n.quantity <= 25 && 'bg-orange',
+														n.quantity > 25 && 'bg-green'
+													)}
+												/>
+											</TableCell> */}
+
+											<TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
+												{n.is_active ? (
+													<Icon className="text-green text-20">check_circle</Icon>
+												) : (
+													<Icon className="text-red text-20">remove_circle</Icon>
+												)}
+											</TableCell>
+										</TableRow>
+									);
 							})}
 					</TableBody>
 				</Table>
