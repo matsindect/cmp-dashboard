@@ -26,7 +26,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,6 +37,12 @@ import {getCountries, selectCountries} from '../store/countriesSlice'
 import { getSectors, selectSectors } from './../store/sectorsSlice';
 import { getProductAttributes, selectProductAttributes} from './../store/productAttributesSlice'
 import reducer from '../store';
+
+import FormHeader from './formHeader';
+import ProductInfoForm from './productInfoForm';
+import MediaForm from './mediaForm';
+import PricingForm from './pricingForm';
+
 
 const useStyles = makeStyles(theme => ({
 	formControl: {
@@ -157,6 +162,7 @@ function Product(props) {
 			)
 		);
 	}
+
 	function getVariant(value) {
 
 		product_attributes.map((attrib)=>{
@@ -239,65 +245,7 @@ function Product(props) {
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
 			header={
-				form && (
-					<div className="flex flex-1 w-full items-center justify-between">
-						<div className="flex flex-col items-start max-w-full">
-							<FuseAnimate animation="transition.slideRightIn" delay={300}>
-								<Typography
-									className="normal-case flex items-center sm:mb-12"
-									component={Link}
-									role="button"
-									to="/apps/e-commerce/products"
-									color="inherit"
-								>
-									<Icon className="text-20">
-										{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}
-									</Icon>
-									<span className="mx-4">Products</span>
-								</Typography>
-							</FuseAnimate>
-
-							<div className="flex items-center max-w-full">
-								<FuseAnimate animation="transition.expandIn" delay={300}>
-									{form.images.length > 0 && form.featuredImageId ? (
-										<img
-											className="w-32 sm:w-48 rounded"
-											src={_.find(form.images, { id: form.featuredImageId }).url}
-											alt={form.product_name}
-										/>
-									) : (
-										<img
-											className="w-32 sm:w-48 rounded"
-											src="assets/images/ecommerce/product-image-placeholder.png"
-											alt={form.product_name}
-										/>
-									)}
-								</FuseAnimate>
-								<div className="flex flex-col min-w-0 mx-8 sm:mc-16">
-									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
-										<Typography className="text-16 sm:text-20 truncate">
-											{form.product_name ? form.product_name : 'New Product'}
-										</Typography>
-									</FuseAnimate>
-									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
-										<Typography variant="caption">Product Detail</Typography>
-									</FuseAnimate>
-								</div>
-							</div>
-						</div>
-						<FuseAnimate animation="transition.slideRightIn" delay={300}>
-							<Button
-								className="whitespace-no-wrap normal-case"
-								variant="contained"
-								color="secondary"
-								disabled={!canBeSubmitted()}
-								onClick={() => dispatch(saveProduct(form))}
-							>
-								Save
-							</Button>
-						</FuseAnimate>
-					</div>
-				)
+				form && <FormHeader	form={form}/>
 			}
 			contentToolbar={
 				<Tabs
@@ -319,250 +267,9 @@ function Product(props) {
 			content={
 				form && (
 					<div className="p-16 sm:p-24 max-w-2xl">
-						{tabValue === 0 && (
-							<div>
-								<TextField
-									className="mt-8 mb-16"
-									error={form.product_name === ''}
-									required
-									label="Product Name"
-									autoFocus
-									id="product_name"
-									name="product_name"
-									value={form.product_name}
-									onChange={handleChange}
-									variant="outlined"
-									fullWidth
-								/>
-
-								<TextField
-									className="mt-8 mb-16"
-									id="description"
-									name="description"
-									onChange={handleChange}
-									label="Description"
-									type="text"
-									value={form.description}
-									multiline
-									rows={5}
-									variant="outlined"
-									fullWidth
-								/>
-
-								<FuseChipSelect
-									className="mt-8 mb-24"
-									value={form.product_categories.map(item => ({
-										value: item.value,
-										label: item.label
-									}))}
-									onChange={value => handleChipChange(value, 'product_categories')}
-									placeholder="Select multiple categories"
-									textFieldProps={{
-										label: 'Categories',
-										InputLabelProps: {
-											shrink: true
-										},
-										variant: 'outlined'
-									}}
-									options={prodcategories.map(item => ({
-										value: item._id,
-										label: item.name
-									}))}
-									isMulti
-								/>
-
-								<FuseChipSelect
-									className="mt-8 mb-16"
-									value={form.sectors.map(item => ({
-										value: item.value,
-										label: item.label
-									}))}
-									onChange={value => handleChipChange(value, 'sectors')}
-									placeholder="Select multiple sectors"
-									textFieldProps={{
-										label: 'Sectors',
-										InputLabelProps: {
-											shrink: true
-										},
-										variant: 'outlined'
-									}}
-									options={sectors.map(item => ({
-										value: item._id,
-										label: item.name
-									}))}
-									isMulti
-								/>
-							</div>
-						)}
-						{tabValue === 1 && (
-							<div>
-								<div className="flex justify-center sm:justify-start flex-wrap -mx-8 mb-8">
-									<p>Product images</p>
-								</div>
-								<div className="flex justify-center sm:justify-start flex-wrap -mx-8">
-									<label
-										htmlFor="button-file"
-										className={clsx(
-											classes.productImageUpload,
-											'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5'
-										)}
-									>
-										<input
-											accept="image/*"
-											className="hidden"
-											id="button-file"
-											type="file"
-											onChange={handleUploadChange}
-										/>
-										<Icon fontSize="large" color="action">
-											cloud_upload
-										</Icon>
-									</label>
-									{form.images.map(media => (
-										<div
-											onClick={() => setFeaturedImage(media.id)}
-											onKeyDown={() => setFeaturedImage(media.id)}
-											role="button"
-											tabIndex={0}
-											className={clsx(
-												classes.productImageItem,
-												'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5',
-												media.id === form.featuredImageId && 'featured'
-											)}
-											key={media.id}
-										>
-											<Icon className={classes.productImageFeaturedStar}>star</Icon>
-											<img className="max-w-none w-auto h-full" src={media.url} alt="product" />
-										</div>
-									))}
-								</div>
-								<div className="flex justify-center sm:justify-start flex-wrap -mx-8 mb-8">
-									<p>Product catalogue</p>
-								</div>
-								<div className="flex justify-center sm:justify-start flex-wrap -mx-8">
-									<label
-										htmlFor="button-file"
-										className={clsx(
-											classes.productImageUpload,
-											'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5'
-										)}
-									>
-										<input
-											accept="image/*"
-											className="hidden"
-											id="button-file"
-											type="file"
-											onChange={handleCatalogueUploadChange}
-										/>
-										<Icon fontSize="large" color="action">
-											cloud_upload
-										</Icon>
-									</label>
-									{form.products_catalogue.map(media => (
-										<div
-											onClick={() => setFeaturedImage(media.id)}
-											onKeyDown={() => setFeaturedImage(media.id)}
-											role="button"
-											tabIndex={0}
-											className={clsx(
-												classes.productImageItem,
-												'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5',
-												media.id === form.featuredImageId && 'featured'
-											)}
-											key={media.id}
-										>
-											<Icon className={classes.productImageFeaturedStar}>star</Icon>
-											<img className="max-w-none w-auto h-full" src={media.url} alt="product" />
-										</div>
-									))}
-								</div>
-							</div>
-						)}
-						{tabValue === 2 && (
-							<div>
-								<FormControl variant="filled" className={classes.formControl}>
-									<FuseChipSelect
-										className="mt-8 mb-16"
-										value={form.sectors.map(item => ({
-											value: item,
-											label: item
-										}))}
-										onChange={value => handleChipChange(value, 'currency')}
-										placeholder=""
-										textFieldProps={{
-											label: 'Currency',
-											InputLabelProps: {
-												shrink: true
-											},
-											variant: 'outlined'
-										}}
-										options={cities.map(item => ({
-											value: item._id,
-											label: item.name
-										}))}
-									/>
-								</FormControl>
-								<FormControl variant="filled" className={classes.formControl}>
-									<TextField
-										className="mt-8 mb-16"
-										label="Price"
-										id="priceTaxExcl"
-										name="priceTaxExcl"
-										value={form.product_pricing.price}
-										onChange={handleChange}
-										// InputProps={{
-										// 	startAdornment: <InputAdornment position="start">$</InputAdornment>
-										// }}
-										type="number"
-										variant="outlined"
-										autoFocus
-										fullWidth
-									/>
-								</FormControl>
-								{/* <FuseChipSelect
-									className="mt-8 mb-16"
-									value={form.origin.country.map(item => ({
-										value: item.value,
-										label: item.label
-									}))}
-									onChange={value => handleChipChange(value, 'country')}
-									placeholder="Select country of origin"
-									textFieldProps={{
-										label: 'Country origin',
-										InputLabelProps: {
-											shrink: true
-										},
-										variant: 'outlined'
-									}}
-									options={countries.map(item => ({
-										value: item._id,
-										label: item.name
-									}))}
-									isMulti
-								/>
-								<FuseChipSelect
-									className="mt-8 mb-16"
-									value={form.origin.city.map(item => ({
-										value: item,
-										label: item
-									}))}
-									onChange={value => handleChipChange(value, 'city')}
-									placeholder="Select city of origin"
-									textFieldProps={{
-										label: 'City origin',
-										InputLabelProps: {
-											shrink: true
-										},
-										variant: 'outlined'
-									}}
-									options={cities.map(item => ({
-										value: item._id,
-										label: item.name
-									}))}
-									isMulti
-								/> */}
-							</div>
-						)}
+						{tabValue === 0 && <ProductInfoForm form={form} setForm={setForm} handleChange={handleChange} />}
+						{tabValue === 1 && <MediaForm form={form} setForm={setForm}/>} 
+						{tabValue === 2 && <PricingForm form={form} setForm={setForm} handleChange={handleChange} />}
 						{tabValue === 3 && (
 							<div>
 								{inputList.map((x, i) => {

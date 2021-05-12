@@ -32,8 +32,6 @@ const navigationConfig = [
 					}
 				]
 			},
-			
-
 			{
 				id: 'suppliers',
 				title: 'Suppliers',
