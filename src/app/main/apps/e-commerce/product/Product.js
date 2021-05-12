@@ -42,6 +42,7 @@ import FormHeader from './formHeader';
 import ProductInfoForm from './productInfoForm';
 import MediaForm from './mediaForm';
 import PricingForm from './pricingForm';
+import ProductAttributesForm from './productAttribute';
 
 
 const useStyles = makeStyles(theme => ({
@@ -270,91 +271,7 @@ function Product(props) {
 						{tabValue === 0 && <ProductInfoForm form={form} setForm={setForm} handleChange={handleChange} />}
 						{tabValue === 1 && <MediaForm form={form} setForm={setForm}/>} 
 						{tabValue === 2 && <PricingForm form={form} setForm={setForm} handleChange={handleChange} />}
-						{tabValue === 3 && (
-							<div>
-								{inputList.map((x, i) => {
-									return (
-										<div className="box">
-											<FuseChipSelect
-												className="mt-8 mb-16"
-												value={form.product_attributes.map(item => ({
-													value: item.value,
-													label: item.label
-												}))}
-												onChange={value => {handleChipChange(value, 'product_attributes'); getVariant(value)}}
-												placeholder="Select city of product attribute"
-												textFieldProps={{
-													label: 'Product Attributes',
-													InputLabelProps: {
-														shrink: true
-													},
-													variant: 'outlined'
-												}}
-												options={product_attributes.map(item => ({
-													value: item._id,
-													label: item.name
-												}))}
-												isMulti
-											/>
-											{variant > 0 && 
-											
-											<FuseChipSelect
-												className="mt-8 mb-16"
-												value={variant.map(item => ({
-													value: item,
-													label: item
-												}))}
-												onChange={value => {handleChipChange(value, 'variant')}}
-												placeholder="Select  product variant"
-												textFieldProps={{
-													label: 'Product Attributes',
-													InputLabelProps: {
-														shrink: true
-													},
-													variant: 'outlined'
-												}}
-												options={variant[0].map(item => ({
-														value: item._id,
-														label: item.label
-												}))}
-												isMulti
-											/>}
-											<FormControl variant="filled" className={classes.formControl}>
-												<TextField
-													className="mt-8 mb-16"
-													required
-													label="Value"
-													autoFocus
-													id="value"
-													name="value"
-													onChange={e => handleInputChange(e, i)}
-													variant="outlined"
-													fullWidth
-												/>
-											</FormControl>
-											
-											<FormControl variant="filled" className={classes.formControl}>
-												<div className="btn-box">
-													{inputList.length !== 1 && (
-														<IconButton
-															color="primary"
-															onClick={() => handleRemoveClick(i)}
-															aria-label="add to shopping cart"
-														>
-															<DeleteIcon />
-														</IconButton>
-													)}
-													{inputList.length - 1 === i && (
-														<AddCircleIcon onClick={handleAddClick} />
-													)}
-												</div>
-											</FormControl>
-											
-										</div>
-									);
-								})}
-							</div>
-						)}
+						{tabValue === 3 && <ProductAttributesForm form={form} setForm={setForm} />}
 						{tabValue === 4 && (
 							<div>
 								<div className="flex -mx-4">
