@@ -24,7 +24,7 @@ function ProductsHeader(props) {
 				</FuseAnimate>
 				<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 					<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-						Supplier
+						Suppliers
 					</Typography>
 				</FuseAnimate>
 			</div>

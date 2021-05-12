@@ -125,7 +125,7 @@ function ProductsTableHead(props) {
 								</MenuList>
 							</Menu>
 						</div>
-					)}
+					)}	
 				</TableCell>
 				{rows.map(row => {
 					return (

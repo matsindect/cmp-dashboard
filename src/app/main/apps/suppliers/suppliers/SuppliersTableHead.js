@@ -51,6 +51,7 @@ const rows = [
 		label: 'Phone Number',
 		sort: true
 	},
+
 	{
 		id: 'active',
 		align: 'right',

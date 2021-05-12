@@ -32,6 +32,8 @@ function ProductsTable(props) {
 		dispatch(getSuppliers());
 	}, [dispatch]);
 
+	console.log(suppliers)
+
 	useEffect(() => {
 		if (searchText.length !== 0) {
 			setData(_.filter(suppliers, item => item.name.toLowerCase().includes(searchText.toLowerCase())));
@@ -171,7 +173,6 @@ function ProductsTable(props) {
 										<TableCell className="p-4 md:p-16" component="th" scope="row">
 											{n.company.name}
 										</TableCell>
-
 										<TableCell className="p-4 md:p-16 truncate" component="th" scope="row">
 											{sectors.join(', ')}
 										</TableCell>
