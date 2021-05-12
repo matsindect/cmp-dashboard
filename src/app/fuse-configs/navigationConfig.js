@@ -32,30 +32,7 @@ const navigationConfig = [
 					}
 				]
 			},
-			{
-				id: 'services-providers',
-				title: 'Services Providers',
-				translate: 'Services Providers',
-				type: 'collapse',
-				icon: 'room_service',
-				url: '/apps/services-providers',
-				children: [
-					{
-						id: 'cmp-services',
-						title: 'All Services Provider',
-						type: 'item',
-						url: '/apps/services-providers',
-						exact: true
-					},
-					{
-						id: 'cmp-new-service',
-						title: 'New Service Provider',
-						type: 'item',
-						url: '/apps/services-providers/new',
-						exact: true
-					}
-				]
-			},
+			
 
 			{
 				id: 'suppliers',

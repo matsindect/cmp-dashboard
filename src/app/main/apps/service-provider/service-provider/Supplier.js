@@ -322,7 +322,7 @@ function Product(props) {
 											alt={form.company.name}
 										/>
 									) : (
-										<img
+										<img 
 											className="w-32 sm:w-48 rounded"
 											src="assets/images/ecommerce/product-image-placeholder.png"
 											alt={form.company.name}
