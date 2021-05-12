@@ -1,6 +1,5 @@
 import { authRoles } from 'app/auth';
 import i18next from 'i18next';
-import DocumentationNavigation from '../main/documentation/DocumentationNavigation';
 
 import ar from './navigation-i18n/ar';
 import en from './navigation-i18n/en';
@@ -54,37 +53,14 @@ const navigationConfig = [
 						type: 'item',
 						url: '/apps/services-providers/new',
 						exact: true
-					},
-					{
-						id: 'service',
-						title: 'Services',
-						translate: 'Services',
-						type: 'collapse',
-						url: '/apps/services',
-						children: [
-							{
-								id: 'cmp-service',
-								title: 'All Services',
-								type: 'item',
-								url: '/apps/services',
-								exact: true
-							},
-							{
-								id: 'cmp-new-service-type',
-								title: 'New Service',
-								type: 'item',
-								url: '/apps/services/new',
-								exact: true
-							}
-						]
-					},
+					}
 				]
 			},
 
 			{
 				id: 'suppliers',
 				title: 'Suppliers',
-				translate: 'Suppliers',
+				translate: 'Suppliers Profiles',
 				type: 'collapse',
 				icon: 'supervised_user_circle',
 				url: '/apps/suppliers',
@@ -102,82 +78,9 @@ const navigationConfig = [
 						type: 'item',
 						url: '/apps/suppliers/new',
 						exact: true
-					},
-					{
-						type: 'divider',
-						id: 'divider-2'
-					},
-					{
-						id: 'products',
-						title: 'Products',
-						translate: 'Products',
-						type: 'collapse',
-						icon: 'shopping_cart',
-						url: '/apps/e-commerce',
-						children: [
-							{
-								id: 'e-commerce-products',
-								title: 'All Products',
-								type: 'item',
-								url: '/apps/e-commerce/products',
-								exact: true
-							},
-							{
-								id: 'e-commerce-new-product',
-								title: 'New Product',
-								type: 'item',
-								url: '/apps/e-commerce/products/new',
-								exact: true
-							},
-							{
-								id: 'e-commerce-product-categories',
-								title: 'Categories',
-								type: 'collapse',
-								url: '/apps/product-categories',
-								children: [
-									{
-										id: 'e-commerce-product-categories-all',
-										title: 'All Categories',
-										type: 'item',
-										url: '/apps/product-categories',
-										exact: true
-									},
-									{
-										id: 'e-commerce-product-categories-new',
-										title: 'New Category',
-										type: 'item',
-										url: '/apps/product-categories/new',
-										exact: true
-									}
-								]
-							},
-							{
-								id: 'e-commerce-product-attributes',
-								title: 'Attributes',
-								type: 'collapse',
-								url: '/apps/product-attributes',
-								children: [
-									{
-										id: 'e-commerce-product-attributes-all',
-										title: 'All Attributes',
-										type: 'item',
-										url: '/apps/product-attributes',
-										exact: true
-									},
-									{
-										id: 'e-commerce-product-attributes-new',
-										title: 'New Attributes',
-										type: 'item',
-										url: '/apps/product-attributes/new',
-										exact: true
-									}
-								]
-							}
-						]
 					}
 				]
-			},
-			
+			}
 		]
 	},
 	{
@@ -190,6 +93,98 @@ const navigationConfig = [
 		type: 'group',
 		icon: 'Settings',
 		children: [
+			{
+				id: 'products',
+				title: 'Products',
+				translate: 'Products',
+				type: 'collapse',
+				icon: 'shopping_cart',
+				url: '/apps/e-commerce',
+				children: [
+					{
+						id: 'e-commerce-products',
+						title: 'All Products',
+						type: 'item',
+						url: '/apps/e-commerce/products',
+						exact: true
+					},
+					{
+						id: 'e-commerce-new-product',
+						title: 'New Product',
+						type: 'item',
+						url: '/apps/e-commerce/products/new',
+						exact: true
+					},
+					{
+						id: 'e-commerce-product-categories',
+						title: 'Categories',
+						type: 'collapse',
+						url: '/apps/product-categories',
+						children: [
+							{
+								id: 'e-commerce-product-categories-all',
+								title: 'All Categories',
+								type: 'item',
+								url: '/apps/product-categories',
+								exact: true
+							},
+							{
+								id: 'e-commerce-product-categories-new',
+								title: 'New Category',
+								type: 'item',
+								url: '/apps/product-categories/new',
+								exact: true
+							}
+						]
+					},
+					{
+						id: 'e-commerce-product-attributes',
+						title: 'Attributes',
+						type: 'collapse',
+						url: '/apps/product-attributes',
+						children: [
+							{
+								id: 'e-commerce-product-attributes-all',
+								title: 'All Attributes',
+								type: 'item',
+								url: '/apps/product-attributes',
+								exact: true
+							},
+							{
+								id: 'e-commerce-product-attributes-new',
+								title: 'New Attributes',
+								type: 'item',
+								url: '/apps/product-attributes/new',
+								exact: true
+							}
+						]
+					}
+				]
+			},
+			{
+				id: 'service',
+				title: 'Services',
+				translate: 'Services',
+				type: 'collapse',
+				icon: 'scatter_plot',
+				url: '/apps/services',
+				children: [
+					{
+						id: 'cmp-service',
+						title: 'All Services',
+						type: 'item',
+						url: '/apps/services',
+						exact: true
+					},
+					{
+						id: 'cmp-new-service-type',
+						title: 'New Service',
+						type: 'item',
+						url: '/apps/services/new',
+						exact: true
+					}
+				]
+			},
 			{
 				id: 'sectors',
 				title: 'Sectors',
@@ -238,7 +233,7 @@ const navigationConfig = [
 					}
 				]
 			},
-			
+
 			{
 				id: 'business',
 				title: 'Business Types',
@@ -263,7 +258,7 @@ const navigationConfig = [
 					}
 				]
 			},
-			
+
 			{
 				id: 'cities',
 				title: 'Cities',

@@ -20,7 +20,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { getSectors, selectSectors } from '../store/sectorsSlice';
-import {getBusinessTypes, selectBusinessTypes} from "../store/businessTypesSlice"
+import { getBusinessTypes, selectBusinessTypes } from '../store/businessTypesSlice';
 import { saveBusinessType, newBusinessType, getBusinessType } from '../store/businessTypeSlice';
 import reducer from '../store';
 
@@ -64,7 +64,7 @@ function Sector(props) {
 	const sector = useSelector(({ cmpBusinessType }) => cmpBusinessType.businessType);
 	const sectors = useSelector(selectSectors);
 	const businesstypes = useSelector(selectBusinessTypes);
-	
+
 	const theme = useTheme();
 
 	const classes = useStyles(props);
@@ -78,8 +78,8 @@ function Sector(props) {
 
 			if (businesstypeId === 'new') {
 				dispatch(newBusinessType());
-				dispatch(getSectors())
-				dispatch(getBusinessTypes())
+				dispatch(getSectors());
+				dispatch(getBusinessTypes());
 			} else {
 				dispatch(getBusinessType(routeParams));
 			}
@@ -278,7 +278,7 @@ function Sector(props) {
 									}))}
 									isMulti
 								/>
-								<FuseChipSelect
+								{/* <FuseChipSelect
 									className="mt-8 mb-24"
 									value={form.sectors.map(item => ({
 										value: item.value,
@@ -298,7 +298,7 @@ function Sector(props) {
 										label: item.name
 									}))}
 									isMulti
-								/>
+								/> */}
 
 								<div>
 									<div className="flex justify-center sm:justify-start flex-wrap -mx-8">

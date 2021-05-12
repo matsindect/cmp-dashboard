@@ -1,6 +1,7 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
+import FuseChipSelect from '@fuse/core/FuseChipSelect';
 import { useForm, useDeepCompareEffect } from '@fuse/hooks';
 import _ from '@lodash';
 import Button from '@material-ui/core/Button';
@@ -17,6 +18,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { saveCategory, newCategory, getCategory } from '../store/categorySlice';
+import { getCategories, selectCategories } from '../store/categoriesSlice';
 import reducer from '../store';
 
 const useStyles = makeStyles(theme => ({
@@ -58,6 +60,7 @@ function Category(props) {
 	const dispatch = useDispatch();
 	const category = useSelector(({ cmpCategories }) => cmpCategories.category);
 	const theme = useTheme();
+	const parents = useSelector(selectCategories);
 
 	const classes = useStyles(props);
 	const [tabValue, setTabValue] = useState(0);
@@ -70,6 +73,7 @@ function Category(props) {
 
 			if (categoryId === 'new') {
 				dispatch(newCategory());
+				dispatch(getCategories());
 			} else {
 				dispatch(getCategory(routeParams));
 			}
@@ -247,7 +251,27 @@ function Category(props) {
 									variant="outlined"
 									fullWidth
 								/>
-
+								<FuseChipSelect
+									className="mt-8 mb-24"
+									value={form.parent_categories.map(item => ({
+										value: item.value._id,
+										label: item.value.name
+									}))}
+									onChange={value => handleChipChange(value, 'parent_categories')}
+									placeholder="Select multiple parents"
+									textFieldProps={{
+										label: 'Parent Category',
+										InputLabelProps: {
+											shrink: true
+										},
+										variant: 'outlined'
+									}}
+									options={parents.map(item => ({
+										value: item._id,
+										label: item.name
+									}))}
+									isMulti
+								/>
 								<div>
 									<div className="flex justify-center sm:justify-start flex-wrap -mx-8">
 										<label

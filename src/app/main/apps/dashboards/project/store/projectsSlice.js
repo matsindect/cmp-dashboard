@@ -1,9 +1,10 @@
 import { createEntityAdapter, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import domainConfig from '../../../../../fuse-configs/domainConfig';
 
 export const getProjects = createAsyncThunk('projectDashboardApp/projects/getProjects', async () => {
-	const response = await axios.get('/api/project-dashboard-app/projects');
-	return response.data;
+	const response = await axios.get(`${domainConfig.api_url}/api/v1/analytics`);
+	return response.data.projects;
 });
 
 const projectsAdapter = createEntityAdapter({});
