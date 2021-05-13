@@ -85,27 +85,7 @@ export default function BusinessTypeForm(props){
                 fullWidth
             />
 
-            <FuseChipSelect
-                className="mt-8 mb-24"
-                value={form.sectors.map(item => ({
-                    value: item.value,
-                    label: item.label
-                }))}
-                onChange={value => handleChipChange(value, 'sectors')}
-                placeholder="Select Service Category"
-                textFieldProps={{
-                    label: 'Service Category',
-                    InputLabelProps: {
-                        shrink: true
-                    },
-                    variant: 'outlined'
-                }}
-                options={sectors.map(item => ({
-                    value: item._id,
-                    label: item.name
-                }))}
-                isMulti
-            />
+            
 
             <FuseChipSelect
                 className="mt-8 mb-24"
@@ -114,31 +94,9 @@ export default function BusinessTypeForm(props){
                     label: item.label
                 }))}
                 onChange={value => handleChipChange(value, 'parent')}
-                placeholder="Select Product Category"
+                placeholder="Parent Business Type"
                 textFieldProps={{
-                    label: 'Select Product Category',
-                    InputLabelProps: {
-                        shrink: true
-                    },
-                    variant: 'outlined'
-                }}
-                options={businesstypes.map(item => ({
-                    value: item._id,
-                    label: item.name
-                }))}
-                isMulti
-            />
-
-            <FuseChipSelect
-                className="mt-8 mb-24"
-                value={form.parent.map(item => ({
-                    value: item.value,
-                    label: item.label
-                }))}
-                onChange={value => handleChipChange(value, 'parent')}
-                placeholder="Product Category Parent"
-                textFieldProps={{
-                    label: 'Product Category Parent',
+                    label: 'Parent Business Type',
                     InputLabelProps: {
                         shrink: true
                     },

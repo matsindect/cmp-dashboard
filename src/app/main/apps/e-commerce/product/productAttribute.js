@@ -82,20 +82,19 @@ export default function ProductAttributesForm(props){
                 <div className="box">
                     <div className={classes.root}>
                        
-                        <Button className={classes.btn} onClick={()=>handleAttributeSelected("Location Equipment")}  variant="contained" color={attributes.includes("Location Equipment") ? "red": "primary"}>
+                        <Button className={classes.btn} onClick={()=>handleAttributeSelected("Location Equipment")}  variant="contained" color={attributes.includes("Location Equipment") ? "primary": "red"}>
                           Location Equipment
                         </Button>
-                        <Button className={classes.btn} onClick={()=>handleAttributeSelected("Crane Capacity (In Tons)")} variant="contained" color={attributes.includes("Crane Capacity (In Tons)") ? "red": "primary"}>
+                        <Button className={classes.btn} onClick={()=>handleAttributeSelected("Crane Capacity (In Tons)")} variant="contained" color={attributes.includes("Crane Capacity (In Tons)") ? "primary": "red"}>
                            Crane Capacity (In Tons)
                         </Button>
-                        <Button className={classes.btn} onClick={()=>handleAttributeSelected("Options")} variant="contained" color={attributes.includes("Options") ? "red": "primary"}>
+                        <Button className={classes.btn} onClick={()=>handleAttributeSelected("Options")} variant="contained" color={attributes.includes("Options") ? "primary": "red"}>
                           Options
                         </Button>
-                        <Button className={classes.btn} onClick={()=>handleAttributeSelected("Rates")} variant="contained" color={attributes.includes("Rates") ? "red": "primary"}>
-                             Rates
+                        <Button className={classes.btn} onClick={()=>handleAttributeSelected("Rates")} variant="contained" color={attributes.includes("Rates") ? "primary": "red"}>
+                            Rates
                         </Button>      
-
-                         <Button className={classes.btn} onClick={()=>handleAttributeSelected("Capacity / Tonnage")} variant="contained" color={attributes.includes("Capacity / Tonnage") ? "red": "primary"}>
+                         <Button className={classes.btn} onClick={()=>handleAttributeSelected("Capacity / Tonnage")} variant="contained" color={attributes.includes("Capacity / Tonnage") ? "primary": "red"}>
                             Capacity / Tonnage
                         </Button>              
                     </div>
