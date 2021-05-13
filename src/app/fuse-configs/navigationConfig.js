@@ -33,23 +33,30 @@ const navigationConfig = [
 				]
 			},
 			{
+				id: 'profile',
+				title: 'My Profile',
+				type: 'item',
+				icon: 'person',
+				url: '/pages/profile'
+			},
+			{
 				id: 'suppliers',
 				title: 'Suppliers',
-				translate: 'Suppliers Profiles',
+				translate: 'Client Profiles',
 				type: 'collapse',
 				icon: 'supervised_user_circle',
 				url: '/apps/suppliers',
 				children: [
 					{
 						id: 'cmp-suppliers',
-						title: 'All Suppliers',
+						title: 'All Clients',
 						type: 'item',
 						url: '/apps/suppliers',
 						exact: true
 					},
 					{
 						id: 'cmp-new-supplier',
-						title: 'New Supplier',
+						title: 'New Clients',
 						type: 'item',
 						url: '/apps/suppliers/new',
 						exact: true
@@ -293,20 +300,32 @@ const navigationConfig = [
 		title: 'Menus',
 		type: 'group',
 		icon: 'Menus',
-	},
-
-	{
-		type: 'divider',
-		id: 'divider-2'
-	},
-
-	{
-		id: 'Navigation',
-		title: 'Navigation',
-		type: 'group',
-		icon: 'Navigation',
+		children: [
+			{
+				id: 'navigation',
+				title: 'Navigation',
+				type: 'collapse',
+				icon: 'emoji_flags',
+				url: '/apps/navigation',
+				children: [
+					{
+						id: 'countries-all',
+						title: 'All Paths',
+						type: 'item',
+						url: '/apps/countries',
+						exact: true
+					},
+					{
+						id: 'countires-new',
+						title: 'New Path',
+						type: 'item',
+						url: '/apps/countries/new',
+						exact: true
+					}
+				]
+			}
+		]
 	}
-
 ];
 
 export default navigationConfig;

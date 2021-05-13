@@ -14,6 +14,7 @@ import ProductAttribute from './product-attributes/productAttributeConfig';
 import BusinessTypes from './business-types/businessTypesConfig';
 import ServiceProvider from './service-provider/serviceProviderAppConfig';
 import Services from './services/servicesConfig';
+import Profile from './profile/ProfilePageConfig';
 
 const appsConfigs = [
 	AnalyticsDashboardAppConfig,
@@ -31,7 +32,8 @@ const appsConfigs = [
 	ProductAttribute,
 	BusinessTypes,
 	ServiceProvider,
-	Services
+	Services,
+	Profile
 ];
 
 export default appsConfigs;
