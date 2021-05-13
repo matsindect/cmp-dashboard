@@ -65,31 +65,39 @@ export default function ProductAttributesForm(props){
     const classes = useStyles()
 
     const handleAttributeSelected = (attribute) => {
-        setAttributes(attributes.concat(attribute))
+        if(!attributes.includes(attribute)){
+            setAttributes(attributes.concat(attribute))
+        }else{
+            const attrbs = attributes.filter(item=>item!==attribute)
+            setAttributes(attrbs);
+        }
     }
+
 
     return(
         <div>
-        {attributes.map((item)=>(
-            <Typography>{item}</Typography>
-        ))}
+        
         {inputList.map((x, i) => {
             return (
                 <div className="box">
                     <div className={classes.root}>
                        
-                        <Button onClick={()=>handleAttributeSelected("Fuel by Client")}  variant="contained" color="primary">
-                            Fuel by Client
+                        <Button className={classes.btn} onClick={()=>handleAttributeSelected("Location Equipment")}  variant="contained" color={attributes.includes("Location Equipment") ? "red": "primary"}>
+                          Location Equipment
                         </Button>
-                        <Button onClick={()=>handleAttributeSelected("Fuel by Supplier")} variant="contained" color="secondary">
-                             Fuel by Supplier
+                        <Button className={classes.btn} onClick={()=>handleAttributeSelected("Crane Capacity (In Tons)")} variant="contained" color={attributes.includes("Crane Capacity (In Tons)") ? "red": "primary"}>
+                           Crane Capacity (In Tons)
                         </Button>
-                        <Button onClick={()=>handleAttributeSelected("Operator Accommodation by Client")} variant="contained" color="secondary">
-                             Operator Accommodation by Client
+                        <Button className={classes.btn} onClick={()=>handleAttributeSelected("Options")} variant="contained" color={attributes.includes("Options") ? "red": "primary"}>
+                          Options
                         </Button>
-                        <Button onClick={()=>handleAttributeSelected("Operator Accommodation by Supplier")} variant="contained" color="secondary">
-                             Operator Accommodation by Supplier
-                        </Button>                        
+                        <Button className={classes.btn} onClick={()=>handleAttributeSelected("Rates")} variant="contained" color={attributes.includes("Rates") ? "red": "primary"}>
+                             Rates
+                        </Button>      
+
+                         <Button className={classes.btn} onClick={()=>handleAttributeSelected("Capacity / Tonnage")} variant="contained" color={attributes.includes("Capacity / Tonnage") ? "red": "primary"}>
+                            Capacity / Tonnage
+                        </Button>              
                     </div>
                     {/**
                      * <FuseChipSelect
@@ -171,6 +179,12 @@ export default function ProductAttributesForm(props){
                 </div>
             );
         })}
+
+    <div style={{display: 'flex', justifyContent:"space-around"}}>
+        {attributes.map((item)=>(
+            <Typography> {item} </Typography>
+        ))}
+        </div>
     </div>
     )
 }
@@ -185,5 +199,9 @@ const useStyles = makeStyles(theme => ({
         '& > *': {
           margin: theme.spacing(1),
         },
+        marginTop: 20
       },
+      btn: {
+          height: 60
+      }
 }));
