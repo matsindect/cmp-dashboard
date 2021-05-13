@@ -124,10 +124,12 @@ function SectorsTable(props) {
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map(n => {
 								const isSelected = selected.indexOf(n._id) !== -1;
-								const sectors =[]
-								n.sectors.map(item=>{
-									sectors.push(item.label)
-								})
+								const sectors =	[]
+							    if(n.sectors!==undefined){
+									n.sectors.map(item=>{
+										sectors.push(item.label)
+									})
+								}
 								if(n.parent.length === 0 ){
 										return (
 										<TableRow

@@ -281,7 +281,32 @@ const navigationConfig = [
 				]
 			}
 		]
+	},
+
+	{
+		type: 'divider',
+		id: 'divider-2'
+	},
+
+	{
+		id: 'Menus',
+		title: 'Menus',
+		type: 'group',
+		icon: 'Menus',
+	},
+
+	{
+		type: 'divider',
+		id: 'divider-2'
+	},
+
+	{
+		id: 'Navigation',
+		title: 'Navigation',
+		type: 'group',
+		icon: 'Navigation',
 	}
+
 ];
 
 export default navigationConfig;
