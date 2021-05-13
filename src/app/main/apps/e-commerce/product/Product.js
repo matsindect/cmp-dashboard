@@ -88,20 +88,23 @@ function Product(props) {
 					classes={{ root: 'w-full h-64' }}
 				>
 					<Tab className="h-64 normal-case" label="Product Info" />
-					<Tab className="h-64 normal-case" label="Product Images" />
-					<Tab className="h-64 normal-case" label="Product Pricing" />
+					{/*<Tab className="h-64 normal-case" label="Product Images" />*/}
+					{/**<Tab className="h-64 normal-case" label="Product Pricing" /> */}
 					<Tab className="h-64 normal-case" label="Product attributes" />
-					<Tab className="h-64 normal-case" label="Product reviews" />
+					{/**<Tab className="h-64 normal-case" label="Product reviews" /> */}
 				</Tabs>
 			}
 			content={
 				form && (
 					<div className="p-16 sm:p-24 max-w-2xl">
 						{tabValue === 0 && <ProductInfoForm form={form} setForm={setForm} handleChange={handleChange} />}
-						{tabValue === 1 && <MediaForm form={form} setForm={setForm}/>} 
+						{tabValue === 1 && <ProductAttributesForm form={form} setForm={setForm} />}
+						{/**
+						 * {tabValue === 1 && <MediaForm form={form} setForm={setForm}/>} 
 						{tabValue === 2 && <PricingForm form={form} setForm={setForm} handleChange={handleChange} />}
 						{tabValue === 3 && <ProductAttributesForm form={form} setForm={setForm} />}
 						{tabValue === 4 && <ReviewsForm form={form} handleChange={handleChange} />}
+						 */}
 					</div>
 				)
 			}
