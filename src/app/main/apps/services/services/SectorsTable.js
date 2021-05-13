@@ -127,12 +127,16 @@ function SectorsTable(props) {
 								const isSelected = selected.indexOf(n._id) !== -1;
 								const sectors =[]
 								const business_types =[]
-								n.sectors.map(item=>{
-									sectors.push(item.label)
-								})
-								n.business_types.map(item=>{
-									business_types.push(item.label)
-								})
+								if(n.sectors!==undefined){
+									n.sectors.map(item=>{
+										sectors.push(item.label)
+									})
+								}
+								if(n.business_types){
+									n.business_types.map(item=>{
+										business_types.push(item.label)
+									})
+								}
 								
 									return (
 										<TableRow

@@ -125,9 +125,12 @@ function SectorsTable(props) {
 							.map(n => {
 								const isSelected = selected.indexOf(n._id) !== -1;
 								const categories =[]
-								n.categories.map(item=>{
-									categories.push(item.label)
-								})
+								if(n.categories!==undefined){
+									n.categories.map(item=>{
+										categories.push(item.label)
+									})
+								}
+								
 								return (
 									<TableRow
 										className="h-64 cursor-pointer"
