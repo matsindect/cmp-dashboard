@@ -20,6 +20,8 @@ import { Link, useParams } from 'react-router-dom';
 import { saveCategory, newCategory, getCategory } from '../store/categorySlice';
 import { getCategories, selectCategories } from '../store/categoriesSlice';
 import reducer from '../store';
+import FormHeader from './formHeadr';
+import CategoryForm from './categoryForm';
 
 const useStyles = makeStyles(theme => ({
 	productImageFeaturedStar: {
@@ -131,9 +133,7 @@ function Category(props) {
 		};
 	}
 
-	function canBeSubmitted() {
-		return form.name.length > 0 && !_.isEqual(category, form);
-	}
+
 
 	if ((!category || (category && routeParams.categoryId !== category._id)) && routeParams.categoryId !== 'new') {
 		return <FuseLoading />;
@@ -145,67 +145,7 @@ function Category(props) {
 				toolbar: 'p-0',
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
-			header={
-				form && (
-					<div className="flex flex-1 w-full items-center justify-between">
-						<div className="flex flex-col items-start max-w-full">
-							<FuseAnimate animation="transition.slideRightIn" delay={300}>
-								<Typography
-									className="normal-case flex items-center sm:mb-12"
-									component={Link}
-									role="button"
-									to="/apps/categories/categories"
-									color="inherit"
-								>
-									<Icon className="text-20">
-										{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}
-									</Icon>
-									<span className="mx-4">Category</span>
-								</Typography>
-							</FuseAnimate>
-
-							<div className="flex items-center max-w-full">
-								<FuseAnimate animation="transition.expandIn" delay={300}>
-									{form.images.length > 0 && form.featuredImageId ? (
-										<img
-											className="w-32 sm:w-48 rounded"
-											src={_.find(form.images, { _id: form.featuredImageId }).url}
-											alt={form.name}
-										/>
-									) : (
-										<img
-											className="w-32 sm:w-48 rounded"
-											src="assets/images/ecommerce/product-image-placeholder.png"
-											alt={form.name}
-										/>
-									)}
-								</FuseAnimate>
-								<div className="flex flex-col min-w-0 mx-8 sm:mc-16">
-									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
-										<Typography className="text-16 sm:text-20 truncate">
-											{form.name ? form.name : 'New Category'}
-										</Typography>
-									</FuseAnimate>
-									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
-										<Typography variant="caption">Category Detail</Typography>
-									</FuseAnimate>
-								</div>
-							</div>
-						</div>
-						<FuseAnimate animation="transition.slideRightIn" delay={300}>
-							<Button
-								className="whitespace-no-wrap normal-case"
-								variant="contained"
-								color="secondary"
-								disabled={!canBeSubmitted()}
-								onClick={() => dispatch(saveCategory(form))}
-							>
-								Save
-							</Button>
-						</FuseAnimate>
-					</div>
-				)
-			}
+			header={form && <FormHeader form={form} category={category} />}
 			contentToolbar={
 				<Tabs
 					value={tabValue}
@@ -222,101 +162,7 @@ function Category(props) {
 			content={
 				form && (
 					<div className="p-16 sm:p-24 max-w-2xl">
-						{tabValue === 0 && (
-							<div>
-								<TextField
-									className="mt-8 mb-16"
-									error={form.name === ''}
-									required
-									label="Name"
-									autoFocus
-									id="name"
-									name="name"
-									value={form.name}
-									onChange={handleChange}
-									variant="outlined"
-									fullWidth
-								/>
-
-								<TextField
-									className="mt-8 mb-16"
-									id="description"
-									name="description"
-									onChange={handleChange}
-									label="Description"
-									type="text"
-									value={form.description}
-									multiline
-									rows={5}
-									variant="outlined"
-									fullWidth
-								/>
-								<FuseChipSelect
-									className="mt-8 mb-24"
-									value={form.parent_categories.map(item => ({
-										value: item.value._id,
-										label: item.value.name
-									}))}
-									onChange={value => handleChipChange(value, 'parent_categories')}
-									placeholder="Select multiple parents"
-									textFieldProps={{
-										label: 'Parent Category',
-										InputLabelProps: {
-											shrink: true
-										},
-										variant: 'outlined'
-									}}
-									options={parents.map(item => ({
-										value: item._id,
-										label: item.name
-									}))}
-									isMulti
-								/>
-								<div>
-									<div className="flex justify-center sm:justify-start flex-wrap -mx-8">
-										<label
-											htmlFor="button-file"
-											className={clsx(
-												classes.productImageUpload,
-												'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5'
-											)}
-										>
-											<input
-												accept="image/*"
-												className="hidden"
-												id="button-file"
-												type="file"
-												onChange={handleUploadChange}
-											/>
-											<Icon fontSize="large" color="action">
-												cloud_upload
-											</Icon>
-										</label>
-										{form.images.map(media => (
-											<div
-												onClick={() => setFeaturedImage(media._id)}
-												onKeyDown={() => setFeaturedImage(media._id)}
-												role="button"
-												tabIndex={0}
-												className={clsx(
-													classes.productImageItem,
-													'flex items-center justify-center relative w-128 h-128 rounded-8 mx-8 mb-16 overflow-hidden cursor-pointer shadow-1 hover:shadow-5',
-													media._id === form.featuredImageId && 'featured'
-												)}
-												key={media._id}
-											>
-												<Icon className={classes.productImageFeaturedStar}>star</Icon>
-												<img
-													className="max-w-none w-auto h-full"
-													src={media.url}
-													alt="product"
-												/>
-											</div>
-										))}
-									</div>
-								</div>
-							</div>
-						)}
+						{tabValue === 0 && <CategoryForm form={form} handleChange={handleChange} setForm={setForm} />}
 					</div>
 				)
 			}
