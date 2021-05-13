@@ -9,11 +9,15 @@ import { getProductAttributes, selectProductAttributes} from './../store/product
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import Button from '@material-ui/core/Button';
+import { selectOrderById } from '../store/ordersSlice';
+import { Typography } from '@material-ui/core';
 
 export default function ProductAttributesForm(props){
     const [inputList, setInputList] = useState([{ key: '', value: '' }]);
     const {form, setForm} = props;
     const [variant, setVariant] = useState([]);
+    const [attributes, setAttributes] = React.useState([]);
     const product_attributes = useSelector(selectProductAttributes)
 
     const handleAddClick = () => {
@@ -60,12 +64,35 @@ export default function ProductAttributesForm(props){
 
     const classes = useStyles()
 
+    const handleAttributeSelected = (attribute) => {
+        setAttributes(attributes.concat(attribute))
+    }
+
     return(
         <div>
+        {attributes.map((item)=>(
+            <Typography>{item}</Typography>
+        ))}
         {inputList.map((x, i) => {
             return (
                 <div className="box">
-                    <FuseChipSelect
+                    <div className={classes.root}>
+                       
+                        <Button onClick={()=>handleAttributeSelected("Fuel by Client")}  variant="contained" color="primary">
+                            Fuel by Client
+                        </Button>
+                        <Button onClick={()=>handleAttributeSelected("Fuel by Supplier")} variant="contained" color="secondary">
+                             Fuel by Supplier
+                        </Button>
+                        <Button onClick={()=>handleAttributeSelected("Operator Accommodation by Client")} variant="contained" color="secondary">
+                             Operator Accommodation by Client
+                        </Button>
+                        <Button onClick={()=>handleAttributeSelected("Operator Accommodation by Supplier")} variant="contained" color="secondary">
+                             Operator Accommodation by Supplier
+                        </Button>                        
+                    </div>
+                    {/**
+                     * <FuseChipSelect
                         className="mt-8 mb-16"
                         value={form.product_attributes.map(item => ({
                             value: item.value,
@@ -139,6 +166,7 @@ export default function ProductAttributesForm(props){
                             )}
                         </div>
                     </FormControl>
+                     */}
                     
                 </div>
             );
@@ -152,5 +180,10 @@ const useStyles = makeStyles(theme => ({
 	formControl: {
 		margin: theme.spacing(1),
 		minWidth: 120
-	}
+	},
+    root: {
+        '& > *': {
+          margin: theme.spacing(1),
+        },
+      },
 }));
