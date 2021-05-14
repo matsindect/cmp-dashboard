@@ -14,6 +14,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import AboutForm from './AboutForm';
 
 function AboutTab() {
 	const [data, setData] = useState(null);
@@ -21,7 +22,9 @@ function AboutTab() {
 	useEffect(() => {
 		axios.get('/api/profile/about').then(res => {
 			setData(res.data);
+			
 		});
+
 	}, []);
 
 	if (!data) {
@@ -32,6 +35,7 @@ function AboutTab() {
 
 	return (
 		<div className="md:flex max-w-2xl">
+			
 			<div className="flex flex-col flex-1 md:ltr:pr-32 md:rtl:pl-32">
 				<FuseAnimateGroup
 					enter={{
