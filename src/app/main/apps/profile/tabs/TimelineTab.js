@@ -18,6 +18,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import Posts from './Posts';
 
 function TimelineTab() {
 	const [data, setData] = useState(null);
@@ -85,6 +86,8 @@ function TimelineTab() {
 
 						<Divider className="my-32" />
 					</div>
+
+					<Posts />
 
 					{data.posts.map(post => (
 						<Card key={post.id} className="mb-32 overflow-hidden rounded-8">

@@ -16,6 +16,7 @@ import ServiceProvider from './service-provider/serviceProviderAppConfig';
 import Services from './services/servicesConfig';
 import Profile from './profile/ProfilePageConfig';
 
+
 const appsConfigs = [
 	AnalyticsDashboardAppConfig,
 	ProjectDashboardAppConfig,

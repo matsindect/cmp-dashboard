@@ -3,6 +3,11 @@ import { lightBlue, red } from '@material-ui/core/colors';
 
 const themesConfig = {
 	default: {
+		typography: {
+			fontFamily: [
+				'Montserrat',
+			].join(','),
+		},
 		palette: {
 			type: 'light',
 			primary: {
