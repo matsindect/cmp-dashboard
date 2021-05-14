@@ -15,16 +15,32 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
+import Button from '@material-ui/core/Button';
 
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
 export default function Post(props){
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
+    const [openDialog, setOpenDialog] = React.useState(false);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+
+    const handleClickOpenDialog = () => {
+        setOpenDialog(true);
+      };
+    
+      const handleCloseDialog = () => {
+        setOpenDialog(false);
+      };
 
     const names = [
         "Pipeline Strainers",
@@ -79,7 +95,7 @@ export default function Post(props){
                 <IconButton aria-label="edit">
                      <EditIcon style={{color: 'green'}} />
                 </IconButton>
-                <IconButton aria-label="delete">
+                <IconButton onClick={handleClickOpenDialog} aria-label="delete">
                     <DeleteIcon style={{color: 'red'}} />
                 </IconButton>
                 <IconButton
@@ -101,6 +117,28 @@ export default function Post(props){
                 </Typography>
                 </CardContent>
             </Collapse>
+            <Dialog
+                open={openDialog}
+                keepMounted
+                onClose={handleCloseDialog}
+                aria-labelledby="alert-dialog-slide-title"
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <DialogTitle id="alert-dialog-slide-title">{"Deleting a Product?"}</DialogTitle>
+                <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                    Are you sure you want to delete
+                </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleCloseDialog} color="primary">
+                    No
+                </Button>
+                <Button onClick={handleCloseDialog} color="primary">
+                    Yes
+                </Button>
+                </DialogActions>
+            </Dialog>
         </Card>
     )
 }

@@ -10,7 +10,6 @@ import React, { useState } from 'react';
 import AboutTab from './tabs/AboutTab';
 import PhotosVideosTab from './tabs/PhotosVideosTab';
 import TimelineTab from './tabs/TimelineTab';
-import Posts from './tabs/Posts';
 import AboutForm from './tabs/AboutForm';
 
 
@@ -97,7 +96,7 @@ function ProfilePage() {
 			}
 			content={
 				<div className="p-16 sm:p-24">
-					{selectedTab === 0 && <Posts />}
+					{selectedTab === 0 && <TimelineTab />}
 					{selectedTab === 1 && <AboutForm />}
 					{selectedTab === 2 && <PhotosVideosTab />}
 				</div>

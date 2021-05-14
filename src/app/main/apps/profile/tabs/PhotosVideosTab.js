@@ -10,17 +10,18 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 function PhotosVideosTab() {
-	const [data, setData] = useState(null);
+	
 
-	useEffect(() => {
-		axios.get('/api/profile/photos-videos').then(res => {
-			setData(res.data);
-		});
-	}, []);
 
-	if (!data) {
-		return null;
-	}
+    const images = [
+        "https://www.abantu.constructionmarket-me.com/cmps/public//images/shutterstock_55264171.jpg",
+        "https://www.abantu.constructionmarket-me.com/cmps/public//images/Sino-shear-stud-with-chamfer.jpg",
+        "https://www.abantu.constructionmarket-me.com/cmps/public//images/HTB1GCjeKVXXXXbCXVXXq6xXFXXX7.jpg",
+        "https://www.abantu.constructionmarket-me.com/cmps/public//images/Strainer.jpg",
+        "https://www.abantu.constructionmarket-me.com/cmps/public//images/8797660872734.jpg",
+        "https://www.abantu.constructionmarket-me.com/cmps/public//images/liebherr-A904C-wheeled-excavator-1.jpg",
+        "https://www.abantu.constructionmarket-me.com/cmps/public//images/t3.jpg",
+    ]
 
 	return (
 		<div className="md:flex max-w-2xl">
@@ -30,27 +31,25 @@ function PhotosVideosTab() {
 						animation: 'transition.slideUpBigIn'
 					}}
 				>
-					{data.map(period => (
-						<div key={period.id} className="mb-48">
+				
+						<div key={2} className="mb-48">
 							<ListSubheader component="div" className="flex items-center px-0 mb-24">
-								<Typography variant="h6">{period.name}</Typography>
-								<Typography className="mx-16" variant="subtitle1" color="textSecondary">
-									{period.info}
-								</Typography>
+								<Typography variant="h6">Pipeline Strainers</Typography>
+								
 							</ListSubheader>
 
 							<GridList className="" spacing={8} cols={0}>
-								{period.media.map(media => (
+								{images.map(media => (
 									<GridListTile
 										classes={{
 											root: 'w-full sm:w-1/2 md:w-1/4',
 											tile: 'rounded-8'
 										}}
-										key={media.preview}
+										key={media}
 									>
-										<img src={media.preview} alt={media.title} />
+										<img src={media} alt={"Pipeline Strainers"} />
 										<GridListTileBar
-											title={media.title}
+											title="Valves"
 											actionIcon={
 												<IconButton>
 													<Icon className="text-white opacity-75">info</Icon>
@@ -61,7 +60,7 @@ function PhotosVideosTab() {
 								))}
 							</GridList>
 						</div>
-					))}
+				
 				</FuseAnimateGroup>
 			</div>
 		</div>

@@ -1,8 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import {Avatar, AppBar, Button, Card, CardContent, Icon, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, Toolbar, Typography} from '@material-ui/core';
+import React from 'react';
+import {AppBar, Card, CardContent, Toolbar, Typography} from '@material-ui/core';
 import Input from '@material-ui/core/Input';
-import FuseAnimate from '@fuse/core/FuseAnimate';
-import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 
 function AboutForm(){
