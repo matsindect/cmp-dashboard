@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 function AboutForm(){
     const classes = useStyles();
     return (
-        <div className="md:flex max-w-2xl">
+        <div className="md:flex max-w-4xl">
             <div className="flex flex-col flex-1 md:pr-32">
                 <form className={classes.root} noValidate autoComplete="off">
                     <Card className="w-full mb-16">
@@ -40,16 +40,18 @@ function AboutForm(){
                             </div>
                         </CardContent>
                     </Card>
-
+                </form>
+            </div>
+            <div className="flex flex-col md:w-320">
+                <div>
                     <Card className="w-full mb-16">
-                        <AppBar className={classes.appBar} position="static" elevation={0}>
+                        <AppBar className={classes.appBar} position="static" color="secondary" elevation={0}>
                             <Toolbar className="pl-16 pr-8">
-                                <Typography variant="subtitle1" color="inherit" className="flex-1 font-bold ">
+                                <Typography variant="subtitle1" color="inherit" className="flex-1 font-bold">
                                     Company Information
                                 </Typography>
                             </Toolbar>
                         </AppBar>
-
                         <CardContent>
                             <div className="mb-24">
                                 <Typography className="font-bold mb-4 text-15">Company</Typography>
@@ -76,9 +78,8 @@ function AboutForm(){
                             </div>
                         </CardContent>
                     </Card>
-
-                </form>
-            </div>
+                </div>
+        </div>
         </div>
     );
 }

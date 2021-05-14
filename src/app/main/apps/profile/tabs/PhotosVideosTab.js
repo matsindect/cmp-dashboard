@@ -35,7 +35,7 @@ function PhotosVideosTab() {
       };
 
 	return (
-		<div className="md:flex max-w-2xl">
+		<div className="md:flex max-w-4xl">
 			<div className="flex flex-col flex-1 md:ltr:pr-32 md:rtl:pl-32">
 				<FuseAnimateGroup
 					enter={{
@@ -45,8 +45,7 @@ function PhotosVideosTab() {
 				
 						<div key={2} className="mb-48">
 							<ListSubheader component="div" className="flex items-center px-0 mb-24">
-								<Typography variant="h6">All MEdia</Typography>
-								
+								<Typography variant="h6">All Media</Typography>
 							</ListSubheader>
 
 							<GridList className="" spacing={8} cols={0}>
@@ -70,6 +69,11 @@ function PhotosVideosTab() {
 									</GridListTile>
 								))}
 							</GridList>
+
+
+							<ListSubheader component="div" style={{marginTop: 40}} className="flex items-center px-0 mb-24">
+								<Typography variant="h6">All Documents</Typography>
+							</ListSubheader>
 						</div>
 
 						<Dialog

@@ -240,53 +240,6 @@ const navigationConfig = [
 					}
 				]
 			},
-
-			{
-				id: 'cities',
-				title: 'Cities',
-				type: 'collapse',
-				icon: 'account_balance',
-				url: '/apps/cities',
-				children: [
-					{
-						id: 'cities-all',
-						title: 'All cities',
-						type: 'item',
-						url: '/apps/cities',
-						exact: true
-					},
-					{
-						id: 'cities-new',
-						title: 'New city',
-						type: 'item',
-						url: '/apps/cities/new',
-						exact: true
-					}
-				]
-			},
-			{
-				id: 'countries',
-				title: 'Countries',
-				type: 'collapse',
-				icon: 'emoji_flags',
-				url: '/apps/countries',
-				children: [
-					{
-						id: 'countries-all',
-						title: 'All countries',
-						type: 'item',
-						url: '/apps/countries',
-						exact: true
-					},
-					{
-						id: 'countires-new',
-						title: 'New country',
-						type: 'item',
-						url: '/apps/countries/new',
-						exact: true
-					}
-				]
-			}
 		]
 	},
 
