@@ -6,12 +6,12 @@ import { selectOrders } from './../store/ordersSlice';
 import { selectSectors } from './../store/sectorsSlice';
 import _ from '@lodash';
 
-export default function ProductInfoForm(props){
-    const {form, setForm, handleChange} = props;
-    const prodcategories = useSelector(selectOrders);
-    const sectors = useSelector(selectSectors);
+export default function ProductInfoForm(props) {
+	const { form, setForm, handleChange } = props;
+	const prodcategories = useSelector(selectOrders);
+	const sectors = useSelector(selectSectors);
 
-    function handleChipChange(value, name) {
+	function handleChipChange(value, name) {
 		setForm(
 			_.set(
 				{ ...form },
@@ -20,111 +20,109 @@ export default function ProductInfoForm(props){
 			)
 		);
 	}
-    return(
-        <div>
-            <TextField
-                className="mt-8 mb-16"
-                error={form.product_name === ''}
-                required
-                label="Product Name"
-                autoFocus
-                id="product_name"
-                name="product_name"
-                value={form.product_name}
-                onChange={handleChange}
-                variant="outlined"
-                fullWidth
-            />
+	return (
+		<div>
+			<TextField
+				className="mt-8 mb-16"
+				error={form.product_name === ''}
+				required
+				label="Product Name"
+				autoFocus
+				id="product_name"
+				name="product_name"
+				value={form.product_name}
+				onChange={handleChange}
+				variant="outlined"
+				fullWidth
+			/>
 
+			<FuseChipSelect
+				className="mt-8 mb-24"
+				value={form.product_categories.map(item => ({
+					value: item.value,
+					label: item.label
+				}))}
+				onChange={value => handleChipChange(value, 'product_categories')}
+				placeholder="Select multiple categories"
+				textFieldProps={{
+					label: 'Product categories',
+					InputLabelProps: {
+						shrink: true
+					},
+					variant: 'outlined'
+				}}
+				options={prodcategories.map(item => ({
+					value: item._id,
+					label: item.name
+				}))}
+				isMulti
+			/>
 
-            <FuseChipSelect
-                className="mt-8 mb-24"
-                value={form.product_categories.map(item => ({
-                    value: item.value,
-                    label: item.label
-                }))}
-                onChange={value => handleChipChange(value, 'product_categories')}
-                placeholder="Select multiple categories"
-                textFieldProps={{
-                    label: 'Categories',
-                    InputLabelProps: {
-                        shrink: true
-                    },
-                    variant: 'outlined'
-                }}
-                options={prodcategories.map(item => ({
-                    value: item._id,
-                    label: item.name
-                }))}
-                isMulti
-            />
+			<FuseChipSelect
+				className="mt-8 mb-16"
+				value={form.tags.map(item => ({
+					value: item.value,
+					label: item.label
+				}))}
+				onChange={value => handleChipChange(value, 'tags')}
+				placeholder="Select Tags"
+				textFieldProps={{
+					label: 'Tags',
+					InputLabelProps: {
+						shrink: true
+					},
+					variant: 'outlined'
+				}}
+				options={sectors.map(item => ({
+					value: item._id,
+					label: item.name
+				}))}
+				isMulti
+			/>
 
-            <FuseChipSelect
-                className="mt-8 mb-16"
-                value={form.tags.map(item => ({
-                    value: item.value,
-                    label: item.label
-                }))}
-                onChange={value => handleChipChange(value, 'tags')}
-                placeholder="Select Tags"
-                textFieldProps={{
-                    label: 'Tags',
-                    InputLabelProps: {
-                        shrink: true
-                    },
-                    variant: 'outlined'
-                }}
-                options={sectors.map(item => ({
-                    value: item._id,
-                    label: item.name
-                }))}
-                isMulti
-            />
+			<FuseChipSelect
+				className="mt-8 mb-16"
+				value={form.sectors.map(item => ({
+					value: item.value,
+					label: item.label
+				}))}
+				onChange={value => handleChipChange(value, 'sectors')}
+				placeholder="Select multiple sectors"
+				textFieldProps={{
+					label: 'Sectors',
+					InputLabelProps: {
+						shrink: true
+					},
+					variant: 'outlined'
+				}}
+				options={sectors.map(item => ({
+					value: item._id,
+					label: item.name
+				}))}
+				isMulti
+			/>
 
-            <FuseChipSelect
-                className="mt-8 mb-16"
-                value={form.sectors.map(item => ({
-                    value: item.value,
-                    label: item.label
-                }))}
-                onChange={value => handleChipChange(value, 'sectors')}
-                placeholder="Select multiple sectors"
-                textFieldProps={{
-                    label: 'Sectors',
-                    InputLabelProps: {
-                        shrink: true
-                    },
-                    variant: 'outlined'
-                }}
-                options={sectors.map(item => ({
-                    value: item._id,
-                    label: item.name
-                }))}
-                isMulti
-            />
-
-            <FuseChipSelect
-                className="mt-8 mb-16"
-                value={form.sectors.map(item => ({
-                    value: item.value,
-                    label: item.label
-                }))}
-                onChange={value => handleChipChange(value, 'sectors')}
-                placeholder="Select Business Types"
-                textFieldProps={{
-                    label: 'Business Types',
-                    InputLabelProps: {
-                        shrink: true
-                    },
-                    variant: 'outlined'
-                }}
-                options={sectors.map(item => ({
-                    value: item._id,
-                    label: item.name
-                }))}
-                isMulti
-            />
-        </div>
-    )
-
+			<FuseChipSelect
+				className="mt-8 mb-16"
+				value={form.sectors.map(item => ({
+					value: item.value,
+					label: item.label
+				}))}
+				onChange={value => handleChipChange(value, 'sectors')}
+				placeholder="Select Business Types"
+				textFieldProps={{
+					label: 'Business Types',
+					InputLabelProps: {
+						shrink: true
+					},
+					variant: 'outlined'
+				}}
+				options={sectors.map(item => ({
+					value: item._id,
+					label: item.name
+				}))}
+				isMulti
+			/>
+		</div>
+	);
 }
