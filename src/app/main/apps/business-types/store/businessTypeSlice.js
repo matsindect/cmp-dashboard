@@ -13,7 +13,7 @@ export const getBusinessType = createAsyncThunk('cmpBusinessType/business-types/
 export const saveBusinessType = createAsyncThunk('cmpBusinessType/business-types/saveBusinessType', async sector => {
 	const response = await axios.post(`${domainConfig.api_url}api/v1/business-types`, sector);
 	const data = await response.data;
-	
+	console.log(data);
 	return data.data;
 });
 
@@ -28,7 +28,6 @@ const businessTypeSlice = createSlice({
 					name: '',
 					description: '',
 					order: 0,
-					sectors:[],
 					parent:[],
 					images: [],
 					is_active: true,

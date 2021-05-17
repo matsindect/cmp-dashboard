@@ -9,6 +9,8 @@ import clsx from 'clsx';
 import {selectBusinessTypes } from '../store/businessTypesSlice';
 import { useSelector } from 'react-redux';
 import { selectSectors } from '../store/sectorsSlice';
+
+
 export default function BusinessTypeForm(props){
     const {form, setForm, handleChange} = props;
     const businesstypes = useSelector(selectBusinessTypes);

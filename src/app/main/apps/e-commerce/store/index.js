@@ -6,7 +6,8 @@ import product from './productSlice';
 import products from './productsSlice';
 import cities from './citiesSlice';
 import countries from './countriesSlice';
-import productAttributes from './productAttributesSlice'
+import productAttributes from './productAttributesSlice';
+import businessTypes from './businessTypeSlice';
 
 const reducer = combineReducers({
 	products,
@@ -16,7 +17,8 @@ const reducer = combineReducers({
 	cities,
 	countries,
 	order,
-	productAttributes
+	productAttributes,
+	businessTypes
 });
 
 export default reducer;

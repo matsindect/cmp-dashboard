@@ -11,7 +11,7 @@ import Icon from '@material-ui/core/Icon';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 export default function FormHeader(props){
-    const {form, sector} = props;
+    const {form, sector, history} = props;
     const dispatch = useDispatch();
 
     const theme = useTheme();
@@ -19,6 +19,10 @@ export default function FormHeader(props){
     function canBeSubmitted() {
 		return form.name.length > 0 && !_.isEqual(sector, form);
 	}
+
+    const submitBusinessType = () => {
+        dispatch(saveBusinessType(form));
+    }
 
     return(
         <div className="flex flex-1 w-full items-center justify-between">
@@ -72,7 +76,7 @@ export default function FormHeader(props){
                     variant="contained"
                     color="secondary"
                     disabled={!canBeSubmitted()}
-                    onClick={() => dispatch(saveBusinessType(form))}
+                    onClick={() => submitBusinessType()}
                 >
                     Save
                 </Button>

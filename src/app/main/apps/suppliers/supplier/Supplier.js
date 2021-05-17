@@ -50,8 +50,8 @@ function Product(props) {
 				dispatch(newSupplier());
 				dispatch(getOrders());
 				dispatch(getSectors());
-				dispatch(getBusinessTypes())
-				dispatch(getProducts())
+				dispatch(getBusinessTypes());
+				dispatch(getProducts());
 			} else {
 				dispatch(getSupplier(routeParams));
 			}
@@ -94,22 +94,20 @@ function Product(props) {
 					classes={{ root: 'w-full h-64' }}
 				>
 					<Tab className="h-64 normal-case" label="Company Info" />
-					<Tab className="h-64 normal-case" label="Images and Files" />
-					<Tab className="h-64 normal-case" label="Products" />
+					{/**<Tab className="h-64 normal-case" label="Images and Files" /> */}
+					{/**<Tab className="h-64 normal-case" label="Products" /> **/}
 					<Tab className="h-64 normal-case" label="Location" />
-					<Tab className="h-64 normal-case" label="Contact persons" />
-					<Tab className="h-64 normal-case" label="Social" />
+					{/**<Tab className="h-64 normal-case" label="Social" />*/}
 				</Tabs>
 			}
 			content={
 				form && (
 					<div className="p-16 sm:p-24 max-w-2xl">
-						{tabValue === 0 &&  <CompanyForm form={form} handleChange={handleChange} />}
-						{tabValue === 1 &&  <MediaForm form={form} setForm={setForm} />}
-						{tabValue === 2 && <ProductsForm form={form} setForm={setForm}/>}
-						{tabValue === 3 && <MapForm form={form} setForm={setForm}/>}
-						{tabValue === 4 && <ContactPersons form={form}/>}
-						{tabValue === 5 && <SocialForm form={form} handleChange={handleChange} />}
+						{tabValue === 0 && <CompanyForm form={form} setForm={setForm} handleChange={handleChange} />}
+						{/**	{tabValue === 1 && <MediaForm form={form} setForm={setForm} />} */}
+						{/**{tabValue === 2 && <ProductsForm form={form} setForm={setForm}/>} */}
+						{tabValue === 1 && <MapForm form={form} setForm={setForm}/>}
+						{/**{tabValue === 5 && <SocialForm form={form} handleChange={handleChange} />} */}
 					</div>
 				)
 			}
