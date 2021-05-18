@@ -14,6 +14,9 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 import clsx from 'clsx';
 import React, { useState } from 'react';
+import {deleteBusinessType} from '../store/businessTypeSlice';
+import { getBusinessTypes } from '../store/businessTypesSlice';
+import { useDispatch } from 'react-redux';
 
 const rows = [
 	{
@@ -55,6 +58,7 @@ const useStyles = makeStyles(theme => ({
 function ProductsTableHead(props) {
 	const classes = useStyles(props);
 	const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
+	const dispatch = useDispatch()
 
 	const createSortHandler = property => event => {
 		props.onRequestSort(event, property);
@@ -65,7 +69,16 @@ function ProductsTableHead(props) {
 	}
 
 	function closeSelectedProductsMenu() {
+		props.selected.forEach(id => {
+			dispatch(deleteBusinessType(id))
+		});
+		dispatch(getBusinessTypes());
+	
 		setSelectedProductsMenu(null);
+	}
+
+	function deleteSelected(){
+		
 	}
 
 	return (
@@ -103,7 +116,7 @@ function ProductsTableHead(props) {
 											closeSelectedProductsMenu();
 										}}
 									>
-										<ListItemIcon className="min-w-40">
+										<ListItemIcon onClick={deleteSelected} className="min-w-40">
 											<Icon>delete</Icon>
 										</ListItemIcon>
 										<ListItemText primary="Remove" />

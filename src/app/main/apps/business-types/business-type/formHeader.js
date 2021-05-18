@@ -6,12 +6,13 @@ import Button from '@material-ui/core/Button';
 import { useDispatch } from 'react-redux';
 import { saveBusinessType} from '../store/businessTypeSlice';
 import _ from '@lodash';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Icon from '@material-ui/core/Icon';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 
 export default function FormHeader(props){
-    const {form, sector, history} = props;
+    const {form, sector} = props;
+    const [redirect, setRedirect] = React.useState(null)
     const dispatch = useDispatch();
 
     const theme = useTheme();
@@ -22,7 +23,10 @@ export default function FormHeader(props){
 
     const submitBusinessType = () => {
         dispatch(saveBusinessType(form));
+        setRedirect("apps/business-types");
     }
+
+  
 
     return(
         <div className="flex flex-1 w-full items-center justify-between">

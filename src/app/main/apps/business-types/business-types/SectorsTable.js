@@ -98,6 +98,7 @@ function SectorsTable(props) {
 				<Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
 					<SectorsTableHead
 						numSelected={selected.length}
+						selected={selected}
 						order={order}
 						onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
