@@ -14,7 +14,6 @@ import { selectSectors } from '../store/sectorsSlice';
 export default function BusinessTypeForm(props){
     const {form, setForm, handleChange} = props;
     const businesstypes = useSelector(selectBusinessTypes);
-    const sectors = useSelector(selectSectors);
 
     function setFeaturedImage(id) {
 		setForm(_.set({ ...form }, 'featuredImageId', id));
@@ -27,7 +26,7 @@ export default function BusinessTypeForm(props){
 			_.set(
 				{ ...form },
 				name,
-				value.map(item => item)
+				value.map(item => item.value)
 			)
 		);
 	}
@@ -91,10 +90,7 @@ export default function BusinessTypeForm(props){
 
             <FuseChipSelect
                 className="mt-8 mb-24"
-                value={form.parent.map(item => ({
-                    value: item.value,
-                    label: item.label
-                }))}
+               
                 onChange={value => handleChipChange(value, 'parent')}
                 placeholder="Parent Business Type"
                 textFieldProps={{
