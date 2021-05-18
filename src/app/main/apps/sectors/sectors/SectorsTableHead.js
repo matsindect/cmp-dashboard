@@ -14,7 +14,9 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 import clsx from 'clsx';
 import React, { useState } from 'react';
-
+import { useDispatch } from 'react-redux';
+import {deleteSector} from '../store/sectorSlice';
+import { getSectors } from '../store/sectorsSlice';
 const rows = [
 	{
 		id: 'image',
@@ -62,6 +64,7 @@ const useStyles = makeStyles(theme => ({
 function ProductsTableHead(props) {
 	const classes = useStyles(props);
 	const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
+	const dispatch = useDispatch()
 
 	const createSortHandler = property => event => {
 		props.onRequestSort(event, property);
@@ -73,6 +76,10 @@ function ProductsTableHead(props) {
 
 	function closeSelectedProductsMenu() {
 		setSelectedProductsMenu(null);
+		props.selected.forEach(id => {
+				dispatch(deleteSector(id))
+		});
+		dispatch(getSectors())
 	}
 
 	return (

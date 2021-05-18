@@ -23,7 +23,7 @@ export default function SectorForm(props){
 			_.set(
 				{ ...form },
 				name,
-				value.map(item => item)
+				value.map(item => item.value)
 			)
 		);
 	}
@@ -89,10 +89,7 @@ export default function SectorForm(props){
 
         <FuseChipSelect
             className="mt-8 mb-24"
-            value={form.categories.map(item => ({
-                value: item.value,
-                label: item.label
-            }))}
+           
             onChange={value => handleChipChange(value, 'categories')}
             placeholder="Select multiple categories"
             textFieldProps={{
@@ -110,10 +107,7 @@ export default function SectorForm(props){
         />
         <FuseChipSelect
             className="mt-8 mb-24"
-            value={form.parent.map(item => ({
-                value: item.value,
-                label: item.label
-            }))}
+            
             onChange={value => handleChipChange(value, 'parent')}
             placeholder="Select multiple parent"
             textFieldProps={{

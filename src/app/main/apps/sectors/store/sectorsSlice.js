@@ -2,8 +2,14 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 import axios from 'axios';
 import domainConfig from '../../../../fuse-configs/domainConfig';
 
+
+const token =  window.localStorage.getItem('jwt_access_token');
+
+const config = {
+		headers: { Authorization: `Bearer ${token}` }
+};
 export const getSectors = createAsyncThunk('cmp/sectors/getSectors', async () => {
-	const response = await axios.get(`${domainConfig.api_url}api/v1/sectors/`);
+	const response = await axios.get(`${domainConfig.api_url}api/v1/sectors/`, config);
 
 	const data = await response.data;
 

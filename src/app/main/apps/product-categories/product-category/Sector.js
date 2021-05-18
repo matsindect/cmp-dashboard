@@ -22,6 +22,7 @@ import { Link, useParams } from 'react-router-dom';
 import { saveSector, newSector, getSector } from '../store/productCategorySlice';
 import {getProductCategoriess, selectProductCategoriess} from '../store/productCategoriesSlice';
 import {getSectors, selectSectors} from '../store/sectorsSlice'
+import { getBusinessTypes, selectBusinessTypes } from '../store/businessTypesSlice';
 import reducer from '../store';
 
 const useStyles = makeStyles(theme => ({
@@ -64,6 +65,7 @@ function Sector(props) {
 	const sector = useSelector(({ cmpProductCategogies }) => cmpProductCategogies.productCategory);
 	const parent = useSelector(selectProductCategoriess)
 	const sectors = useSelector(selectSectors)
+	const businessTypes = useSelector(selectBusinessTypes);
 	const theme = useTheme();
 
 	const classes = useStyles(props);
@@ -77,7 +79,8 @@ function Sector(props) {
 
 			if (sectorId === 'new') {
 				dispatch(newSector());
-				dispatch(getSectors())
+				dispatch(getSectors());
+				dispatch(getBusinessTypes());
 				dispatch(getProductCategoriess())
 			} else {
 				dispatch(getSector(routeParams));
@@ -300,6 +303,25 @@ function Sector(props) {
 									}))}
 									isMulti
 								/>
+
+<								FuseChipSelect
+									className="mt-8 mb-24"
+									onChange={value => handleChipChange(value, 'business_types')}
+									placeholder="Select Business Types"
+									textFieldProps={{
+										label: 'Business Types',
+										InputLabelProps: {
+											shrink: true
+										},
+										variant: 'outlined'
+									}}
+									options={sectors.map(item => ({
+										value: item._id,
+										label: item.name
+									}))}
+									isMulti
+								/>
+
 								<div>
 									<div className="flex justify-center sm:justify-start flex-wrap -mx-8">
 										<label

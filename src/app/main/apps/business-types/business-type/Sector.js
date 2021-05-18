@@ -49,6 +49,7 @@ function Sector(props) {
 		setTabValue(value);
 	}
 
+	console.log(form)
 
 	if ((!sector || (sector && routeParams.businesstypeId !== sector._id)) && routeParams.businesstypeId !== 'new') {
 		return <FuseLoading />;
