@@ -10,15 +10,17 @@ import { saveSupplier } from '../store/supplierSlice';
 import _ from '@lodash';
 
 export default function FormHeader(props){
-    const {form, handleChangeTab} =props;
+    const {form} =props;
     const theme = useTheme();
     const dispatch = useDispatch();
 
     const supplier = useSelector(({ cmpSupplier }) => cmpSupplier.supplier);
 
     function canBeSubmitted() {
-		return form.company.name.length > 0 && !_.isEqual(supplier, form);
+		return form.company.name && !_.isEqual(supplier, form);
 	}
+
+    console.log("Company"+form.company.tel)
 
     return(
         <div className="flex flex-1 w-full items-center justify-between">

@@ -15,6 +15,8 @@ export default function ProductsForm(props){
     const sectors = useSelector(selectSectors);
     const business_types = useSelector(selectBusinessTypes)
 
+    console.log("Business Types"+business_types)
+
 	function handleChipChange(value, name) {
 		setForm(
 			_.set(
@@ -43,7 +45,7 @@ export default function ProductsForm(props){
                 variant: 'outlined'
             }}
             options={prodcategories.map(item => ({
-                value: item._id,
+                value: item.id,
                 label: item.name
             }))}
             isMulti

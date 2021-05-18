@@ -24,7 +24,7 @@ export default function ContactPersons(props){
 		const list = [...inputList];
 		list[index][name] = value;
 		setInputList(list);
-		form.product_attributes = list;
+		form.contact_person = list;
 	};
 
     	// handle click event of the Remove button
@@ -32,7 +32,7 @@ export default function ContactPersons(props){
 		const list = [...inputList];
 		list.splice(index, 1);
 		setInputList(list);
-		form.product_attributes = list;
+		form.contact_person = list;
 	};
 
     return(

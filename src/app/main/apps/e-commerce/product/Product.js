@@ -58,6 +58,8 @@ function Product(props) {
 		}
 	}, [form, product, setForm]);
 
+	console.log(form)
+
 	function handleChangeTab(event, value) {
 		setTabValue(value);
 	}

@@ -15,7 +15,7 @@ export const saveProduct = createAsyncThunk('eCommerceApp/product/saveProduct', 
 	console.log(product);
 	const response = await axios.post(`${domainConfig.api_url}api/v1/products/`, product);
 	const data = await response.data.data;
-
+      
 	return data;
 });
 

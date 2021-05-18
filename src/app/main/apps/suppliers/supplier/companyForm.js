@@ -4,10 +4,25 @@ import _ from '@lodash';
 import TextField from '@material-ui/core/TextField';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import { makeStyles } from '@material-ui/core/styles';
+import FuseChipSelect from '@fuse/core/FuseChipSelect';
+import { useSelector } from 'react-redux';
+import {selectBusinessTypes} from '../store/businessTypesSlice';
 
 export default function CompanyForm(props){
     const { form, handleChange, setForm } = props;
+    const business_types = useSelector(selectBusinessTypes)
     const classes = useStyles();
+
+    function handleChipChange(value, name) {
+		setForm(
+			_.set(
+				{ ...form },
+				name,
+				value.map(item => item)
+			)
+		);
+	}
+
     return(
         <div>
         <Grid container className={classes.root} spacing={4}>
@@ -19,17 +34,17 @@ export default function CompanyForm(props){
                     required
                     label="Company Name"
                     autoFocus
-                    id="name"
-                    name="name"
-                    defaultValue={form.company.name&&form.company.name}
+                    id="company.name"
+                    name="company.name"
+                    defaultValue={form.company.name}
                     onChange={handleChange}
                     variant="outlined"
                     fullWidth
                 />
                 <TextField
                     className="mt-8 mb-16"
-                    id="about"
-                    name="about"
+                    id="company.about"
+                    name="company.about"
                     onChange={handleChange}
                     label="About the company"
                     type="text"
@@ -45,11 +60,10 @@ export default function CompanyForm(props){
                     label="Phone number"
                     id="tel"
                     name="tel"
-                    defaultValue={form.company.tel}
+                    defaultValue={form.tel}
                     fullWidth
                     className="mt-8 mb-16"
                 />
-                
             </Grid>
             <Grid item xs={6}>
                 <MuiPhoneNumber
@@ -58,7 +72,7 @@ export default function CompanyForm(props){
                     label="Fax"
                     id="fax"
                     name="fax"
-                    defaultValue={form.company.fax}
+                    defaultValue={form.fax}
                     fullWidth
                     className="mt-8 mb-16"
                 />
@@ -70,7 +84,7 @@ export default function CompanyForm(props){
                     autoFocus
                     id="email"
                     name="email"
-                    defaultValue={form.company.email}
+                    defaultValue={form.email}
                     onChange={handleChange}
                     variant="outlined"
                     fullWidth
@@ -82,10 +96,31 @@ export default function CompanyForm(props){
                     type="url"
                     id="website"
                     name="website"
-                    defaultValue={form.company.website}
+                    defaultValue={form.website}
                     onChange={handleChange}
                     variant="outlined"
                     fullWidth
+                />
+                <FuseChipSelect
+                    className="mt-8 mb-16"
+                    value={form.business_types&&form.business_types.map(item => ({
+                        value: item,
+                        label: item
+                    }))}
+                    onChange={value => handleChipChange(value, 'business_types')}
+                    placeholder="Select business type"
+                    textFieldProps={{
+                        label: 'Business Types',
+                        InputLabelProps: {
+                            shrink: true
+                        },
+                        variant: 'outlined'
+                    }}
+                    options={business_types.map(item => ({
+                        value: item._id,
+                        label: item.name
+                    }))}
+                    isMulti
                 />
             </Grid>
         </Grid>

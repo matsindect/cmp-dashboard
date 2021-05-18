@@ -31,13 +31,6 @@ const rows = [
 		sort: true
 	},
 	{
-		id: 'categories',
-		align: 'left',
-		disablePadding: false,
-		label: 'Sectors',
-		sort: true
-	},
-	{
 		id: 'description',
 		align: 'left',
 		disablePadding: false,

@@ -3,10 +3,12 @@ import axios from 'axios';
 import domainConfig from './../../../../fuse-configs/domainConfig';
 
 export const getSectors = createAsyncThunk('eCommerceApp/sectors/getSectors', async () => {
-	const response = await axios.get(`${domainConfig.api_url}api/v1/sectors/`);
-	const data = await response.data.data;
-
-	return data;
+	const response = await axios.get(`${domainConfig.api_url}api/v1/sectors/`).then(res=>{
+		console.log(res)
+	}).catch(e=>{
+		console.log(e.response.data)
+	});
+	
 });
 
 const sectorsAdapter = createEntityAdapter({});

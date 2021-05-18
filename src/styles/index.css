@@ -8,7 +8,7 @@ body.no-animate *::after {
     transition: none !important;
     animation: none !important;
 }
-.MuiOutlinedInput-root {
+input {
 
     height: 64px;
 }
