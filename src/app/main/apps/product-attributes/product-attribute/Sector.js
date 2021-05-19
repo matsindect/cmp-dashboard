@@ -20,8 +20,9 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { saveProductAttributes, newProductAttributes, getProductAttributes } from '../store/productAttributeSlice';
-import {getSectors, selectSectors} from '../store/sectorsSlice';
-import {getCategories,selectCategories } from '../store/categoriesSlice'
+import { getSectors, selectSectors } from '../store/sectorsSlice';
+import { getCategories, selectCategories } from '../store/categoriesSlice';
+import { getBusinessTypes, selectBusinessTypes } from '../store/businessTypesSlice';
 import FormControl from '@material-ui/core/FormControl';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -32,18 +33,18 @@ import reducer from '../store';
 const useStyles = makeStyles(theme => ({
 	formControl: {
 		// margin: theme.spacing(1),
-		minWidth: "90%",
+		minWidth: '90%'
 	},
-	center:{
+	center: {
 		display: 'block',
-		marginLeft:'auto',
-		marginRight:'auto',
+		marginLeft: 'auto',
+		marginRight: 'auto',
 		justifyContent: 'center',
-		marginTop:20
+		marginTop: 20
 	},
-	variantButton:{
-		width:'10%',
-		position:"relative",
+	variantButton: {
+		width: '10%',
+		position: 'relative',
 		flexDirection: 'column',
 		display: 'inline-flex'
 	},
@@ -85,15 +86,15 @@ function Sector(props) {
 	const dispatch = useDispatch();
 	const sector = useSelector(({ cmpProductAttributes }) => cmpProductAttributes.productAttribute);
 	const theme = useTheme();
-	const sectors = useSelector(selectSectors)
-	const categories = useSelector(selectCategories)
+	const sectors = useSelector(selectSectors);
+	const categories = useSelector(selectCategories);
+	const businessTypes = useSelector(selectBusinessTypes);
 
 	const classes = useStyles(props);
 	const [tabValue, setTabValue] = useState(0);
 	const { form, handleChange, setForm } = useForm(null);
 	const routeParams = useParams();
-	const [inputList, setInputList] = useState([{ label:'' }]);
-
+	const [inputList, setInputList] = useState([{ label: '' }]);
 
 	useDeepCompareEffect(() => {
 		function updateSectorState() {
@@ -103,6 +104,7 @@ function Sector(props) {
 				dispatch(newProductAttributes());
 				dispatch(getSectors());
 				dispatch(getCategories());
+				dispatch(getBusinessTypes());
 			} else {
 				dispatch(getProductAttributes(routeParams));
 			}
@@ -115,7 +117,6 @@ function Sector(props) {
 		if ((sector && !form) || (sector && form && sector.id !== form.id)) {
 			setForm(sector);
 		}
-		
 	}, [form, sector, setForm]);
 
 	function handleChangeTab(event, value) {
@@ -131,7 +132,7 @@ function Sector(props) {
 			)
 		);
 	}
-console.log(form)
+	console.log(form);
 	function setFeaturedImage(id) {
 		setForm(_.set({ ...form }, 'featuredImageId', id));
 	}
@@ -169,27 +170,27 @@ console.log(form)
 		return <FuseLoading />;
 	}
 
-		// handle input change
-		const handleInputChange = (e, index) => {
-			const { name, value } = e.target;
-			const list = [...inputList];
-			list[index][name] = value;
-			setInputList(list);
-			form.variants = list;
-		};
-	
-		// handle click event of the Remove button
-		const handleRemoveClick = index => {
-			const list = [...inputList];
-			list.splice(index, 1);
-			setInputList(list);
-			form.variants = list;
-		};
-	
-		// handle click event of the Add button
-		const handleAddClick = () => {
-			setInputList([...inputList, { label:'' }]);
-		};
+	// handle input change
+	const handleInputChange = (e, index) => {
+		const { name, value } = e.target;
+		const list = [...inputList];
+		list[index][name] = value;
+		setInputList(list);
+		form.variants = list;
+	};
+
+	// handle click event of the Remove button
+	const handleRemoveClick = index => {
+		const list = [...inputList];
+		list.splice(index, 1);
+		setInputList(list);
+		form.variants = list;
+	};
+
+	// handle click event of the Add button
+	const handleAddClick = () => {
+		setInputList([...inputList, { label: '' }]);
+	};
 	return (
 		<FusePageCarded
 			classes={{
@@ -288,7 +289,7 @@ console.log(form)
 									variant="outlined"
 									fullWidth
 								/>
-	
+
 								{inputList.map((x, i) => {
 									return (
 										<div className="box" key={i}>
@@ -305,7 +306,7 @@ console.log(form)
 													fullWidth
 												/>
 											</FormControl>
-											
+
 											<FormControl variant="filled" className={classes.variantButton}>
 												<div className="btn-box " className={classes.center}>
 													{inputList.length !== 1 && (
@@ -322,11 +323,10 @@ console.log(form)
 													)}
 												</div>
 											</FormControl>
-											
 										</div>
 									);
 								})}
-						
+
 								<TextField
 									className="mt-8 mb-16"
 									id="description"
@@ -343,8 +343,8 @@ console.log(form)
 								<FuseChipSelect
 									className="mt-8 mb-24"
 									value={form.sectors.map(item => ({
-										value: item.value,
-										label: item.label
+										value: item._id ? item._id : item.value,
+										label: item.name ? item.name : item.label
 									}))}
 									onChange={value => handleChipChange(value, 'sectors')}
 									placeholder="Select multiple setors"
@@ -363,14 +363,14 @@ console.log(form)
 								/>
 								<FuseChipSelect
 									className="mt-8 mb-24"
-									value={form.categories.map(item => ({
-										value: item.value,
-										label: item.label
+									value={form.product_category.map(item => ({
+										value: item._id ? item._id : item.value,
+										label: item.name ? item.name : item.label
 									}))}
-									onChange={value => handleChipChange(value, 'categories')}
-									placeholder="Select multiple categories"
+									onChange={value => handleChipChange(value, 'product_category')}
+									placeholder="Select multiple product category"
 									textFieldProps={{
-										label: 'Categories',
+										label: 'Product Category',
 										InputLabelProps: {
 											shrink: true
 										},
@@ -382,9 +382,27 @@ console.log(form)
 									}))}
 									isMulti
 								/>
-								
-								
-								
+								<FuseChipSelect
+									className="mt-8 mb-24"
+									value={form.business_type.map(item => ({
+										value: item._id ? item._id : item.value,
+										label: item.name ? item.name : item.label
+									}))}
+									onChange={value => handleChipChange(value, 'business_type')}
+									placeholder="Select multiple product business types"
+									textFieldProps={{
+										label: 'Business Types',
+										InputLabelProps: {
+											shrink: true
+										},
+										variant: 'outlined'
+									}}
+									options={businessTypes.map(item => ({
+										value: item._id,
+										label: item.name
+									}))}
+									isMulti
+								/>
 							</div>
 						)}
 					</div>

@@ -20,8 +20,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { saveSector, newSector, getSector } from '../store/productCategorySlice';
-import {getProductCategoriess, selectProductCategoriess} from '../store/productCategoriesSlice';
-import {getSectors, selectSectors} from '../store/sectorsSlice'
+import { getProductCategoriess, selectProductCategoriess } from '../store/productCategoriesSlice';
+import { getSectors, selectSectors } from '../store/sectorsSlice';
 import { getBusinessTypes, selectBusinessTypes } from '../store/businessTypesSlice';
 import reducer from '../store';
 
@@ -63,8 +63,8 @@ const useStyles = makeStyles(theme => ({
 function Sector(props) {
 	const dispatch = useDispatch();
 	const sector = useSelector(({ cmpProductCategogies }) => cmpProductCategogies.productCategory);
-	const parent = useSelector(selectProductCategoriess)
-	const sectors = useSelector(selectSectors)
+	const parent = useSelector(selectProductCategoriess);
+	const sectors = useSelector(selectSectors);
 	const businessTypes = useSelector(selectBusinessTypes);
 	const theme = useTheme();
 
@@ -81,7 +81,7 @@ function Sector(props) {
 				dispatch(newSector());
 				dispatch(getSectors());
 				dispatch(getBusinessTypes());
-				dispatch(getProductCategoriess())
+				dispatch(getProductCategoriess());
 			} else {
 				dispatch(getSector(routeParams));
 			}
@@ -101,7 +101,6 @@ function Sector(props) {
 	}
 
 	function handleChipChange(value, name) {
-		console.log(value)
 		setForm(
 			_.set(
 				{ ...form },
@@ -110,7 +109,7 @@ function Sector(props) {
 			)
 		);
 	}
-
+	// console.log(form);
 	function setFeaturedImage(id) {
 		setForm(_.set({ ...form }, 'featuredImageId', id));
 	}
@@ -264,8 +263,8 @@ function Sector(props) {
 								<FuseChipSelect
 									className="mt-8 mb-24"
 									value={form.parent.map(item => ({
-										value: item.value,
-										label: item.label
+										value: item !== null && item._id ? item._id : item.value,
+										label: item !== null && item.name ? item.name : item.label
 									}))}
 									onChange={value => handleChipChange(value, 'parent')}
 									placeholder="Select multiple parent"
@@ -285,8 +284,8 @@ function Sector(props) {
 								<FuseChipSelect
 									className="mt-8 mb-24"
 									value={form.sectors.map(item => ({
-										value: item.value,
-										label: item.label
+										value: item !== null && item._id ? item._id : item.value,
+										label: item !== null && item.name ? item.name : item.label
 									}))}
 									onChange={value => handleChipChange(value, 'sectors')}
 									placeholder="Select multiple setors"
@@ -304,8 +303,12 @@ function Sector(props) {
 									isMulti
 								/>
 
-<								FuseChipSelect
+								<FuseChipSelect
 									className="mt-8 mb-24"
+									value={form.business_types.map(item => ({
+										value: item !== null && item._id ? item._id : item.value,
+										label: item !== null && item.name ? item.name : item.label
+									}))}
 									onChange={value => handleChipChange(value, 'business_types')}
 									placeholder="Select Business Types"
 									textFieldProps={{
@@ -315,7 +318,7 @@ function Sector(props) {
 										},
 										variant: 'outlined'
 									}}
-									options={sectors.map(item => ({
+									options={businessTypes.map(item => ({
 										value: item._id,
 										label: item.name
 									}))}

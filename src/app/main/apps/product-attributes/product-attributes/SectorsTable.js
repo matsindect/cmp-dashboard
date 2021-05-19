@@ -124,10 +124,12 @@ function SectorsTable(props) {
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map(n => {
 								const isSelected = selected.indexOf(n._id) !== -1;
-								const categories =[]
-								n.categories.map(item=>{
-									categories.push(item.label)
-								})
+								const categories = [];
+								if (n.product_category.length > 0) {
+									n.product_category.map(item => {
+										categories.push(item.label);
+									});
+								}
 								return (
 									<TableRow
 										className="h-64 cursor-pointer"
@@ -177,23 +179,6 @@ function SectorsTable(props) {
 										<TableCell className="p-4 md:p-16" component="th" scope="row">
 											{n.description}
 										</TableCell>
-
-										{/* <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
-											<span>$</span>
-											{n.priceTaxIncl}
-										</TableCell> */}
-
-										{/* <TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
-											{n.quantity}
-											<i
-												className={clsx(
-													'inline-block w-8 h-8 rounded mx-8',
-													n.quantity <= 5 && 'bg-red',
-													n.quantity > 5 && n.quantity <= 25 && 'bg-orange',
-													n.quantity > 25 && 'bg-green'
-												)}
-											/>
-										</TableCell> */}
 
 										<TableCell className="p-4 md:p-16" component="th" scope="row" align="right">
 											{n.is_active ? (

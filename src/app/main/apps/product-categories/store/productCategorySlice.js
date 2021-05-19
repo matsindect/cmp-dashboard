@@ -11,6 +11,7 @@ export const getSector = createAsyncThunk('cmpProductCategogies/sector/getSector
 });
 
 export const saveSector = createAsyncThunk('cmpProductCategogies/sector/saveSector', async sector => {
+	console.log(sector);
 	const response = await axios.post(`${domainConfig.api_url}api/v1/product-categories`, sector);
 	const data = await response.data;
 	console.log(data);
@@ -30,6 +31,7 @@ const sectorSlice = createSlice({
 					sectors: [],
 					categories: [],
 					parent: [],
+					business_types: [],
 					order: 0,
 					images: [],
 					active: true
